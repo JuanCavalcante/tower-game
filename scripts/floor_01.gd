@@ -58,20 +58,9 @@ func spawn_enemy_at(point):
 	enemies_alive += 1
 
 func on_floor_cleared():
-	print("Floor Cleared!")
-
-	var portal = get_node("ExitPortal")
+	var portal = get_node_or_null("ExitPortal")
 	if portal:
 		portal.activate()
 
-func _get_floor_enemies():
-	var floor_enemies = []
-	_collect_enemies(self, floor_enemies)
-	return floor_enemies
-
-func _collect_enemies(node, floor_enemies):
-	if node.is_in_group("enemies"):
-		floor_enemies.append(node)
-
-	for child in node.get_children():
-		_collect_enemies(child, floor_enemies)
+func _get_floor_enemies() -> Array:
+	return get_tree().get_nodes_in_group("enemies")

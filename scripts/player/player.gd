@@ -24,7 +24,7 @@ func take_damage(amount):
 		die()
 
 func die():
-	print("Player morreu")
+	pass
 
 func _physics_process(delta):
 	var direction = Vector2.ZERO
@@ -80,10 +80,10 @@ func attack():
 		if not is_instance_valid(enemy) or not enemy.has_method("take_damage"):
 			continue
 
-		var distance = global_position.distance_to(enemy.global_position)
-		var direction_to_enemy = (enemy.global_position - global_position).normalized()
+		var dist_sq = global_position.distance_squared_to(enemy.global_position)
+		var dir_x = enemy.global_position.x - global_position.x
 
-		if direction_to_enemy.x * facing_direction > 0 and distance <= attack_range:
+		if dir_x * facing_direction > 0 and dist_sq <= attack_range * attack_range:
 			enemy.take_damage(attack_damage, global_position)
 
 	await anim.animation_finished

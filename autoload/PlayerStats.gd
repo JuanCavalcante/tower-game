@@ -2,7 +2,7 @@ extends Node
 
 var level := 1
 var xp := 0
-var xp_to_next_level := 50
+var xp_to_next_level: float = 50.0
 
 var max_health := 100
 var current_health := 100
@@ -26,7 +26,7 @@ func to_save_data():
 func load_save_data(data):
 	level = int(data.get("level", 1))
 	xp = int(data.get("xp", 0))
-	xp_to_next_level = int(data.get("xp_to_next_level", 50))
+	xp_to_next_level = float(data.get("xp_to_next_level", 50.0))
 	max_health = int(data.get("max_health", 100))
 	current_health = int(data.get("current_health", max_health))
 
@@ -39,7 +39,7 @@ func add_xp(amount):
 
 func level_up():
 	level += 1
-	xp = xp - xp_to_next_level
+	xp = xp - int(xp_to_next_level)
 	xp_to_next_level *= 1.5
 
 	max_health += 20

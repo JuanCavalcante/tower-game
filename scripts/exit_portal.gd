@@ -11,5 +11,5 @@ func _on_body_entered(body):
 	if not active:
 		return
 
-	if body.name == "Player":
+	if body.is_in_group("player"):
 		GameManager.load_floor(GameManager.current_floor + 1)
