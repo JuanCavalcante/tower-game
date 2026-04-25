@@ -68,11 +68,11 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_boss"]
-radius = 25.0
-height = 56.0
+radius = 12.0
+height = 40.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_boss"]
-radius = 35.0
+radius = 22.022715
 
 [node name="MiniBoss" type="CharacterBody2D" unique_id=991700123]
 script = ExtResource("1_mboss")
@@ -81,16 +81,16 @@ script = ExtResource("1_mboss")
 scale = Vector2(1.8, 1.8)
 sprite_frames = SubResource("SpriteFrames_fv2ly")
 animation = &"run"
-frame_progress = 0.0
+frame_progress = 0.6263741
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=223452345]
-position = Vector2(0, 26)
+position = Vector2(0, 37)
 shape = SubResource("CapsuleShape2D_boss")
 
 [node name="DamageArea" type="Area2D" parent="." unique_id=334563456]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea" unique_id=445674567]
-position = Vector2(0, 25)
+position = Vector2(-1, 15)
 shape = SubResource("CircleShape2D_boss")
 
 [connection signal="body_entered" from="DamageArea" to="." method="_on_damage_area_body_entered"]

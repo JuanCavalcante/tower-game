@@ -9,7 +9,10 @@ var current_level_instance = null
 var floors = {
 	1: "res://scenes/world/floor_01.tscn",
 	2: "res://scenes/world/floor_02.tscn",
-	3: "res://scenes/world/floor_03.tscn"
+	3: "res://scenes/world/floor_03.tscn",
+	4: "res://scenes/world/floor_04.tscn",
+	5: "res://scenes/world/floor_05.tscn",
+	6: "res://scenes/world/floor_06.tscn"
 }
 
 func start_new_game():

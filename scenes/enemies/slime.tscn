@@ -68,11 +68,11 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_cjnwd"]
-radius = 15.0
+radius = 7.0
 height = 34.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yajr6"]
-radius = 19.026299
+radius = 13.0
 
 [node name="Slime" type="CharacterBody2D" unique_id=823700578]
 script = ExtResource("1_yajr6")
@@ -83,13 +83,13 @@ animation = &"run"
 frame_progress = 0.69455403
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1061859845]
-position = Vector2(0, 16)
+position = Vector2(-1, 17)
 shape = SubResource("CapsuleShape2D_cjnwd")
 
 [node name="DamageArea" type="Area2D" parent="." unique_id=1713805722]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea" unique_id=1886474494]
-position = Vector2(0, 15)
+position = Vector2(-1, 10)
 shape = SubResource("CircleShape2D_yajr6")
 
 [connection signal="body_entered" from="DamageArea" to="." method="_on_damage_area_body_entered"]

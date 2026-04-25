@@ -222,8 +222,9 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_x7p2l"]
-size = Vector2(23, 44)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dovo2"]
+radius = 6.0
+height = 46.0
 
 [node name="Player" type="CharacterBody2D" unique_id=306928137]
 z_index = 10
@@ -231,17 +232,16 @@ script = ExtResource("1_8afob")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1305192322]
 sprite_frames = SubResource("SpriteFrames_tffgl")
-animation = &"attack"
+animation = &"walk"
 autoplay = "idle"
-frame = 5
-frame_progress = 1.0
+frame = 7
+frame_progress = 0.1759452
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2096321726]
-position = Vector2(-0.5, 10)
-shape = SubResource("RectangleShape2D_x7p2l")
+position = Vector2(0, 11)
+shape = SubResource("CapsuleShape2D_dovo2")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1873523049]
-enabled = true
 limit_left = 0
 limit_top = 0
 limit_right = 1280

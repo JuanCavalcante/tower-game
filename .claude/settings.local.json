@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh pr *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git config *)",
+      "Bash(git push *)",
+      "Bash(npm install *)",
+      "PowerShell(npm install -g @anthropic-ai/claude-code)",
+      "PowerShell(winget install OpenJS.NodeJS.LTS)"
+    ]
+  }
+}
