@@ -1,0 +1,5 @@
+res://scenes/world/exit_portal.tscn
+res://scripts/player/player.gd
+res://scenes/enimies/slime.tscn
+res://scripts/enimies/slime.gd
+res://scenes/world/floor_01.tscn

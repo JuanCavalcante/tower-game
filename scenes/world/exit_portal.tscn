@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://bsso1o3lu3okb"]
+
+[ext_resource type="Script" uid="uid://k8iogt762b7h" path="res://scripts/exit_portal.gd" id="1_0w4lf"]
+[ext_resource type="Texture2D" uid="uid://danvxg31vjbeh" path="res://assets/sprites/Dimensional_Portal.png" id="2_r7pt2"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0w4lf"]
+radius = 17.0
+height = 42.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6xp5n"]
+atlas = ExtResource("2_r7pt2")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7nq3"]
+atlas = ExtResource("2_r7pt2")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1p14n"]
+atlas = ExtResource("2_r7pt2")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h65ya"]
+atlas = ExtResource("2_r7pt2")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kovow"]
+atlas = ExtResource("2_r7pt2")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vvtec"]
+atlas = ExtResource("2_r7pt2")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6tv2x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6xp5n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r7nq3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1p14n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h65ya")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kovow")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vvtec")
+}],
+"loop": true,
+"name": &"Portal",
+"speed": 10.0
+}]
+
+[node name="ExitPortal" type="Area2D" unique_id=1742621935]
+script = ExtResource("1_0w4lf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1998233792]
+shape = SubResource("CapsuleShape2D_0w4lf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1317715487]
+position = Vector2(-1, 4.7683716e-07)
+scale = Vector2(1.34375, 1.40625)
+sprite_frames = SubResource("SpriteFrames_6tv2x")
+animation = &"Portal"
+autoplay = "Portal"
+frame_progress = 0.6974392
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
