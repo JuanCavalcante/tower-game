@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://dm3p9nk6yt1hz"]
+[gd_scene format=4 uid="uid://dm3qank6yt1h0"]
 
 [ext_resource type="Script" uid="uid://bw3q5t8vxr2ly" path="res://scripts/floor_02.gd" id="1_f02sc"]
 [ext_resource type="Texture2D" uid="uid://dynmfgd206jls" path="res://assets/tilesets/Floor Tiles2.png" id="2_ihrxy"]

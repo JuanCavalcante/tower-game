@@ -18,18 +18,119 @@ jump_force = null
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=547875082]
 
-[node name="HealthLabel" type="Label" parent="UI" unique_id=1103687201]
+[node name="HUD" type="Control" parent="UI" unique_id=1103687204]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HealthLabel" type="Label" parent="UI/HUD" unique_id=1103687201]
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 
-[node name="XPLabel" type="Label" parent="UI" unique_id=1103687202]
+[node name="XPLabel" type="Label" parent="UI/HUD" unique_id=1103687202]
+layout_mode = 0
 offset_top = 24.0
 offset_right = 200.0
 offset_bottom = 47.0
 
-[node name="FloorLabel" type="Label" parent="UI" unique_id=1103687203]
+[node name="FloorLabel" type="Label" parent="UI/HUD" unique_id=1103687203]
+layout_mode = 0
 offset_top = 48.0
 offset_right = 120.0
 offset_bottom = 71.0
+
+[node name="MainMenu" type="Control" parent="UI" unique_id=1103687205]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuPanel" type="PanelContainer" parent="UI/MainMenu" unique_id=1103687206]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -120.0
+offset_right = 150.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuItems" type="VBoxContainer" parent="UI/MainMenu/MenuPanel" unique_id=1103687207]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="UI/MainMenu/MenuPanel/MenuItems" unique_id=1103687208]
+layout_mode = 2
+text = "Tower Game"
+horizontal_alignment = 1
+
+[node name="NewGameButton" type="Button" parent="UI/MainMenu/MenuPanel/MenuItems" unique_id=1103687209]
+custom_minimum_size = Vector2(240, 42)
+layout_mode = 2
+text = "Novo Jogo"
+
+[node name="ContinueButton" type="Button" parent="UI/MainMenu/MenuPanel/MenuItems" unique_id=1103687210]
+custom_minimum_size = Vector2(240, 42)
+layout_mode = 2
+text = "Continuar"
+
+[node name="QuitButton" type="Button" parent="UI/MainMenu/MenuPanel/MenuItems" unique_id=1103687211]
+custom_minimum_size = Vector2(240, 42)
+layout_mode = 2
+text = "Sair do jogo"
+
+[node name="PauseMenu" type="Control" parent="UI" unique_id=1103687212]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuPanel" type="PanelContainer" parent="UI/PauseMenu" unique_id=1103687213]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuItems" type="VBoxContainer" parent="UI/PauseMenu/MenuPanel" unique_id=1103687214]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ResumeButton" type="Button" parent="UI/PauseMenu/MenuPanel/MenuItems" unique_id=1103687215]
+custom_minimum_size = Vector2(240, 42)
+layout_mode = 2
+text = "Continuar"
+
+[node name="NewGameButton" type="Button" parent="UI/PauseMenu/MenuPanel/MenuItems" unique_id=1103687216]
+custom_minimum_size = Vector2(240, 42)
+layout_mode = 2
+text = "Novo Jogo"
+
+[node name="QuitButton" type="Button" parent="UI/PauseMenu/MenuPanel/MenuItems" unique_id=1103687217]
+custom_minimum_size = Vector2(240, 42)
+layout_mode = 2
+text = "Sair do jogo"
 
 [node name="Managers" type="Node" parent="." unique_id=1209282052]

@@ -226,6 +226,7 @@ animations = [{
 size = Vector2(23, 44)
 
 [node name="Player" type="CharacterBody2D" unique_id=306928137]
+z_index = 10
 script = ExtResource("1_8afob")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1305192322]
@@ -240,6 +241,7 @@ position = Vector2(-0.5, 10)
 shape = SubResource("RectangleShape2D_x7p2l")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1873523049]
+enabled = true
 limit_left = 0
 limit_top = 0
 limit_right = 1280

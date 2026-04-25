@@ -14,7 +14,7 @@ var is_attacking := false
 var facing_direction := 1
 
 func _ready():
-	PlayerStats.current_health = PlayerStats.max_health
+	add_to_group("player")
 
 func take_damage(amount):
 	PlayerStats.current_health -= amount
@@ -77,6 +77,9 @@ func attack():
 	var enemies = get_tree().get_nodes_in_group("enemies")
 
 	for enemy in enemies:
+		if not is_instance_valid(enemy) or not enemy.has_method("take_damage"):
+			continue
+
 		var distance = global_position.distance_to(enemy.global_position)
 		var direction_to_enemy = (enemy.global_position - global_position).normalized()
 

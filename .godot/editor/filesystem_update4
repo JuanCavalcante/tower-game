@@ -1,5 +1,10 @@
-res://scenes/world/exit_portal.tscn
+res://autoload/GameManager.gd
+res://scripts/exit_portal.gd
+res://scripts/main.gd
+res://autoload/PlayerStats.gd
 res://scripts/player/player.gd
-res://scenes/enimies/slime.tscn
+res://scripts/floor_01.gd
+res://scripts/floor_02.gd
+res://scripts/floor_03.gd
+res://scripts/enimies/mini_boss.gd
 res://scripts/enimies/slime.gd
-res://scenes/world/floor_01.tscn

@@ -15,7 +15,7 @@ var knockback_velocity := Vector2.ZERO
 
 func _ready():
 	current_health = max_health
-	player = get_tree().get_root().get_node("Main/Game/Player")
+	player = get_tree().get_first_node_in_group("player")
 	add_to_group("enemies")
 
 func _physics_process(delta):
@@ -24,7 +24,7 @@ func _physics_process(delta):
 	else:
 		velocity.y = 0.1
 
-	if player:
+	if is_instance_valid(player):
 		var direction = (player.global_position - global_position)
 
 		velocity.x = direction.normalized().x * speed
@@ -59,11 +59,22 @@ func flash():
 func die():
 	PlayerStats.add_xp(xp_reward)
 
-	var floor = get_parent().get_parent()
-	if floor.has_method("enemy_killed"):
+	var floor = _find_floor_node()
+	if floor and floor.has_method("enemy_killed"):
 		floor.enemy_killed(self)
 
 	queue_free()
+
+func _find_floor_node():
+	var node = get_parent()
+
+	while node:
+		if node.has_method("enemy_killed"):
+			return node
+
+		node = node.get_parent()
+
+	return null
 
 func _on_damage_area_body_entered(body):
 	if body.name == "Player" and can_damage:

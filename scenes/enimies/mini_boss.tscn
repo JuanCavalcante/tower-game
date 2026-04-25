@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://b9k2mx4r7hn5q"]
+[gd_scene format=3 uid="uid://cak2mx4r7hn5q"]
 
 [ext_resource type="Script" uid="uid://cx4mb2n7yq8ov" path="res://scripts/enimies/mini_boss.gd" id="1_mboss"]
 [ext_resource type="Texture2D" uid="uid://c1lytnfjd6g5t" path="res://assets/sprites/Mushroom with VFX/Mushroom-Run.png" id="3_vxknm"]
