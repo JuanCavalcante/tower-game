@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://dp6n1m4hs9wke" path="res://scripts/floor_03.gd" id="1_f03sc"]
 [ext_resource type="Texture2D" uid="uid://dynmfgd206jls" path="res://assets/tilesets/Floor Tiles2.png" id="2_ihrxy"]
-[ext_resource type="PackedScene" uid="uid://cbceuq2n756e0" path="res://scenes/enimies/slime.tscn" id="3_3boyv"]
+[ext_resource type="PackedScene" uid="uid://cbceuq2n756e0" path="res://scenes/enemies/slime.tscn" id="3_3boyv"]
 [ext_resource type="PackedScene" uid="uid://bsso1o3lu3okb" path="res://scenes/world/exit_portal.tscn" id="4_ihrxy"]
-[ext_resource type="PackedScene" uid="uid://b9k2mx4r7hn5q" path="res://scenes/enimies/mini_boss.tscn" id="5_mboss"]
+[ext_resource type="PackedScene" uid="uid://cak2mx4r7hn5q" path="res://scenes/enemies/mini_boss.tscn" id="5_mboss"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dbd3n"]
 texture = ExtResource("2_ihrxy")

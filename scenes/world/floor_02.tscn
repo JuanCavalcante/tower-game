@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bw3q5t8vxr2ly" path="res://scripts/floor_02.gd" id="1_f02sc"]
 [ext_resource type="Texture2D" uid="uid://dynmfgd206jls" path="res://assets/tilesets/Floor Tiles2.png" id="2_ihrxy"]
-[ext_resource type="PackedScene" uid="uid://cbceuq2n756e0" path="res://scenes/enimies/slime.tscn" id="3_3boyv"]
+[ext_resource type="PackedScene" uid="uid://cbceuq2n756e0" path="res://scenes/enemies/slime.tscn" id="3_3boyv"]
 [ext_resource type="PackedScene" uid="uid://bsso1o3lu3okb" path="res://scenes/world/exit_portal.tscn" id="4_ihrxy"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dbd3n"]

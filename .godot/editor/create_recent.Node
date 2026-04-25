@@ -1,3 +1,4 @@
+Node
 AnimatedSprite2D
 TileMapLayer
 Camera2D
@@ -8,5 +9,4 @@ Sprite2D
 CharacterBody2D
 Node2D
 TileMap
-Node
 CanvasLayer
