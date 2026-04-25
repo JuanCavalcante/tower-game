@@ -26,23 +26,23 @@ PlayerStats.gd::GDScript::4576865081918554765::1777038252::0::1::::<>Node<><>0<>
 ::res://data/::1777029548
 ::res://scenes/::1777045998
 main.tscn::PackedScene::4607103419545010268::1777045998::0::1::::<><><>0<>0<><>::uid://dro1v0tsut0oj::::res://scripts/main.gd<>uid://csmmwqcvmouk8::::res://scenes/player/player.tscn
-::res://scenes/enimies/::1777047424
-slime.tscn::PackedScene::4847438433099477741::1777047424::0::1::::<><><>0<>0<><>::uid://dbj4nrmwrxv0u::::res://scripts/enimies/slime.gd<>uid://dkh4q3vpnvvpi::::res://assets/sprites/Mushroom-Idle-solo.png
+::res://scenes/enimies/::1777071298
+slime.tscn::PackedScene::4847438433099477741::1777071298::0::1::::<><><>0<>0<><>::uid://dbj4nrmwrxv0u::::res://scripts/enimies/slime.gd<>uid://c1lytnfjd6g5t::::res://assets/sprites/Mushroom with VFX/Mushroom-Run.png
 ::res://scenes/player/::1777049702
 player.tscn::PackedScene::6061781821732572437::1777049702::0::1::::<><><>0<>0<><>::uid://cf46s5mnshkru::::res://scripts/player/player.gd<>uid://b7k16yjoq7xa2::::res://assets/sprites/GandalfHardcore Warrior.png
 ::res://scenes/systems/::1777029596
 ::res://scenes/ui/::1777029587
-::res://scenes/world/::1777069540
+::res://scenes/world/::1777076641
 exit_portal.tscn::PackedScene::3687875916400076813::1777069540::0::1::::<><><>0<>0<><>::uid://k8iogt762b7h::::res://scripts/exit_portal.gd<>uid://danvxg31vjbeh::::res://assets/sprites/Dimensional_Portal.png
-floor_01.tscn::PackedScene::541483434574359899::1777045998::0::1::::<><><>0<>0<><>::uid://nxx0jhy5gqbx::::res://scripts/floor_01.gd<>uid://dynmfgd206jls::::res://assets/tilesets/Floor Tiles2.png<>uid://cbceuq2n756e0::::res://scenes/enimies/slime.tscn<>uid://bsso1o3lu3okb::::res://scenes/world/exit_portal.tscn
+floor_01.tscn::PackedScene::541483434574359899::1777079578::0::1::::<><><>0<>0<><>::uid://nxx0jhy5gqbx::::res://scripts/floor_01.gd<>uid://dynmfgd206jls::::res://assets/tilesets/Floor Tiles2.png<>uid://cbceuq2n756e0::::res://scenes/enimies/slime.tscn<>uid://bsso1o3lu3okb::::res://scenes/world/exit_portal.tscn
 ::res://scripts/::1777038252
 exit_portal.gd::GDScript::770523985308904915::1777032741::0::1::::<>Area2D<><>0<>0<><>::
-floor_01.gd::GDScript::961377275973623753::1777035689::0::1::::<>Node2D<><>0<>0<><>::
+floor_01.gd::GDScript::961377275973623753::1777079578::0::1::::<>Node2D<><>0<>0<><>::
 main.gd::GDScript::8382991168246999457::1777038252::0::1::::<>Node<><>0<>0<><>::
 ::res://scripts/core/::1777029637
-::res://scripts/enimies/::1777047073
-slime.gd::GDScript::7249815215072696258::1777047073::0::1::::<>CharacterBody2D<><>0<>0<><>::
-::res://scripts/player/::1777069568
-player.gd::GDScript::5185568506363305206::1777069568::0::1::::<>CharacterBody2D<><>0<>0<><>::
+::res://scripts/enimies/::1777071298
+slime.gd::GDScript::7249815215072696258::1777071298::0::1::::<>CharacterBody2D<><>0<>0<><>::
+::res://scripts/player/::1777071212
+player.gd::GDScript::5185568506363305206::1777071212::0::1::::<>CharacterBody2D<><>0<>0<><>::
 ::res://scripts/systems/::1777029630
 ::res://scripts/ui/::1777029641

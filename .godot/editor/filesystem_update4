@@ -3,3 +3,4 @@ res://scripts/player/player.gd
 res://scenes/enimies/slime.tscn
 res://scripts/enimies/slime.gd
 res://scenes/world/floor_01.tscn
+res://scripts/floor_01.gd
