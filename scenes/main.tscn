@@ -22,4 +22,14 @@ jump_force = null
 offset_right = 40.0
 offset_bottom = 23.0
 
+[node name="XPLabel" type="Label" parent="UI" unique_id=1103687202]
+offset_top = 24.0
+offset_right = 200.0
+offset_bottom = 47.0
+
+[node name="FloorLabel" type="Label" parent="UI" unique_id=1103687203]
+offset_top = 48.0
+offset_right = 120.0
+offset_bottom = 71.0
+
 [node name="Managers" type="Node" parent="." unique_id=1209282052]
