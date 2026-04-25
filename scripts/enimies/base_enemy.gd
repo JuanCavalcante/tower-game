@@ -399,17 +399,17 @@ func update_animation() -> void:
 	
 	match state:
 		State.IDLE:
-			if anim.sprite_frames.has_animation("idle"):
+			if anim.sprite_frames.has_animation("idle") and anim.animation != "idle":
 				anim.play("idle")
 
 		State.CHASE:
-			if anim.sprite_frames.has_animation("run"):
+			if anim.sprite_frames.has_animation("run") and anim.animation != "run":
 				anim.play("run")
 
 		State.ATTACK:
-			if anim.sprite_frames.has_animation("attack"):
+			if anim.sprite_frames.has_animation("attack") and anim.animation != "attack":
 				anim.play("attack")
 
 		State.HURT:
-			if anim.sprite_frames.has_animation("hurt"):
+			if anim.sprite_frames.has_animation("hurt") and anim.animation != "hurt":
 				anim.play("hurt")
