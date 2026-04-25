@@ -5,6 +5,9 @@ extends Node
 @onready var pause_menu = $UI/PauseMenu
 @onready var hud = $UI/HUD
 @onready var main_continue_button = $UI/MainMenu/MenuPanel/MenuItems/ContinueButton
+@onready var health_label = $UI/HUD/HealthLabel
+@onready var xp_label = $UI/HUD/XPLabel
+@onready var floor_label = $UI/HUD/FloorLabel
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -24,9 +27,9 @@ func _process(_delta):
 		else:
 			pause_game()
 
-	$UI/HUD/HealthLabel.text = "HP: " + str(PlayerStats.current_health) + "/" + str(PlayerStats.max_health)
-	$UI/HUD/XPLabel.text = "XP: " + str(PlayerStats.xp) + "/" + str(PlayerStats.xp_to_next_level) + "  Nivel: " + str(PlayerStats.level)
-	$UI/HUD/FloorLabel.text = "Andar: " + str(GameManager.current_floor)
+	health_label.text = "HP: " + str(PlayerStats.current_health) + "/" + str(PlayerStats.max_health)
+	xp_label.text = "XP: " + str(PlayerStats.xp) + "/" + str(int(PlayerStats.xp_to_next_level)) + "  Nivel: " + str(PlayerStats.level)
+	floor_label.text = "Andar: " + str(GameManager.current_floor)
 
 func show_main_menu():
 	get_tree().paused = false

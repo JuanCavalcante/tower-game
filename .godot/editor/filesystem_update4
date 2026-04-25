@@ -1,10 +1,8 @@
-res://autoload/GameManager.gd
-res://scripts/exit_portal.gd
-res://scripts/main.gd
-res://autoload/PlayerStats.gd
-res://scripts/player/player.gd
-res://scripts/floor_01.gd
-res://scripts/floor_02.gd
-res://scripts/floor_03.gd
+res://scenes/player/player.tscn
+res://scripts/enimies/base_enemy.gd
+res://scripts/enimies/skeleton.gd
 res://scripts/enimies/mini_boss.gd
 res://scripts/enimies/slime.gd
+res://scenes/main.tscn
+res://scripts/floor_01.gd
+res://scripts/enimies/skeleton_boss.gd
