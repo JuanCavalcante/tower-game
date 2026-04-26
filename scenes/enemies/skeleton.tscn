@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://brmt17c21m775"]
 
-[ext_resource type="Script" uid="uid://bjfgflg4dvjc7" path="res://scripts/enimies/skeleton.gd" id="1_skel"]
+[ext_resource type="Script" uid="uid://bjfgflg4dvjc7" path="res://scripts/enemies/skeleton.gd" id="1_skel"]
 [ext_resource type="Texture2D" uid="uid://bxb6b467vhld4" path="res://assets/sprites/enimies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Idle.png" id="2_idle"]
 [ext_resource type="Texture2D" uid="uid://c3nm60dohh5cc" path="res://assets/sprites/enimies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Walk.png" id="3_walk"]
 [ext_resource type="Texture2D" uid="uid://bn48mbow0uwxn" path="res://assets/sprites/enimies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Hurt.png" id="4_hurt"]

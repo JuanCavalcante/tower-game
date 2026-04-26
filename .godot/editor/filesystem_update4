@@ -11,3 +11,6 @@ res://scenes/world/floor_02.tscn
 res://scripts/enimies/skeleton.gd
 res://scripts/player/player.gd
 res://scripts/main.gd
+res://scripts/base_floor.gd
+res://scripts/enimies/base_enemy.gd
+res://scenes/enemies/slime.tscn
