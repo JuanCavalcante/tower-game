@@ -2,9 +2,11 @@ extends Node
 
 const SAVE_PATH := "user://savegame.json"
 const PLAYER_START_POSITION := Vector2(69, 73)
+const STARTING_FLOOR := 1
 
 var current_floor = 1
 var current_level_instance = null
+var unlocked_floors := [STARTING_FLOOR]
 
 var floors = {
 	1: "res://scenes/world/floor_01.tscn",
@@ -14,7 +16,9 @@ var floors = {
 
 func start_new_game():
 	PlayerStats.reset()
-	load_floor(1)
+	current_floor = STARTING_FLOOR
+	unlocked_floors = [STARTING_FLOOR]
+	load_floor(STARTING_FLOOR)
 
 func has_save_game():
 	return FileAccess.file_exists(SAVE_PATH)
@@ -28,6 +32,7 @@ func save_game():
 
 	var data = {
 		"current_floor": current_floor,
+		"unlocked_floors": unlocked_floors,
 		"player_stats": PlayerStats.to_save_data()
 	}
 
@@ -51,17 +56,27 @@ func continue_game():
 		return
 
 	PlayerStats.load_save_data(parsed.get("player_stats", {}))
-	load_floor(int(parsed.get("current_floor", 1)), false)
+	_load_unlocked_floors(parsed.get("unlocked_floors", [STARTING_FLOOR]))
+
+	var saved_floor = int(parsed.get("current_floor", STARTING_FLOOR))
+	if not is_floor_unlocked(saved_floor):
+		saved_floor = STARTING_FLOOR
+
+	load_floor(saved_floor, false)
 
 func load_floor(floor_number, save_progress := true):
-	if current_level_instance:
-		current_level_instance.queue_free()
-
 	var scene_path = floors.get(floor_number)
 
 	if not scene_path:
 		print("Todos os andares concluídos! Parabéns!")
 		return
+
+	if not is_floor_unlocked(floor_number):
+		print("Andar bloqueado: ", floor_number)
+		return
+
+	if current_level_instance:
+		current_level_instance.queue_free()
 
 	var scene = load(scene_path)
 
@@ -80,6 +95,37 @@ func load_floor(floor_number, save_progress := true):
 		save_game()
 
 	print("Loaded floor: ", floor_number)
+
+func is_floor_unlocked(floor_number: int) -> bool:
+	return unlocked_floors.has(floor_number)
+
+func unlock_floor(floor_number: int) -> void:
+	if not floors.has(floor_number):
+		return
+
+	if unlocked_floors.has(floor_number):
+		return
+
+	unlocked_floors.append(floor_number)
+	unlocked_floors.sort()
+	save_game()
+
+func get_unlocked_floors() -> Array:
+	return unlocked_floors.duplicate()
+
+func _load_unlocked_floors(saved_unlocked_floors) -> void:
+	unlocked_floors = []
+
+	if typeof(saved_unlocked_floors) == TYPE_ARRAY:
+		for floor_number in saved_unlocked_floors:
+			var parsed_floor = int(floor_number)
+			if floors.has(parsed_floor) and not unlocked_floors.has(parsed_floor):
+				unlocked_floors.append(parsed_floor)
+
+	if not unlocked_floors.has(STARTING_FLOOR):
+		unlocked_floors.append(STARTING_FLOOR)
+
+	unlocked_floors.sort()
 
 func _reset_player_position(game_node):
 	var player = game_node.get_node_or_null("Player")
