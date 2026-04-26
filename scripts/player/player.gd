@@ -12,21 +12,52 @@ extends CharacterBody2D
 var can_attack := true
 var is_attacking := false
 var facing_direction := 1
+var is_dead := false
 
 func _ready():
 	add_to_group("player")
 
 func take_damage(amount):
+	if GameManager.is_dev_mode:
+		return
+
+	if is_dead:
+		return
+
 	PlayerStats.current_health -= amount
+	PlayerStats.current_health = max(PlayerStats.current_health, 0)
 	print("Player HP: ", PlayerStats.current_health)
 
 	if PlayerStats.current_health <= 0:
-		die()
+		await die()
 
 func die():
-	pass
+	if is_dead:
+		return
+
+	is_dead = true
+	can_attack = false
+	is_attacking = false
+	velocity = Vector2.ZERO
+	set_physics_process(false)
+
+	if anim and anim.sprite_frames and anim.sprite_frames.has_animation("die"):
+		anim.play("die")
+		await anim.animation_finished
+	else:
+		await get_tree().create_timer(0.2).timeout
+
+	PlayerStats.current_health = PlayerStats.max_health
+	GameManager.load_floor(0)
+
+	is_dead = false
+	set_physics_process(true)
+	can_attack = true
 
 func _physics_process(delta):
+	if is_dead:
+		return
+
 	var direction = Vector2.ZERO
 
 	if Input.is_action_just_pressed("attack") and can_attack:
@@ -84,7 +115,8 @@ func attack():
 		var dir_x = enemy.global_position.x - global_position.x
 
 		if dir_x * facing_direction > 0 and dist_sq <= attack_range * attack_range:
-			enemy.take_damage(attack_damage, global_position)
+			var damage_to_apply: int = 999999 if GameManager.is_dev_mode else attack_damage
+			enemy.take_damage(damage_to_apply, global_position)
 
 	await anim.animation_finished
 

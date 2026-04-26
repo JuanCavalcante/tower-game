@@ -8,6 +8,8 @@ var _attack_count: int = 0
 var _special_on_cooldown: bool = false
 var _effect_sprite: Sprite2D = null
 
+@onready var damage_area: Area2D = $DamageArea
+
 
 func _ready() -> void:
 	max_health = 280
@@ -25,25 +27,43 @@ func _ready() -> void:
 	_play_effect(EFFECT_FIRE, Vector2(0, -44), Vector2(0.22, 0.22), Color(1, 1, 1, 0.5), 0.5)
 
 
-func _on_damage_area_body_entered(body: Node) -> void:
-	if not body.is_in_group("player") or not can_damage or _is_dying:
+func _on_damage_area_body_entered(_body: Node) -> void:
+	# O boss usa attack_player() como única fonte de dano para evitar conflito de estados.
+	return
+
+
+func attack_player() -> void:
+	if _is_dying or _is_hurt or _is_attacking or not can_attack:
 		return
 
-	body.take_damage(damage)
-	can_damage = false
+	can_attack = false
 	_attack_count += 1
 
 	if _attack_count % 3 == 0 and not _special_on_cooldown:
-		await _cast_thunder_special(body)
-		await get_tree().create_timer(attack_cooldown + 0.2).timeout
-		can_damage = true
+		await _cast_thunder_special(player)
+	else:
+		_is_attacking = true
+		anim.play("attack1")
+		await get_tree().create_timer(0.18).timeout
+		_deal_damage_if_player_overlapping()
+
+		if anim.animation in ["attack1", "attack2"]:
+			await anim.animation_finished
+
+		_is_attacking = false
+
+	await get_tree().create_timer(attack_cooldown).timeout
+	can_attack = true
+
+
+func _deal_damage_if_player_overlapping() -> void:
+	if damage_area == null:
 		return
 
-	if not _is_hurt and not _is_attacking:
-		_is_attacking = true
-		anim.play("attack2" if _attack_count % 3 == 0 else "attack1")
-	await get_tree().create_timer(1.3).timeout
-	can_damage = true
+	for body in damage_area.get_overlapping_bodies():
+		if body.is_in_group("player") and body.has_method("take_damage"):
+			body.take_damage(damage)
+			break
 
 
 func _cast_thunder_special(body: Node) -> void:

@@ -13,7 +13,12 @@ func take_damage(amount, source_position = Vector2.ZERO):
 		return
 	current_health -= amount
 	_update_health_bar()
-	knockback_velocity = (global_position - source_position).normalized() * knockback_force
+	var knockback_dir_x: float = sign(global_position.x - source_position.x)
+	if knockback_dir_x == 0.0:
+		knockback_dir_x = -1.0 if randf() < 0.5 else 1.0
+
+	# Mantem o knockback principalmente horizontal para evitar que o boss "suba" no player.
+	knockback_velocity = Vector2(knockback_dir_x * knockback_force, -28.0)
 	if current_health <= 0:
 		_start_death()
 	else:

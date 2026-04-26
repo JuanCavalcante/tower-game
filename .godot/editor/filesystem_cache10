@@ -1,10 +1,13 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1777096829
+::res://::1777240855
 CLAUDE.md::TextFile::-1::1777091101::0::1::::<><><>0<>0<><>::
 icon.svg::CompressedTexture2D::1425275409578978592::1777087446::1777087446::1::::<><><>0<>0<>458ae55a5704ec8ee4f227a0960b577e<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
+ISSUE_6_STATUS.md::TextFile::-1::1777232481::0::1::::<><><>0<>0<><>::
+ISSUE_6_WORK_GUIDE.md::TextFile::-1::1777231533::0::1::::<><><>0<>0<><>::
+README.md::TextFile::-1::1777099429::0::1::::<><><>0<>0<><>::
 READY_ISSUE_2_TASKS.md::TextFile::-1::1777088485::0::1::::<><><>0<>0<><>::
 ::res://assets/::1777087446
-::res://assets/sprites/::1777098450
+::res://assets/sprites/::1777178832
 Dimensional_Portal.png::CompressedTexture2D::7187415451594352235::1777087446::1777087446::1::::<><><>0<>0<>f0271aa971040ea25a1c990745965677<>res://.godot/imported/Dimensional_Portal.png-e45c2f458871b119df8d2652fc7b1d24.ctex::
 GandalfHardcore Warrior-solo.png::CompressedTexture2D::8413670212810462078::1777087446::1777087446::1::::<><><>0<>0<>f0bd86f1eb349501138e3458f6777f13<>res://.godot/imported/GandalfHardcore Warrior-solo.png-01a01a972c6f1228b82808b3edd2d953.ctex::
 GandalfHardcore Warrior.png::CompressedTexture2D::4654742734196119799::1777087446::1777087446::1::::<><><>0<>0<>848e06c32f0dbd8558036e7838ee8cf7<>res://.godot/imported/GandalfHardcore Warrior.png-7517a0330a444e537e762ef1f0556494.ctex::
@@ -55,16 +58,62 @@ Mushroom-Idle-solo.png::CompressedTexture2D::757664288999144135::1777087446::177
 Mushroom-Idle.png::CompressedTexture2D::4753393734242742550::1777087446::1777087446::1::::<><><>0<>0<>184e8319a9b74ee7b14264e8184c9fa1<>res://.godot/imported/Mushroom-Idle.png-787754e4e098e908f71df850acd9d4ae.ctex::
 Mushroom-Run.png::CompressedTexture2D::6621951286122017967::1777087446::1777087446::1::::<><><>0<>0<>390f60acee681461b73fff79abdaf27c<>res://.godot/imported/Mushroom-Run.png-9d315b8f07bae618b7106c17da1b966c.ctex::
 Mushroom-Stun.png::CompressedTexture2D::3360649307215049527::1777087446::1777087446::1::::<><><>0<>0<>52767cfaafde207d388e6e31519c9fea<>res://.godot/imported/Mushroom-Stun.png-533da7bec6d0304ce8d066ea9703ebdc.ctex::
-::res://assets/sprites/tailmap/::1777095156
+::res://assets/sprites/sprite_generator/::1777241687
+2a921620-c1f8-454d-bcfd-1116c3f17497.png::CompressedTexture2D::859981625587382276::1777236880::1777236880::1::::<><><>0<>0<>be4552ec4a9228c81d885aa37663d440<>res://.godot/imported/2a921620-c1f8-454d-bcfd-1116c3f17497.png-5625ca3ecfb6354c7cca8fcf801ce0c2.ctex::
+8dc31ef8-e214-4211-b81e-d4ba5a61c603.png::CompressedTexture2D::3096277264145001239::1777236590::1777236591::1::::<><><>0<>0<>882edcc63d123a7ffe66a60c5293e0b2<>res://.godot/imported/8dc31ef8-e214-4211-b81e-d4ba5a61c603.png-26de2e0cf7a66ecf0358c275a6b6665d.ctex::
+29f167d5-a09c-4dcf-8a37-eabc412d5513.png::CompressedTexture2D::591130009369325768::1777241671::1777241688::1::::<><><>0<>0<>6622ca9c324e63b43d52ab460c13c62a<>res://.godot/imported/29f167d5-a09c-4dcf-8a37-eabc412d5513.png-7b887100fc5602d3ca07cbdab5062608.ctex::
+db8c43d9-6771-4427-98fe-7d4fe8fd6245.png::CompressedTexture2D::5804901576557644481::1777237172::1777237172::1::::<><><>0<>0<>cfca8ad71eabad84c9c7409b0bb484f8<>res://.godot/imported/db8c43d9-6771-4427-98fe-7d4fe8fd6245.png-6ad2d10e6bb74a5567ea31c75228e6c4.ctex::
+MUSH_BACK.png::CompressedTexture2D::5126538541911246083::1777240799::1777241179::1::::<><><>0<>0<>6a58ac064e424cfdd56b60772cd418f2<>res://.godot/imported/MUSH_BACK.png-1b7b866dfc44361bb476294978ab2802.ctex::
+::res://assets/sprites/tailmap/::1777240892
+MUSH_BACK.png::CompressedTexture2D::7275761098318854237::1777240892::1777240871::1::::<><><>0<>0<>7f429c13e1cffed5d7a36bd33bc4ca37<>res://.godot/imported/MUSH_BACK.png-75c4971d3a018a0e469a7c0c7707d0d6.ctex::
 spr_torch.png::CompressedTexture2D::3558133551218103426::1563481420::1777095156::1::::<><><>0<>0<>eae712ba479bf1025ef5e5df7ca6deb7<>res://.godot/imported/spr_torch.png-4335548d9e7d828b528837aec52a4c9c.ctex::
 Tilesetv3.png::CompressedTexture2D::386310823472311720::1563481688::1777095156::1::::<><><>0<>0<>ae946c6e9848f4474c1ff8bb32708b8c<>res://.godot/imported/Tilesetv3.png-616f849340f47bdca6f4d6fb7dc282ec.ctex::
-::res://assets/tilesets/::1777087446
+::res://assets/sprites/tailmap/GandalfHardcore House Asset Pack 32x32/::1777236067
+House Furniture Tiles 32x32.png::CompressedTexture2D::7735819841485541971::1739636848::1777231565::1::::<><><>0<>0<>99c618d34c063b8fbbb65602ed5f3c11<>res://.godot/imported/House Furniture Tiles 32x32.png-9a12b40057dbf8a416d4fa2d7b5d8a01.ctex::
+House Inside Tiles 32x32 v1.png::CompressedTexture2D::6666114687674941631::1718892092::1777231565::1::::<><><>0<>0<>c9cacfa75d7df7ae5e774da383e1cf4d<>res://.godot/imported/House Inside Tiles 32x32 v1.png-75b62fc1de2f1738ee6ce7bda85acb7f.ctex::
+House Inside Tiles 32x32 v2.png::CompressedTexture2D::3875429866042341012::1718892092::1777231565::1::::<><><>0<>0<>51f0d507caa3ad7392c075b1298570af<>res://.godot/imported/House Inside Tiles 32x32 v2.png-0e794d1dac6fbf39805a5138108ea1a9.ctex::
+House outside Tiles 32x32 v1.png::CompressedTexture2D::5329516899983599595::1718892052::1777231565::1::::<><><>0<>0<>00bb043f91eea8e2f15182c77be86bb9<>res://.godot/imported/House outside Tiles 32x32 v1.png-ce2d82edbfce1edce59909bb9822fa00.ctex::
+House outside Tiles 32x32 v2.png::CompressedTexture2D::1757191480395617630::1718892052::1777231565::1::::<><><>0<>0<>c721d2dbeb2dd018e6539d9936da5ae2<>res://.godot/imported/House outside Tiles 32x32 v2.png-4e1acfec28be0e1557f8ae7fec45e617.ctex::
+Links.txt::TextFile::-1::1715780886::0::1::::<><><>0<>0<><>::
+READ ME.txt::TextFile::-1::1777236067::0::1::::<><><>0<>0<><>::
+::res://assets/sprites/tailmap/GandalfHardcore Pixel Art Medieval Fantasy Assets/::1777231565
+Bamboos.png::CompressedTexture2D::4203323125413455909::1777055452::1777231565::1::::<><><>0<>0<>61e3bfc585f824d9e8e94a02e8d8dd8c<>res://.godot/imported/Bamboos.png-1ff8b51d97209a36a051b3474b29e7f4.ctex::
+Castle Tiles.png::CompressedTexture2D::3782987822205066786::1747759878::1777231565::1::::<><><>0<>0<>4fcbdcaf1c4ea7a9b8d0a3b4c464a16c<>res://.godot/imported/Castle Tiles.png-d7bbb530b2bc677374da48be6fec26c0.ctex::
+Dark Forest Tiles.png::CompressedTexture2D::3740740333230276615::1762710114::1777231565::1::::<><><>0<>0<>252123d382684eb0d5e60d0f8cd1fb16<>res://.godot/imported/Dark Forest Tiles.png-13e92c6a435f34bded851ed46dd1dbc6.ctex::
+Dead Trees.png::CompressedTexture2D::2049620200406915138::1762095988::1777231565::1::::<><><>0<>0<>4d73948bc58128c3559d2e0d199ccd05<>res://.godot/imported/Dead Trees.png-b3c5cc0b60b12dd5cebe3c89ea96a727.ctex::
+Fall Tree.png::CompressedTexture2D::6927782608325237313::1762708292::1777231565::1::::<><><>0<>0<>c20b27d65beacea9d4a79714ab58a821<>res://.godot/imported/Fall Tree.png-543e7d529b6817e9b15633e95abde169.ctex::
+Fountain face.png::CompressedTexture2D::7712676449027304381::1764953984::1777231565::1::::<><><>0<>0<>2f918e44650089d75ecf1a2feab8b4eb<>res://.godot/imported/Fountain face.png-22dad03ff3af4cdefc1921d5fd502e1d.ctex::
+GandalfHardcore coat of arms.png::CompressedTexture2D::3175428383975208096::1753538894::1777231565::1::::<><><>0<>0<>c37af5a187278830b63fdb19cc828746<>res://.godot/imported/GandalfHardcore coat of arms.png-d8b66983243eed4077b876b2df4f8200.ctex::
+garden pool sheet.png::CompressedTexture2D::3089522828791606558::1754591362::1777231565::1::::<><><>0<>0<>8657159a1cfabbfccaee1c11ef290ac1<>res://.godot/imported/garden pool sheet.png-9652259d99169ca1ea504a06314eef7d.ctex::
+House Furniture Tiles 32x32.png::CompressedTexture2D::4446278261640524951::1777055500::1777231565::1::::<><><>0<>0<>ee15a2dd801a1ce0f5a768f2bd8c59ae<>res://.godot/imported/House Furniture Tiles 32x32.png-bb196cbce4287eea68f2efa5abe898f5.ctex::
+House Inside Tiles.png::CompressedTexture2D::5932861266258484717::1747763738::1777231565::1::::<><><>0<>0<>581566d4cb39058b09aa6472506c1293<>res://.godot/imported/House Inside Tiles.png-7a402a81c278e51a5a0df6a4c3647885.ctex::
+House Outside Tiles.png::CompressedTexture2D::2695727353748065487::1747345144::1777231565::1::::<><><>0<>0<>d15a6d61a79c32f42d3f14168b7fcac1<>res://.godot/imported/House Outside Tiles.png-05a6ffa34a9faf6cd803586500164ad8.ctex::
+Large Bed.png::CompressedTexture2D::4500376061099113764::1772117042::1777231565::1::::<><><>0<>0<>125abaff7f5b8b333c581b5494f0fda9<>res://.godot/imported/Large Bed.png-20d839ea52112a60d6c4446112bcbeeb.ctex::
+Links.txt::TextFile::-1::1747254408::0::1::::<><><>0<>0<><>::
+Old Dark Tree2.png::CompressedTexture2D::8661373220452165790::1771446484::1777231565::1::::<><><>0<>0<>cd8c4021870795a77989ca9552fec87f<>res://.godot/imported/Old Dark Tree2.png-9da4cb1da6f0862898c072591543b393.ctex::
+Old Dark Tree3.png::CompressedTexture2D::4608732789456020179::1771446484::1777231565::1::::<><><>0<>0<>a27be5c64590d976d1b9b6748ab78e61<>res://.godot/imported/Old Dark Tree3.png-5176281871448605ca1e3a7b95bf8cc9.ctex::
+Old Dark Tree.png::CompressedTexture2D::5897026130852159901::1762095504::1777231565::1::::<><><>0<>0<>21982aed1ba97052ac12938f12038b75<>res://.godot/imported/Old Dark Tree.png-ff0760f8b00fd8e0b598d66b3c773813.ctex::
+Old Tree.png::CompressedTexture2D::7827550805001550546::1762095752::1777231565::1::::<><><>0<>0<>b9e0bba531fcd593ecf9c6317976b8b1<>res://.godot/imported/Old Tree.png-f5391df2ddb4b0ce2eb2a1721195f03e.ctex::
+Oriental Tiles.png::CompressedTexture2D::1703562620070110024::1772117266::1777231565::1::::<><><>0<>0<>a91fc81bd964e1e63293ee68f75400fd<>res://.godot/imported/Oriental Tiles.png-61849b1b95bda1e6cbcc38a8df70edbe.ctex::
+READ ME.txt::TextFile::-1::1747254408::0::1::::<><><>0<>0<><>::
+Small Bees sheet 96x48.png::CompressedTexture2D::5521792556962778400::1750872818::1777231565::1::::<><><>0<>0<>d0f39d658fc921d1ea5df3d113064ea7<>res://.godot/imported/Small Bees sheet 96x48.png-0ac23977ed51c7111c58a6e3d5d3385f.ctex::
+Smoker.png::CompressedTexture2D::2244066101840412775::1756399866::1777231565::1::::<><><>0<>0<>2505c149ff02b51548425e89fae5a501<>res://.godot/imported/Smoker.png-0696d14e6e2b6845db14139045d2b464.ctex::
+::res://assets/sprites/tailmap/GandalfHardcore Pixel Art Medieval Fantasy Assets/Aseprite file/::1764954334
+::res://assets/sprites/tailmap/GandalfHardcore Pixel Art Medieval Fantasy Assets/Dark Forest Background/::1777231565
+Dark Forest Background Top.png::CompressedTexture2D::6466731875019812145::1762710948::1777231565::1::::<><><>0<>0<>a65caa3e37ca0e4480d6244602c81611<>res://.godot/imported/Dark Forest Background Top.png-cb919dbab7fd78a920b036534aa5f991.ctex::
+Dark Forest Background.png::CompressedTexture2D::3053983088904308796::1762710962::1777231565::1::::<><><>0<>0<>15367b647f85fbc114b89146f4bb2369<>res://.godot/imported/Dark Forest Background.png-7b14367b4d0a335fc531d67522483dba.ctex::
+::res://assets/tilesets/::1777231793
+city_hub_tileset.tres::::-1::1777232396::0::1::::<><><>0<>0<><>::
 Floor Tiles2.png::CompressedTexture2D::8871369063113487700::1777087446::1777087446::1::::<><><>0<>0<>21d36e75faa91f586c205cf3d0a86634<>res://.godot/imported/Floor Tiles2.png-47abc5fb02492e5602cee9322868d3fa.ctex::
-::res://autoload/::1777095983
-GameManager.gd::GDScript::6085690610239929821::1777095983::0::1::::<>Node<><>0<>0<><>::
+::res://autoload/::1777233912
+GameManager.gd::GDScript::6085690610239929821::1777240659::0::1::::<>Node<><>0<>0<><>::
 PlayerStats.gd::GDScript::4576865081918554765::1777091527::0::1::::<>Node<><>0<>0<><>::
-::res://scenes/::1777098327
-main.tscn::PackedScene::4607103419545010268::1777098327::0::1::::<><><>0<>0<><>::uid://dro1v0tsut0oj::::res://scripts/main.gd<>uid://csmmwqcvmouk8::::res://scenes/player/player.tscn
+::res://midia/::1777137427
+Intro_photo.png::CompressedTexture2D::5035009959147691026::1777136718::1777136726::1::::<><><>0<>0<>864f58c1ae986dd163b498dd25038152<>res://.godot/imported/Intro_photo.png-013548832f5afdc0a113eb2d10cd0181.ctex::
+TowerGame_Theme.mp3::AudioStreamMP3::1421248062411574415::1777136427::1777136428::1::::<><><>0<>0<>bfd42e07570a2f330027877f6d4e7aa6<>res://.godot/imported/TowerGame_Theme.mp3-0edea9ccaf248d5a19f1b02b59262d31.mp3str::
+TWGame.png::CompressedTexture2D::8871231591878799391::1777137427::1777137427::1::::<><><>0<>0<>86752615ebac309958b0d56fb32796dc<>res://.godot/imported/TWGame.png-9541e386f3f2cddeb0883b0f14d6c3e1.ctex::
+::res://scenes/::1777241132
+main.tscn::PackedScene::4607103419545010268::1777236171::0::1::::<><><>0<>0<><>::uid://dro1v0tsut0oj::::res://scripts/main.gd<>uid://csmmwqcvmouk8::::res://scenes/player/player.tscn<>uid://dynj5g1n2ds04::::res://midia/TWGame.png<>uid://uip0ovcpp0b8::::res://midia/TowerGame_Theme.mp3<>uid://bt5riy1r6dufa::::res://assets/sprites/tailmap/GandalfHardcore Pixel Art Medieval Fantasy Assets/Castle Tiles.png
 ::res://scenes/enemies/::1777096616
 mini_boss.tscn::PackedScene::4795147186910190680::1777096016::0::1::::<><><>0<>0<><>::uid://cx4mb2n7yq8ov::::res://scripts/enimies/mini_boss.gd<>uid://c1lytnfjd6g5t::::res://assets/sprites/Mushroom with VFX/Mushroom-Run.png
 skeleton.tscn::PackedScene::3605605297191283390::1777096616::0::1::::<><><>0<>0<><>::uid://bjfgflg4dvjc7::::res://scripts/enimies/skeleton.gd<>uid://bxb6b467vhld4::::res://assets/sprites/enimies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Idle.png<>uid://c3nm60dohh5cc::::res://assets/sprites/enimies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Walk.png<>uid://bn48mbow0uwxn::::res://assets/sprites/enimies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Hurt.png<>uid://dqe8k0ych5tqm::::res://assets/sprites/enimies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Attack1.png<>uid://cdktve31fe0au::::res://assets/sprites/enimies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Attack2.png<>uid://lii2wt7od2tg::::res://assets/sprites/enimies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Die.png
@@ -72,27 +121,30 @@ skeleton_boss.tscn::PackedScene::1480501311774388046::1777096616::0::1::::<><><>
 slime.tscn::PackedScene::4847438433099477741::1777096616::0::1::::<><><>0<>0<><>::uid://dbj4nrmwrxv0u::::res://scripts/enimies/slime.gd<>uid://c1lytnfjd6g5t::::res://assets/sprites/Mushroom with VFX/Mushroom-Run.png
 ::res://scenes/player/::1777097322
 player.tscn::PackedScene::6061781821732572437::1777097322::0::1::::<><><>0<>0<><>::uid://cf46s5mnshkru::::res://scripts/player/player.gd<>uid://b7k16yjoq7xa2::::res://assets/sprites/GandalfHardcore Warrior.png
-::res://scenes/world/::1777096338
+::res://scenes/world/::1777241683
 exit_portal.tscn::PackedScene::3687875916400076813::1777087446::0::1::::<><><>0<>0<><>::uid://k8iogt762b7h::::res://scripts/exit_portal.gd<>uid://danvxg31vjbeh::::res://assets/sprites/Dimensional_Portal.png
-floor_01.tscn::PackedScene::541483434574359899::1777097968::0::1::::<><><>0<>0<><>::uid://nxx0jhy5gqbx::::res://scripts/floor_01.gd<>uid://dynmfgd206jls::::res://assets/tilesets/Floor Tiles2.png<>uid://cbceuq2n756e0::::res://scenes/enemies/slime.tscn<>uid://bsso1o3lu3okb::::res://scenes/world/exit_portal.tscn
+floor_00_city.tscn::PackedScene::-1::1777240086::0::1::::<><><>0<>0<><>::res://scripts/floor_00_city.gd<>res://node_cidade.tscn
+floor_01.tscn::PackedScene::541483434574359899::1777241683::0::1::::<><><>0<>0<><>::uid://nxx0jhy5gqbx::::res://scripts/floor_01.gd<>uid://dynmfgd206jls::::res://assets/tilesets/Floor Tiles2.png<>uid://cbceuq2n756e0::::res://scenes/enemies/slime.tscn<>uid://cfbllt7mdut8f::::res://assets/sprites/sprite_generator/MUSH_BACK.png<>uid://bsso1o3lu3okb::::res://scenes/world/exit_portal.tscn
 floor_02.tscn::PackedScene::8060302923426572263::1777096013::0::1::::<><><>0<>0<><>::uid://bw3q5t8vxr2ly::::res://scripts/floor_02.gd<>uid://dynmfgd206jls::::res://assets/tilesets/Floor Tiles2.png<>uid://cbceuq2n756e0::::res://scenes/enemies/slime.tscn<>uid://bsso1o3lu3okb::::res://scenes/world/exit_portal.tscn
-floor_03.tscn::PackedScene::2671463962405800544::1777087446::0::1::::<><><>0<>0<><>::uid://dp6n1m4htawke::::res://scripts/floor_03.gd<>uid://dynmfgd206jls::::res://assets/tilesets/Floor Tiles2.png<>uid://cbceuq2n756e0::::res://scenes/enemies/slime.tscn<>uid://bsso1o3lu3okb::::res://scenes/world/exit_portal.tscn<>uid://cak2mx4r7hn5q::::res://scenes/enemies/mini_boss.tscn
-floor_04.tscn::PackedScene::3510591705284800662::1777096338::0::1::::<><><>0<>0<><>::uid://dvwqvjiqr7gyu::::res://scripts/floor_04.gd<>uid://dynmfgd206jls::::res://assets/tilesets/Floor Tiles2.png<>uid://qql326uiqvjc::::res://scenes/enemies/skeleton.tscn<>uid://bsso1o3lu3okb::::res://scenes/world/exit_portal.tscn
-::res://scripts/::1777095976
+floor_03.tscn::PackedScene::2671463962405800544::1777241268::0::1::::<><><>0<>0<><>::uid://dp6n1m4htawke::::res://scripts/floor_03.gd<>uid://cfbllt7mdut8f::::res://assets/sprites/sprite_generator/MUSH_BACK.png<>uid://dynmfgd206jls::::res://assets/tilesets/Floor Tiles2.png<>uid://cbceuq2n756e0::::res://scenes/enemies/slime.tscn<>uid://bsso1o3lu3okb::::res://scenes/world/exit_portal.tscn<>uid://cak2mx4r7hn5q::::res://scenes/enemies/mini_boss.tscn
+floor_04.tscn::PackedScene::3510591705284800662::1777098710::0::1::::<><><>0<>0<><>::uid://dvwqvjiqr7gyu::::res://scripts/floor_04.gd<>uid://dynmfgd206jls::::res://assets/tilesets/Floor Tiles2.png<>uid://qql326uiqvjc::::res://scenes/enemies/skeleton.tscn<>uid://bsso1o3lu3okb::::res://scenes/world/exit_portal.tscn<>uid://vdfv1gnikqp7::::res://scenes/enemies/skeleton_boss.tscn
+node_cidade.tscn::PackedScene::1600648455467552289::1777240911::0::1::::<><><>0<>0<><>::uid://cox647jj24x8l::::res://assets/sprites/sprite_generator/db8c43d9-6771-4427-98fe-7d4fe8fd6245.png<>uid://bkd4h7x1cdpe2::::res://assets/sprites/sprite_generator/8dc31ef8-e214-4211-b81e-d4ba5a61c603.png<>uid://bt5riy1r6dufa::::res://assets/sprites/tailmap/GandalfHardcore Pixel Art Medieval Fantasy Assets/Castle Tiles.png
+::res://scripts/::1777233966
 base_floor.gd::GDScript::8768769276341607413::1777091465::0::1::::BaseFloor<>Node2D<><>0<>0<><>::
-exit_portal.gd::GDScript::770523985308904915::1777091493::0::1::::<>Area2D<><>0<>0<><>::
+exit_portal.gd::GDScript::770523985308904915::1777240138::0::1::::<>Area2D<><>0<>0<><>::
+floor_00_city.gd::GDScript::3320555212934896063::1777240659::0::1::::Floor00City<>Node2D<><>0<>0<><>::
 floor_01.gd::GDScript::961377275973623753::1777097968::0::1::::<>Node2D<><>0<>0<><>::
 floor_02.gd::GDScript::3989403916452675410::1777091481::0::1::::<>BaseFloor<><>0<>0<><>::
 floor_03.gd::GDScript::8276926842996127232::1777091482::0::1::::<>BaseFloor<><>0<>0<><>::
 floor_04.gd::GDScript::3105228226434808769::1777095973::0::1::::<>BaseFloor<><>0<>0<><>::
 floor_05.gd::GDScript::6761592467912734512::1777095974::0::1::::<>BaseFloor<><>0<>0<><>::
 floor_06.gd::GDScript::1194682781621378000::1777095975::0::1::::<>BaseFloor<><>0<>0<><>::
-main.gd::GDScript::8382991168246999457::1777091541::0::1::::<>Node<><>0<>0<><>::
+main.gd::GDScript::8382991168246999457::1777137378::0::1::::<>Node<><>0<>0<><>::
 ::res://scripts/enimies/::1777097004
 base_enemy.gd::GDScript::1193998672185872309::1777098192::0::1::::BaseEnemy<>CharacterBody2D<><>0<>0<><>::
-mini_boss.gd::GDScript::6447783555335367349::1777097706::0::1::::<>BaseEnemy<><>0<>0<><>::
+mini_boss.gd::GDScript::6447783555335367349::1777098615::0::1::::<>BaseEnemy<><>0<>0<><>::
 skeleton.gd::GDScript::3028815984479964928::1777097706::0::1::::<>BaseEnemy<><>0<>0<><>::
-skeleton_boss.gd::GDScript::531482494956379343::1777095972::0::1::::<>BaseEnemy<><>0<>0<><>::
+skeleton_boss.gd::GDScript::531482494956379343::1777240347::0::1::::<>BaseEnemy<><>0<>0<><>::
 slime.gd::GDScript::7249815215072696258::1777097706::0::1::::<>BaseEnemy<><>0<>0<><>::
 ::res://scripts/player/::1777091500
 player.gd::GDScript::5185568506363305206::1777091500::0::1::::<>CharacterBody2D<><>0<>0<><>::

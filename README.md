@@ -1,72 +1,101 @@
 # Tower Game
 
-2D platformer feito em Godot 4, com progressao por andares, combate corpo a corpo e portais de saida.
+![Godot](https://img.shields.io/badge/Engine-Godot_4-478cbf?logo=godot-engine&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Active_Development-2ea44f)
+![Genre](https://img.shields.io/badge/Genre-2D_Platformer-orange)
+![Combat](https://img.shields.io/badge/Combat-Melee-red)
+![Language](https://img.shields.io/badge/Scripting-GDScript-6c7a89)
 
-## Resumo
+2D platformer feito em Godot 4, com progressao por andares, combate corpo a corpo e portal de saida.
 
-- O jogador sobe andares enfrentando ondas de inimigos.
+## Visao Geral
+
+- O jogador sobe andares enfrentando ondas e grupos de inimigos.
 - Cada andar e limpo ao derrotar todos os mobs.
 - Ao limpar o andar, o portal de saida e ativado.
-- Ha sistema de XP e level up pelo autoload `PlayerStats`.
+- Ha sistema de XP e level up via autoload PlayerStats.
 
-## Como rodar
+## Como Rodar
 
 1. Abra o projeto no Godot 4.
-2. Rode a cena principal com `F5`.
-3. Para testar uma cena especifica, use `F6`.
+2. Rode a cena principal com F5.
+3. Para testar uma cena especifica, use F6.
 
-Nao ha pipeline de build por CLI nem testes automatizados neste repositorio.
+Nao ha build CLI nem testes automatizados neste repositorio.
 
 ## Controles
 
-- `A` / `Seta Esquerda`: mover para esquerda
-- `D` / `Seta Direita`: mover para direita
-- `W` / `Espaco` / `Seta Cima`: pular
-- `Botao esquerdo do mouse` (ou tecla configurada): atacar
+- A / Seta Esquerda: mover para esquerda
+- D / Seta Direita: mover para direita
+- W / Espaco / Seta Cima: pular
+- Botao esquerdo do mouse: atacar
 
-## Estrutura principal
+## Estrutura Principal
 
-- `autoload/GameManager.gd`
-  - Gerencia troca de andares e save/load em `user://savegame.json`.
-- `autoload/PlayerStats.gd`
-  - Vida, XP e level do jogador.
-- `scenes/main.tscn`
-  - Cena raiz com jogo + UI.
-- `scenes/world/`
-  - Andares (`floor_01.tscn`, `floor_02.tscn`, ...).
-- `scenes/enemies/`
-  - Cenas dos inimigos e bosses.
-- `scripts/enimies/`
-  - IA e comportamento base dos inimigos.
+- autoload/GameManager.gd: troca de andares, save/load em user://savegame.json
+- autoload/PlayerStats.gd: vida, XP e level do jogador
+- scenes/main.tscn: cena raiz com jogo e UI
+- scenes/world/: andares do jogo
+- scenes/enemies/: cenas dos inimigos e bosses
+- scripts/enimies/: IA e comportamento dos inimigos
 
-## Regras de andares e inimigos
+## Bosses
 
-### Contrato dos andares
+### Mushroom Boss (MiniBoss)
 
-Cada script de andar deve:
+![Mushroom Boss](assets/sprites/Mushroom%20with%20VFX/Mushroom-Idle.png)
 
-1. estender `Node2D`;
-2. implementar `enemy_killed(enemy)`;
-3. ativar o portal ao limpar o andar (`portal.activate()`).
+- Cena: scenes/enemies/mini_boss.tscn
+- Script: scripts/enimies/mini_boss.gd
+- Vida base: 320
+- Dano base: 16
+- XP ao derrotar: 320
+- Especial: Toxic Burst
+	- Carrega enquanto acerta ataques normais.
+	- Ativa efeito de green fire + poison + smoke.
+	- Causa dano extra em sequencia.
 
-### Contrato dos inimigos
+### Skeleton Boss
 
-Cada inimigo deve:
+![Skeleton Boss](assets/sprites/enimies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Idle.png)
 
-1. entrar no grupo `"enemies"` no `_ready()`;
-2. implementar `take_damage(amount, source_position: Vector2)`;
-3. ao morrer, dar XP e notificar o andar atual.
+- Cena: scenes/enemies/skeleton_boss.tscn
+- Script: scripts/enimies/skeleton_boss.gd
+- Vida base: 280
+- Dano base: 22
+- XP ao derrotar: 380
+- Especial: Thunder Smash
+	- Em ciclos de ataque, dispara especial com thunder + smoke.
+	- Causa dano extra no impacto.
 
-## Notas da versao atual
+## Efeitos Visuais dos Especiais
 
-- IA base com melhor distribuicao de mobs (menos aglomeracao).
-- Patrulha curta aleatoria logo apos spawn, interrompida ao detectar jogador.
-- Barrinha de vida por inimigo.
-- Floor 1 reformulada para spawn por wave mais estavel.
-- Melhorias em bosses (cogumelo e caveira), com ataques especiais e efeitos visuais.
+![Fire](assets/sprites/effect/fire.png)
+![Green Fire](assets/sprites/effect/greenfire.png)
+![Poison](assets/sprites/effect/poison.png)
+![Smoke](assets/sprites/effect/smoke.png)
+![Thunder](assets/sprites/effect/thunder.png)
 
-## Proximos passos recomendados
+## Lore
 
-- Balancear dano/cooldown dos especiais dos bosses em runtime.
-- Ajustar quantidade e delay das waves por dificuldade alvo.
-- Adicionar testes de smoke/manual checklist por andar.
+O mundo da torre foi selado por um antigo ritual. Cada andar guarda ecos de batalhas antigas, e os inimigos sao fragmentos corrompidos dessa magia.
+
+No terceiro andar, o Mushroom Boss representa a corrupcao alquimica da torre, usando fogo verde e veneno para enfraquecer invasores.
+
+No quarto andar, o Skeleton Boss protege os niveis superiores com poder de tempestade, invocando trovões para eliminar qualquer heroi que tente subir.
+
+O jogador avanca andar por andar, reunindo experiencia, aumentando seu poder e abrindo caminho ate o topo da torre.
+
+## Notas da Versao Atual
+
+- IA base com melhor distribuicao de mobs (menos aglomeracao)
+- Patrulha curta aleatoria logo apos spawn, interrompida ao detectar o jogador
+- Barrinha de vida por inimigo
+- Floor 1 reformulada para spawn por wave mais estavel
+- Melhorias de movimento e especial nos bosses
+
+## Proximos Passos
+
+- Balancear dano e cooldown dos especiais em runtime
+- Ajustar count e delay das waves por dificuldade alvo
+- Adicionar checklist de teste manual por andar
