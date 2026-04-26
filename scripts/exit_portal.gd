@@ -12,4 +12,6 @@ func _on_body_entered(body):
 		return
 
 	if body.is_in_group("player"):
-		GameManager.load_floor(GameManager.current_floor + 1)
+		var next_floor: int = int(GameManager.current_floor) + 1
+		GameManager.unlock_floor(next_floor)
+		GameManager.load_floor(next_floor)
