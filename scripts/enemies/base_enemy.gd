@@ -52,13 +52,19 @@ var _health_bar_fill: ColorRect = null
 
 func _ready() -> void:
 	current_health = max_health
-	player = get_tree().get_first_node_in_group("player") as Node2D
+	_refresh_player_reference()
 	add_to_group("enemies")
 	_personal_attack_offset = randf_range(-8.0, 14.0)
 	_setup_spawn_patrol()
 	_create_health_bar()
 	_update_health_bar()
 	call_deferred("_snap_to_floor_on_spawn")
+
+
+func _refresh_player_reference() -> void:
+	if is_instance_valid(player):
+		return
+	player = get_tree().get_first_node_in_group("player") as Node2D
 
 
 func _snap_to_floor_on_spawn() -> void:
@@ -170,6 +176,7 @@ func _physics_process(delta: float) -> void:
 		return
 
 	apply_gravity(delta)
+	_refresh_player_reference()
 
 	if not is_instance_valid(player):
 		state = State.IDLE
