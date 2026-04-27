@@ -28,6 +28,11 @@ func _start_hurt():
 
 func _start_death():
 	_is_dying = true
+	state = State.DEAD
+	can_attack = false
+	can_damage = false
+	velocity = Vector2.ZERO
+	_disable_collision_for_death()
 	set_physics_process(false)
 	anim.play("die")
 

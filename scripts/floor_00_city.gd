@@ -128,7 +128,7 @@ func _ensure_vendor_area() -> void:
 	if _vendor_label == null:
 		_vendor_label = Label.new()
 		_vendor_label.name = "VendorLabel"
-		_vendor_label.text = "TraderNPC"
+		_vendor_label.text = ""
 		_vendor_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		add_child(_vendor_label)
 

@@ -89,10 +89,7 @@ func take_damage(amount: int, source_position: Vector2 = Vector2.ZERO) -> void:
 	current_health -= amount
 	_update_health_bar()
 
-	var knockback_direction: Vector2 = global_position - source_position
-	if knockback_direction.length_squared() < 0.0001:
-		knockback_direction = Vector2(1, 0)
-	knockback_velocity = knockback_direction.normalized() * knockback_force
+	knockback_velocity = _build_knockback_velocity(source_position)
 
 	flash()
 

@@ -1,38 +1,39 @@
-[gd_scene load_steps=4 format=4]
+[gd_scene format=3 uid="uid://c4hjqilrk3dhr"]
 
-[ext_resource type="Script" path="res://scripts/floor_00_city.gd" id="1_script"]
-[ext_resource type="PackedScene" path="res://scenes/world/node_cidade.tscn" id="3_city_scene"]
+[ext_resource type="Script" uid="uid://bnkrcapq7dt2f" path="res://scripts/floor_00_city.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://m8kasuv270pw" path="res://scenes/world/node_cidade.tscn" id="3_city_scene"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1"]
 radius = 80.0
 
-[node name="Floor00City" type="Node2D"]
+[node name="Floor00City" type="Node2D" unique_id=1486828057]
 script = ExtResource("1_script")
 
-[node name="CidadeHub" parent="." instance=ExtResource("3_city_scene")]
+[node name="CidadeHub" parent="." unique_id=536151770 instance=ExtResource("3_city_scene")]
 
-[node name="PortalAnchor" type="Marker2D" parent="."]
+[node name="PortalAnchor" type="Marker2D" parent="." unique_id=1291829660]
 position = Vector2(640, 360)
 
-[node name="PortalArea" type="Area2D" parent="."]
+[node name="PortalArea" type="Area2D" parent="." unique_id=1836701970]
 position = Vector2(640, 360)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PortalArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PortalArea" unique_id=340481185]
+position = Vector2(16, 53)
 shape = SubResource("CircleShape2D_1")
 
-[node name="InteractPrompt" type="Label" parent="."]
-offset_left = 570.0
-offset_top = 290.0
-offset_right = 710.0
-offset_bottom = 315.0
+[node name="InteractPrompt" type="Label" parent="." unique_id=493016921]
+offset_left = 532.0
+offset_top = 467.0
+offset_right = 788.0
+offset_bottom = 492.0
 text = "Pressione E para entrar no portal"
 horizontal_alignment = 1
-visible = false
 
-[node name="PortalUI" type="CanvasLayer" parent="."]
+[node name="PortalUI" type="CanvasLayer" parent="." unique_id=779498632]
 layer = 20
 
-[node name="Overlay" type="ColorRect" parent="PortalUI"]
+[node name="Overlay" type="ColorRect" parent="PortalUI" unique_id=1473712132]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -40,9 +41,9 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.45)
-visible = false
 
-[node name="PortalPanel" type="PanelContainer" parent="PortalUI"]
+[node name="PortalPanel" type="PanelContainer" parent="PortalUI" unique_id=1404156170]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -54,20 +55,19 @@ offset_right = 330.0
 offset_bottom = 270.0
 grow_horizontal = 2
 grow_vertical = 2
-visible = false
 
-[node name="VBox" type="VBoxContainer" parent="PortalUI/PortalPanel"]
+[node name="VBox" type="VBoxContainer" parent="PortalUI/PortalPanel" unique_id=1920925552]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="PortalUI/PortalPanel/VBox"]
+[node name="Title" type="Label" parent="PortalUI/PortalPanel/VBox" unique_id=2003608531]
 layout_mode = 2
 text = "Escolha o Andar"
 horizontal_alignment = 1
 
-[node name="FloorButtons" type="GridContainer" parent="PortalUI/PortalPanel/VBox"]
+[node name="FloorButtons" type="GridContainer" parent="PortalUI/PortalPanel/VBox" unique_id=676350283]
 layout_mode = 2
 columns = 5
 
-[node name="CloseButton" type="Button" parent="PortalUI/PortalPanel/VBox"]
+[node name="CloseButton" type="Button" parent="PortalUI/PortalPanel/VBox" unique_id=185176702]
 layout_mode = 2
 text = "Fechar"

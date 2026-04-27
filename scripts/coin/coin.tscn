@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://7h0nkua2k5a8"]
 
-[ext_resource type="Texture2D" path="res://assets/sprites/effect/coins-chests-etc-2-0.png" id="1_coin_sheet"]
-[ext_resource type="Script" uid="uid://dt6rgtw1wyk7o" path="res://scripts/coin/coin_pickup.gd" id="2_coin_script"]
+[ext_resource type="Texture2D" uid="uid://bdvfafcposmy6" path="res://assets/sprites/effect/coins-chests-etc-2-0.png" id="1_coin_sheet"]
+[ext_resource type="Script" uid="uid://c3gvpou802lsp" path="res://scripts/coin/coin_pickup.gd" id="2_coin_script"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1"]
 atlas = ExtResource("1_coin_sheet")
@@ -53,10 +53,10 @@ animations = [{
 "speed": 12.0
 }]
 
-[node name="coin" type="Node2D"]
+[node name="coin" type="Node2D" unique_id=1211661585]
 script = ExtResource("2_coin_script")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2090548672]
 position = Vector2(0, -8)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_coin")

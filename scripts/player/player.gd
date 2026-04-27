@@ -6,6 +6,7 @@ const SWORD_SFX_2 := preload("res://assets/sprites/effect/sound/sword2.mp3")
 @export var speed := 200
 @export var attack_damage := 30
 @export var attack_range := 50
+@export var attack_vertical_tolerance := 58
 @export var gravity := 900
 @export var jump_force := -400
 @export var attack_cooldown := 0.5
@@ -141,15 +142,20 @@ func attack():
 	await get_tree().create_timer(0.45).timeout
 
 	var enemies = get_tree().get_nodes_in_group("enemies")
+	var effective_attack_range: float = float(attack_range) + 8.0
+	var effective_range_sq: float = effective_attack_range * effective_attack_range
 
 	for enemy in enemies:
 		if not is_instance_valid(enemy) or not enemy.has_method("take_damage"):
 			continue
 
-		var dist_sq = global_position.distance_squared_to(enemy.global_position)
-		var dir_x = enemy.global_position.x - global_position.x
+		var to_enemy: Vector2 = enemy.global_position - global_position
+		var dist_sq: float = to_enemy.length_squared()
+		if abs(to_enemy.y) > float(attack_vertical_tolerance):
+			continue
 
-		if dir_x * facing_direction > 0 and dist_sq <= attack_range * attack_range:
+		var is_in_front: bool = to_enemy.x * facing_direction >= -6.0
+		if is_in_front and dist_sq <= effective_range_sq:
 			var damage_to_apply: int = 999999 if GameManager.is_dev_mode else PlayerStats.get_total_damage(attack_damage)
 			enemy.take_damage(damage_to_apply, global_position)
 

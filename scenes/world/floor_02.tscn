@@ -604,28 +604,28 @@ tile_set = SubResource("TileSet_yyb8y")
 [node name="Enemies" type="Node2D" parent="." unique_id=2010000001]
 
 [node name="Slime1" parent="Enemies" unique_id=2010000002 instance=ExtResource("3_3boyv")]
-position = Vector2(200, 605)
+position = Vector2(198, 587)
 
 [node name="Slime2" parent="Enemies" unique_id=2010000003 instance=ExtResource("3_3boyv")]
-position = Vector2(400, 605)
+position = Vector2(404, 586)
 
 [node name="Slime3" parent="Enemies" unique_id=2010000004 instance=ExtResource("3_3boyv")]
-position = Vector2(600, 605)
+position = Vector2(603, 589)
 
 [node name="Slime4" parent="Enemies" unique_id=2010000005 instance=ExtResource("3_3boyv")]
-position = Vector2(800, 605)
+position = Vector2(799, 588)
 
 [node name="Slime5" parent="Enemies" unique_id=2010000006 instance=ExtResource("3_3boyv")]
-position = Vector2(1000, 605)
+position = Vector2(999, 585)
 
 [node name="Slime6" parent="Enemies" unique_id=2010000007 instance=ExtResource("3_3boyv")]
-position = Vector2(300, 420)
+position = Vector2(290, 590)
 
 [node name="Slime7" parent="Enemies" unique_id=2010000008 instance=ExtResource("3_3boyv")]
-position = Vector2(700, 420)
+position = Vector2(691, 590)
 
 [node name="Slime8" parent="Enemies" unique_id=2010000009 instance=ExtResource("3_3boyv")]
-position = Vector2(1100, 420)
+position = Vector2(1119, 587)
 
 [node name="ExitPortal" parent="." unique_id=2010000010 instance=ExtResource("4_ihrxy")]
 position = Vector2(55, 603)

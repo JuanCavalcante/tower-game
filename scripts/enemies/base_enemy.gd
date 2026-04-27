@@ -340,7 +340,7 @@ func attack_player() -> void:
 	if anim.sprite_frames.has_animation("attack"):
 		anim.play("attack")
 	
-	if player.has_method("take_damage"):
+	if player.has_method("take_damage") and _is_player_in_attack_hitbox(player):
 		player.take_damage(damage)
 	
 	await get_tree().create_timer(attack_cooldown).timeout
@@ -354,8 +354,7 @@ func take_damage(amount: int, from_position: Vector2 = Vector2.ZERO) -> void:
 	current_health -= amount
 	_update_health_bar()
 	
-	var direction: float = sign(global_position.x - from_position.x)
-	knockback_velocity = Vector2(direction * knockback_force, -80)
+	knockback_velocity = _build_knockback_velocity(from_position)
 	
 	flash()
 	
@@ -380,6 +379,7 @@ func flash() -> void:
 
 func die() -> void:
 	state = State.DEAD
+	_disable_collision_for_death()
 	
 	if anim.sprite_frames.has_animation("death"):
 		anim.play("death")
@@ -393,6 +393,61 @@ func die() -> void:
 		floor_node.enemy_killed(self)
 	
 	queue_free()
+
+
+func _build_knockback_velocity(from_position: Vector2) -> Vector2:
+	var knockback_direction: Vector2 = global_position - from_position
+	if knockback_direction.length_squared() < 0.0001:
+		knockback_direction = Vector2(1, 0)
+
+	var impulse: Vector2 = knockback_direction.normalized() * knockback_force
+	var max_upward: float = knockback_force * 0.35
+	var max_downward: float = knockback_force * 0.2
+	impulse.y = clamp(impulse.y, -max_upward, max_downward)
+
+	var min_horizontal: float = knockback_force * 0.35
+	if abs(impulse.x) < min_horizontal:
+		impulse.x = sign(knockback_direction.x if abs(knockback_direction.x) > 0.001 else 1.0) * min_horizontal
+
+	return impulse
+
+
+func _is_player_in_attack_hitbox(player_node: Node2D) -> bool:
+	if not is_instance_valid(player_node):
+		return false
+
+	var effective_attack_range: float = max(attack_range + _personal_attack_offset, 12.0)
+	var delta_to_player: Vector2 = player_node.global_position - global_position
+	if abs(delta_to_player.y) > 66.0:
+		return false
+
+	var facing_sign: float = 1.0
+	if anim != null:
+		facing_sign = -1.0 if anim.flip_h == sprite_faces_right else 1.0
+
+	return delta_to_player.length_squared() <= effective_attack_range * effective_attack_range and delta_to_player.x * facing_sign >= -6.0
+
+
+func _disable_collision_for_death() -> void:
+	collision_layer = 0
+	collision_mask = 0
+
+	var body_collision: CollisionShape2D = get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if body_collision != null:
+		body_collision.set_deferred("disabled", true)
+
+	var damage_area: Area2D = get_node_or_null("DamageArea") as Area2D
+	if damage_area == null:
+		return
+
+	damage_area.monitoring = false
+	damage_area.monitorable = false
+	damage_area.collision_layer = 0
+	damage_area.collision_mask = 0
+
+	for child in damage_area.get_children():
+		if child is CollisionShape2D:
+			(child as CollisionShape2D).set_deferred("disabled", true)
 
 
 func _drop_coin_pickups(total_value: int) -> void:

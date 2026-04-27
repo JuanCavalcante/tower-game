@@ -605,22 +605,22 @@ tile_set = SubResource("TileSet_yyb8y")
 [node name="Enemies" type="Node2D" parent="." unique_id=-284967295]
 
 [node name="Skeleton1" parent="Enemies" unique_id=-284967294 instance=ExtResource("3_skel")]
-position = Vector2(150, 605)
+position = Vector2(153, 586)
 
 [node name="Skeleton2" parent="Enemies" unique_id=-284967293 instance=ExtResource("3_skel")]
-position = Vector2(400, 605)
+position = Vector2(404, 585)
 
 [node name="Skeleton3" parent="Enemies" unique_id=-284967292 instance=ExtResource("3_skel")]
-position = Vector2(700, 605)
+position = Vector2(699, 586)
 
 [node name="Skeleton4" parent="Enemies" unique_id=-284967291 instance=ExtResource("3_skel")]
-position = Vector2(1000, 605)
+position = Vector2(1003, 585)
 
 [node name="Skeleton5" parent="Enemies" unique_id=-284967290 instance=ExtResource("3_skel")]
-position = Vector2(300, 420)
+position = Vector2(286, 585)
 
 [node name="SkeletonBoss" parent="Enemies" unique_id=-284967289 instance=ExtResource("5_sboss")]
-position = Vector2(800, 420)
+position = Vector2(823, 561)
 
 [node name="ExitPortal" parent="." unique_id=-284967288 instance=ExtResource("4_ihrxy")]
 position = Vector2(55, 603)
