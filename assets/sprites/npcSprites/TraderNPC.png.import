@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dr4v6ismonbyc"
-path="res://.godot/imported/GandalfHardcore Warrior-solo.png-01a01a972c6f1228b82808b3edd2d953.ctex"
+uid="uid://c1bbsokwwosm1"
+path="res://.godot/imported/TraderNPC.png-3e4c4de4644c1c6ef39a97663425272e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/GandalfHardcore Warrior-solo.png"
-dest_files=["res://.godot/imported/GandalfHardcore Warrior-solo.png-01a01a972c6f1228b82808b3edd2d953.ctex"]
+source_file="res://assets/sprites/npcSprites/TraderNPC.png"
+dest_files=["res://.godot/imported/TraderNPC.png-3e4c4de4644c1c6ef39a97663425272e.ctex"]
 
 [params]
 
