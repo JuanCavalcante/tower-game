@@ -1,5 +1,8 @@
 extends CharacterBody2D
 
+const SWORD_SFX_1 := preload("res://assets/sprites/effect/sound/sword1.mp3")
+const SWORD_SFX_2 := preload("res://assets/sprites/effect/sound/sword2.mp3")
+
 @export var speed := 200
 @export var attack_damage := 30
 @export var attack_range := 50
@@ -13,9 +16,34 @@ var can_attack := true
 var is_attacking := false
 var facing_direction := 1
 var is_dead := false
+var _sword_sfx_player: AudioStreamPlayer2D = null
 
 func _ready():
 	add_to_group("player")
+	_sword_sfx_player = AudioStreamPlayer2D.new()
+	_sword_sfx_player.name = "SwordSfx"
+	_sword_sfx_player.volume_db = -7.0
+	add_child(_sword_sfx_player)
+
+
+func _play_sword_sfx_start() -> void:
+	if _sword_sfx_player == null:
+		return
+
+	if _sword_sfx_player.playing:
+		_sword_sfx_player.stop()
+	_sword_sfx_player.stream = SWORD_SFX_1
+	_sword_sfx_player.play()
+
+
+func _play_sword_sfx_end() -> void:
+	if _sword_sfx_player == null:
+		return
+
+	if _sword_sfx_player.playing:
+		_sword_sfx_player.stop()
+	_sword_sfx_player.stream = SWORD_SFX_2
+	_sword_sfx_player.play()
 
 func take_damage(amount):
 	if GameManager.is_dev_mode:
@@ -108,6 +136,7 @@ func attack():
 	is_attacking = true
 
 	anim.play("attack")
+	_play_sword_sfx_start()
 	
 	await get_tree().create_timer(0.45).timeout
 
@@ -123,6 +152,8 @@ func attack():
 		if dir_x * facing_direction > 0 and dist_sq <= attack_range * attack_range:
 			var damage_to_apply: int = 999999 if GameManager.is_dev_mode else PlayerStats.get_total_damage(attack_damage)
 			enemy.take_damage(damage_to_apply, global_position)
+
+	_play_sword_sfx_end()
 
 	await anim.animation_finished
 

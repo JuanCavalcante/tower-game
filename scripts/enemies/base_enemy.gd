@@ -1,6 +1,8 @@
 extends CharacterBody2D
 class_name BaseEnemy
 
+const COIN_SCENE := preload("res://scripts/coin/coin.tscn")
+
 enum State {
 	IDLE,
 	CHASE,
@@ -384,13 +386,46 @@ func die() -> void:
 		await anim.animation_finished
 	
 	PlayerStats.add_xp(xp_reward)
-	PlayerStats.add_coins(coin_reward)
+	_drop_coin_pickups(coin_reward)
 	
 	var floor_node: Node = _find_floor_node()
 	if floor_node:
 		floor_node.enemy_killed(self)
 	
 	queue_free()
+
+
+func _drop_coin_pickups(total_value: int) -> void:
+	if total_value <= 0:
+		return
+
+	if COIN_SCENE == null:
+		PlayerStats.add_coins(total_value)
+		return
+
+	var parent_node: Node = get_parent()
+	if parent_node == null:
+		PlayerStats.add_coins(total_value)
+		return
+
+	var coin_count: int = clamp(total_value, 1, 8)
+	var base_value: int = total_value / coin_count
+	var remainder: int = total_value % coin_count
+
+	for index in range(coin_count):
+		var coin := COIN_SCENE.instantiate()
+		if coin == null:
+			continue
+
+		parent_node.add_child(coin)
+		(coin as Node2D).global_position = global_position + Vector2(randf_range(-6.0, 6.0), randf_range(-4.0, 4.0))
+
+		var value_for_coin := base_value
+		if index < remainder:
+			value_for_coin += 1
+
+		if coin.has_method("setup"):
+			coin.call("setup", value_for_coin, Vector2(sign(randf() - 0.5), 0.0))
 
 
 func _find_floor_node() -> Node:

@@ -6,6 +6,7 @@ const POTION_COST := 15
 const WEAPON_COST := 60
 const WEAPON_NAME := "Lamina de Aco"
 const WEAPON_DAMAGE_BONUS := 15
+const BUY_SOUND := preload("res://assets/sprites/effect/sound/buySound.mp3")
 
 var _player_in_portal_range := false
 var _player_in_vendor_range := false
@@ -24,6 +25,7 @@ var _active_ui_mode := ""
 var vendor_anchor: Marker2D = null
 var vendor_area: Area2D = null
 var _vendor_label: Label = null
+var _buy_sfx_player: AudioStreamPlayer2D = null
 
 func _ready() -> void:
 	_sync_portal_layout_to_sprite()
@@ -32,6 +34,7 @@ func _ready() -> void:
 	interact_prompt.visible = false
 	portal_overlay.visible = false
 	portal_panel.visible = false
+	_ensure_audio()
 
 	_build_portal_buttons()
 
@@ -69,13 +72,44 @@ func _find_portal_sprite() -> Node2D:
 	return null
 
 
+func _find_trader_sprite() -> Node2D:
+	var direct_trader := get_node_or_null("CidadeHub/TraderNpc") as Node2D
+	if direct_trader != null:
+		return direct_trader
+
+	var nested_trader := get_node_or_null("CidadeHub/Cidade_Hub/TraderNpc") as Node2D
+	if nested_trader != null:
+		return nested_trader
+
+	return null
+
+
+func _ensure_audio() -> void:
+	if _buy_sfx_player != null:
+		return
+
+	_buy_sfx_player = AudioStreamPlayer2D.new()
+	_buy_sfx_player.name = "BuySfx"
+	_buy_sfx_player.stream = BUY_SOUND
+	_buy_sfx_player.volume_db = -6.0
+	add_child(_buy_sfx_player)
+
+
 func _ensure_vendor_area() -> void:
 	vendor_anchor = get_node_or_null("VendorAnchor") as Marker2D
+	var trader_sprite: Node2D = _find_trader_sprite()
+	var vendor_position: Vector2 = portal_anchor.global_position + Vector2(220, 0)
+	if trader_sprite != null:
+		vendor_position = trader_sprite.global_position
+	else:
+		push_warning("TraderNpc nao encontrado em CidadeHub; usando fallback de posicao.")
+
 	if vendor_anchor == null:
 		vendor_anchor = Marker2D.new()
 		vendor_anchor.name = "VendorAnchor"
 		add_child(vendor_anchor)
-		vendor_anchor.global_position = portal_anchor.global_position + Vector2(220, 0)
+
+	vendor_anchor.global_position = vendor_position
 
 	vendor_area = get_node_or_null("VendorArea") as Area2D
 	if vendor_area == null:
@@ -94,10 +128,11 @@ func _ensure_vendor_area() -> void:
 	if _vendor_label == null:
 		_vendor_label = Label.new()
 		_vendor_label.name = "VendorLabel"
-		_vendor_label.text = "Vendedor"
+		_vendor_label.text = "TraderNPC"
 		_vendor_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		_vendor_label.position = vendor_anchor.global_position + Vector2(-58, -108)
 		add_child(_vendor_label)
+
+	_vendor_label.position = vendor_anchor.global_position + Vector2(-78, -110)
 
 
 func _clear_action_buttons() -> void:
@@ -214,11 +249,13 @@ func _on_vendor_body_exited(body: Node2D) -> void:
 func _update_interaction_prompt() -> void:
 	if _player_in_vendor_range:
 		interact_prompt.text = "Pressione E para falar com o vendedor"
+		interact_prompt.global_position = vendor_anchor.global_position + Vector2(-150, -130)
 		interact_prompt.visible = true
 		return
 
 	if _player_in_portal_range:
 		interact_prompt.text = "Pressione E para entrar no portal"
+		interact_prompt.global_position = portal_anchor.global_position + Vector2(-130, -120)
 		interact_prompt.visible = true
 		return
 
@@ -259,6 +296,7 @@ func _buy_potion() -> void:
 
 	PlayerStats.add_potion(1)
 	_build_vendor_buttons()
+	_play_buy_sound()
 	GameManager.save_game()
 
 
@@ -273,4 +311,15 @@ func _buy_weapon() -> void:
 
 	PlayerStats.equip_weapon(WEAPON_NAME, WEAPON_DAMAGE_BONUS)
 	_build_vendor_buttons()
+	_play_buy_sound()
 	GameManager.save_game()
+
+
+func _play_buy_sound() -> void:
+	if _buy_sfx_player == null:
+		return
+
+	_buy_sfx_player.global_position = vendor_anchor.global_position if vendor_anchor != null else global_position
+	if _buy_sfx_player.playing:
+		_buy_sfx_player.stop()
+	_buy_sfx_player.play()
