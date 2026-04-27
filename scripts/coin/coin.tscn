@@ -1,69 +1,62 @@
 [gd_scene format=3 uid="uid://7h0nkua2k5a8"]
 
-[ext_resource type="Texture2D" uid="uid://bmxkoepuiy5cn" path="res://assets/sprites/effect/coin.png" id="1_lmnf1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/effect/coins-chests-etc-2-0.png" id="1_coin_sheet"]
 [ext_resource type="Script" uid="uid://dt6rgtw1wyk7o" path="res://scripts/coin/coin_pickup.gd" id="2_coin_script"]
 
-[sub_resource type="ImageTexture" id="ImageTexture_nsm6g"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_1"]
+atlas = ExtResource("1_coin_sheet")
+region = Rect2(64, 16, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_6odau"]
-atlas = ExtResource("1_lmnf1")
-region = Rect2(3, 195, 246, 360)
+[sub_resource type="AtlasTexture" id="AtlasTexture_2"]
+atlas = ExtResource("1_coin_sheet")
+region = Rect2(80, 16, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_k48t5"]
-atlas = ExtResource("1_lmnf1")
-region = Rect2(259, 195, 246, 360)
+[sub_resource type="AtlasTexture" id="AtlasTexture_3"]
+atlas = ExtResource("1_coin_sheet")
+region = Rect2(96, 16, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_qydu1"]
-atlas = ExtResource("1_lmnf1")
-region = Rect2(515, 195, 246, 360)
+[sub_resource type="AtlasTexture" id="AtlasTexture_4"]
+atlas = ExtResource("1_coin_sheet")
+region = Rect2(112, 16, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ggi7v"]
-atlas = ExtResource("1_lmnf1")
-region = Rect2(771, 195, 246, 360)
+[sub_resource type="AtlasTexture" id="AtlasTexture_5"]
+atlas = ExtResource("1_coin_sheet")
+region = Rect2(128, 16, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2sbuf"]
-atlas = ExtResource("1_lmnf1")
-region = Rect2(1027, 195, 246, 360)
+[sub_resource type="AtlasTexture" id="AtlasTexture_6"]
+atlas = ExtResource("1_coin_sheet")
+region = Rect2(144, 16, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_jimn6"]
-atlas = ExtResource("1_lmnf1")
-region = Rect2(1283, 195, 246, 360)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_ll1c6"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_coin"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_6odau")
+"texture": SubResource("AtlasTexture_1")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_k48t5")
+"texture": SubResource("AtlasTexture_2")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_qydu1")
+"texture": SubResource("AtlasTexture_3")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ggi7v")
+"texture": SubResource("AtlasTexture_4")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_2sbuf")
+"texture": SubResource("AtlasTexture_5")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_jimn6")
+"texture": SubResource("AtlasTexture_6")
 }],
 "loop": true,
 "name": &"default",
-"speed": 15.0
+"speed": 12.0
 }]
 
-[node name="coin" type="Node2D" unique_id=573830917]
+[node name="coin" type="Node2D"]
 script = ExtResource("2_coin_script")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1330071712]
-scale = Vector2(38, 19)
-texture = SubResource("ImageTexture_nsm6g")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Sprite2D" unique_id=671853617]
-position = Vector2(0.2105263, -0.36842108)
-scale = Vector2(0.0015778745, 0.0020193716)
-sprite_frames = SubResource("SpriteFrames_ll1c6")
-frame_progress = 0.77305084
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -8)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_coin")

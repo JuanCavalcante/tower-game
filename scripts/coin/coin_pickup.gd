@@ -3,7 +3,7 @@ extends Node2D
 static var _last_collect_sfx_msec: int = 0
 
 @export var collect_radius := 16.0
-@export var magnet_range := 120.0
+@export var magnet_range := 72.0
 @export var magnet_speed := 360.0
 @export var bob_amplitude := 3.5
 @export var bob_speed := 6.0
@@ -24,7 +24,7 @@ var _bob_time := 0.0
 var _ground_y := 0.0
 var _has_ground := false
 
-@onready var anim: AnimatedSprite2D = $Sprite2D/AnimatedSprite2D
+@onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 
 const COLLECT_SOUND := preload("res://assets/sprites/effect/sound/coinSound.mp3")
 
