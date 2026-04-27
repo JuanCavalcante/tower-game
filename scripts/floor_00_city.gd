@@ -161,6 +161,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.echo:
 		return
 
+	if event.is_action_pressed("ui_cancel") and _ui_open:
+		_close_ui()
+		return
+
 	if event.is_action_pressed("interact"):
 		if (_player_in_portal_range or _player_in_vendor_range) and not _ui_open:
 			if _player_in_vendor_range:
