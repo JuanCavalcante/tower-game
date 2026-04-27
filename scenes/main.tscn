@@ -300,7 +300,7 @@ offset_top = 48.0
 offset_right = 120.0
 offset_bottom = 71.0
 
-[node name="DevModeButton" type="CheckButton" parent="UI/HUD"]
+[node name="DevModeButton" type="CheckButton" parent="UI/HUD" unique_id=576511546]
 layout_mode = 0
 offset_left = 940.0
 offset_top = 12.0
