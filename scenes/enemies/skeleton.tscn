@@ -434,6 +434,8 @@ height = 40.0
 radius = 5.3851647
 
 [node name="Skeleton" type="CharacterBody2D" unique_id=300000001]
+collision_layer = 4
+collision_mask = 1
 script = ExtResource("1_skel")
 speed = 90
 max_health = 60
@@ -450,6 +452,7 @@ position = Vector2(-3, 15)
 shape = SubResource("CapsuleShape2D_skel")
 
 [node name="DamageArea" type="Area2D" parent="." unique_id=300000004]
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea" unique_id=300000005]
 position = Vector2(-4, -8)

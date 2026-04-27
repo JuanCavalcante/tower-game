@@ -5,7 +5,7 @@ const SWORD_SFX_2 := preload("res://assets/sprites/effect/sound/sword2.mp3")
 
 @export var speed := 200
 @export var attack_damage := 30
-@export var attack_range := 50
+@export var attack_range := 70
 @export var gravity := 900
 @export var jump_force := -400
 @export var attack_cooldown := 0.5
@@ -149,7 +149,7 @@ func attack():
 		var dist_sq = global_position.distance_squared_to(enemy.global_position)
 		var dir_x = enemy.global_position.x - global_position.x
 
-		if dir_x * facing_direction > 0 and dist_sq <= attack_range * attack_range:
+		if dir_x * facing_direction >= 0 and dist_sq <= attack_range * attack_range:
 			var damage_to_apply: int = 999999 if GameManager.is_dev_mode else PlayerStats.get_total_damage(attack_damage)
 			enemy.take_damage(damage_to_apply, global_position)
 

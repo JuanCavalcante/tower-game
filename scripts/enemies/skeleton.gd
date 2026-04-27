@@ -29,6 +29,9 @@ func _start_hurt():
 func _start_death():
 	_is_dying = true
 	set_physics_process(false)
+	var col := get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if col:
+		col.set_deferred("disabled", true)
 	anim.play("die")
 
 func _on_animation_finished():

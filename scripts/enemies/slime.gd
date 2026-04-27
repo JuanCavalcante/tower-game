@@ -92,7 +92,8 @@ func take_damage(amount: int, source_position: Vector2 = Vector2.ZERO) -> void:
 	var knockback_direction: Vector2 = global_position - source_position
 	if knockback_direction.length_squared() < 0.0001:
 		knockback_direction = Vector2(1, 0)
-	knockback_velocity = knockback_direction.normalized() * knockback_force
+	var normalized_dir: Vector2 = knockback_direction.normalized()
+	knockback_velocity = Vector2(normalized_dir.x * knockback_force, max(normalized_dir.y * knockback_force, -30.0))
 
 	flash()
 

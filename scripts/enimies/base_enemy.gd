@@ -380,7 +380,11 @@ func flash() -> void:
 
 func die() -> void:
 	state = State.DEAD
-	
+
+	var col := get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if col:
+		col.set_deferred("disabled", true)
+
 	if anim.sprite_frames.has_animation("death"):
 		anim.play("death")
 		await anim.animation_finished
