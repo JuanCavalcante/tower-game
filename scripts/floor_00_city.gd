@@ -2,29 +2,44 @@ extends Node2D
 class_name Floor00City
 
 const TOTAL_PORTAL_FLOORS := 10
+const POTION_COST := 15
+const WEAPON_COST := 60
+const WEAPON_NAME := "Lamina de Aco"
+const WEAPON_DAMAGE_BONUS := 15
 
-var _player_in_range := false
+var _player_in_portal_range := false
+var _player_in_vendor_range := false
 var _ui_open := false
+var _active_ui_mode := ""
 
 @onready var interact_prompt: Label = $InteractPrompt
 @onready var portal_ui: CanvasLayer = $PortalUI
 @onready var portal_overlay: ColorRect = $PortalUI/Overlay
 @onready var portal_panel: PanelContainer = $PortalUI/PortalPanel
 @onready var floor_buttons_grid: GridContainer = $PortalUI/PortalPanel/VBox/FloorButtons
+@onready var panel_title: Label = $PortalUI/PortalPanel/VBox/Title
 @onready var portal_anchor: Marker2D = $PortalAnchor
 @onready var portal_area: Area2D = $PortalArea
 
+var vendor_anchor: Marker2D = null
+var vendor_area: Area2D = null
+var _vendor_label: Label = null
+
 func _ready() -> void:
 	_sync_portal_layout_to_sprite()
+	_ensure_vendor_area()
 
 	interact_prompt.visible = false
 	portal_overlay.visible = false
 	portal_panel.visible = false
 
-	_build_floor_buttons()
+	_build_portal_buttons()
 
-	portal_area.body_entered.connect(_on_body_entered)
-	portal_area.body_exited.connect(_on_body_exited)
+	portal_area.body_entered.connect(_on_portal_body_entered)
+	portal_area.body_exited.connect(_on_portal_body_exited)
+	if vendor_area != null:
+		vendor_area.body_entered.connect(_on_vendor_body_entered)
+		vendor_area.body_exited.connect(_on_vendor_body_exited)
 
 	var close_btn: Button = $PortalUI/PortalPanel/VBox/CloseButton
 	close_btn.pressed.connect(_close_ui)
@@ -40,7 +55,7 @@ func _sync_portal_layout_to_sprite() -> void:
 
 	portal_anchor.global_position = portal_position
 	portal_area.global_position = portal_position
-	interact_prompt.global_position = portal_position + Vector2(-95, -120)
+	interact_prompt.global_position = portal_position + Vector2(-130, -120)
 
 func _find_portal_sprite() -> Node2D:
 	var direct_portal := get_node_or_null("CidadeHub/Portal") as Node2D
@@ -53,9 +68,46 @@ func _find_portal_sprite() -> Node2D:
 
 	return null
 
-func _build_floor_buttons() -> void:
+
+func _ensure_vendor_area() -> void:
+	vendor_anchor = get_node_or_null("VendorAnchor") as Marker2D
+	if vendor_anchor == null:
+		vendor_anchor = Marker2D.new()
+		vendor_anchor.name = "VendorAnchor"
+		add_child(vendor_anchor)
+		vendor_anchor.global_position = portal_anchor.global_position + Vector2(220, 0)
+
+	vendor_area = get_node_or_null("VendorArea") as Area2D
+	if vendor_area == null:
+		vendor_area = Area2D.new()
+		vendor_area.name = "VendorArea"
+		add_child(vendor_area)
+		vendor_area.global_position = vendor_anchor.global_position
+
+		var shape := CollisionShape2D.new()
+		var circle := CircleShape2D.new()
+		circle.radius = 72.0
+		shape.shape = circle
+		vendor_area.add_child(shape)
+
+	_vendor_label = get_node_or_null("VendorLabel") as Label
+	if _vendor_label == null:
+		_vendor_label = Label.new()
+		_vendor_label.name = "VendorLabel"
+		_vendor_label.text = "Vendedor"
+		_vendor_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_vendor_label.position = vendor_anchor.global_position + Vector2(-58, -108)
+		add_child(_vendor_label)
+
+
+func _clear_action_buttons() -> void:
 	for child in floor_buttons_grid.get_children():
 		child.queue_free()
+
+
+func _build_portal_buttons() -> void:
+	_clear_action_buttons()
+	panel_title.text = "Escolha o Andar"
 
 	for floor_num in range(1, TOTAL_PORTAL_FLOORS + 1):
 		var btn := Button.new()
@@ -66,6 +118,29 @@ func _build_floor_buttons() -> void:
 
 		btn.pressed.connect(func(): _enter_floor(floor_num))
 		floor_buttons_grid.add_child(btn)
+
+
+func _build_vendor_buttons() -> void:
+	_clear_action_buttons()
+	panel_title.text = "Vendedor"
+
+	var status := Label.new()
+	status.text = "Moedas: %d | Pocoes: %d" % [PlayerStats.coins, PlayerStats.potions]
+	status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	floor_buttons_grid.add_child(status)
+
+	var potion_btn := Button.new()
+	potion_btn.custom_minimum_size = Vector2(260, 40)
+	potion_btn.text = "Comprar Pocao de Vida (%d moedas)" % POTION_COST
+	potion_btn.pressed.connect(_buy_potion)
+	floor_buttons_grid.add_child(potion_btn)
+
+	var weapon_btn := Button.new()
+	weapon_btn.custom_minimum_size = Vector2(260, 40)
+	weapon_btn.text = "Comprar %s (+%d dano) - %d moedas" % [WEAPON_NAME, WEAPON_DAMAGE_BONUS, WEAPON_COST]
+	weapon_btn.disabled = PlayerStats.weapon_damage_bonus >= WEAPON_DAMAGE_BONUS
+	weapon_btn.pressed.connect(_buy_weapon)
+	floor_buttons_grid.add_child(weapon_btn)
 
 func _apply_floor_button_state(btn: Button, floor_num: int) -> void:
 	var unlocked: bool = GameManager.is_floor_unlocked(floor_num)
@@ -86,35 +161,116 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.echo:
 		return
 
+	if event.is_action_pressed("ui_cancel") and _ui_open:
+		_close_ui()
+		return
+
 	if event.is_action_pressed("interact"):
-		if _player_in_range and not _ui_open:
-			_open_ui()
+		if (_player_in_portal_range or _player_in_vendor_range) and not _ui_open:
+			if _player_in_vendor_range:
+				_open_vendor_ui()
+			elif _player_in_portal_range:
+				_open_portal_ui()
 		elif _ui_open:
 			_close_ui()
 
-func _on_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		_player_in_range = true
+func _on_portal_body_entered(body: Node2D) -> void:
+	if not body.is_in_group("player"):
+		return
+
+	_player_in_portal_range = true
+	_update_interaction_prompt()
+
+
+func _on_portal_body_exited(body: Node2D) -> void:
+	if not body.is_in_group("player"):
+		return
+
+	_player_in_portal_range = false
+	if _ui_open and _active_ui_mode == "portal":
+		_close_ui()
+	_update_interaction_prompt()
+
+
+func _on_vendor_body_entered(body: Node2D) -> void:
+	if not body.is_in_group("player"):
+		return
+
+	_player_in_vendor_range = true
+	_update_interaction_prompt()
+
+
+func _on_vendor_body_exited(body: Node2D) -> void:
+	if not body.is_in_group("player"):
+		return
+
+	_player_in_vendor_range = false
+	if _ui_open and _active_ui_mode == "vendor":
+		_close_ui()
+
+	_update_interaction_prompt()
+
+
+func _update_interaction_prompt() -> void:
+	if _player_in_vendor_range:
+		interact_prompt.text = "Pressione E para falar com o vendedor"
 		interact_prompt.visible = true
+		return
 
-func _on_body_exited(body: Node2D) -> void:
-	if body.is_in_group("player"):
-		_player_in_range = false
-		interact_prompt.visible = false
-		if _ui_open:
-			_close_ui()
+	if _player_in_portal_range:
+		interact_prompt.text = "Pressione E para entrar no portal"
+		interact_prompt.visible = true
+		return
 
-func _open_ui() -> void:
+	interact_prompt.visible = false
+
+
+func _open_portal_ui() -> void:
+	_active_ui_mode = "portal"
 	_ui_open = true
+	_build_portal_buttons()
 	_refresh_floor_buttons()
+	portal_overlay.visible = true
+	portal_panel.visible = true
+
+
+func _open_vendor_ui() -> void:
+	_active_ui_mode = "vendor"
+	_ui_open = true
+	_build_vendor_buttons()
 	portal_overlay.visible = true
 	portal_panel.visible = true
 
 func _close_ui() -> void:
 	_ui_open = false
+	_active_ui_mode = ""
 	portal_overlay.visible = false
 	portal_panel.visible = false
 
 func _enter_floor(floor_number: int) -> void:
 	_close_ui()
 	GameManager.load_floor(floor_number)
+
+
+func _buy_potion() -> void:
+	if not PlayerStats.spend_coins(POTION_COST):
+		push_warning("Moedas insuficientes para comprar pocao.")
+		return
+
+	PlayerStats.add_potion(1)
+	_build_vendor_buttons()
+	GameManager.save_game()
+
+
+func _buy_weapon() -> void:
+	if PlayerStats.weapon_damage_bonus >= WEAPON_DAMAGE_BONUS:
+		push_warning("Arma ja comprada.")
+		return
+
+	if not PlayerStats.spend_coins(WEAPON_COST):
+		push_warning("Moedas insuficientes para comprar arma.")
+		return
+
+	PlayerStats.equip_weapon(WEAPON_NAME, WEAPON_DAMAGE_BONUS)
+	_build_vendor_buttons()
+	GameManager.save_game()

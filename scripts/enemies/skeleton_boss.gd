@@ -19,6 +19,7 @@ func _ready() -> void:
 	attack_range = 46.0
 	stop_distance = 30.0
 	xp_reward = 380
+	coin_reward = 80
 	super._ready()
 
 	_setup_effect_sprite()
