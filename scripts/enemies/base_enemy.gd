@@ -14,6 +14,7 @@ enum State {
 @export var gravity := 900.0
 @export var knockback_force := 200.0
 @export var xp_reward := 20
+@export var coin_reward := 3
 @export var sprite_faces_right := false
 
 @export var detection_range := 220.0
@@ -383,6 +384,7 @@ func die() -> void:
 		await anim.animation_finished
 	
 	PlayerStats.add_xp(xp_reward)
+	PlayerStats.add_coins(coin_reward)
 	
 	var floor_node: Node = _find_floor_node()
 	if floor_node:

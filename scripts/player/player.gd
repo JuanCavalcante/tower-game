@@ -60,6 +60,12 @@ func _physics_process(delta):
 
 	var direction = Vector2.ZERO
 
+	if Input.is_action_just_pressed("use_potion"):
+		if PlayerStats.use_potion(40):
+			print("Pocao usada. HP: ", PlayerStats.current_health, "/", PlayerStats.max_health)
+		else:
+			print("Sem pocao ou HP ja cheio.")
+
 	if Input.is_action_just_pressed("attack") and can_attack:
 		attack()
 
@@ -115,7 +121,7 @@ func attack():
 		var dir_x = enemy.global_position.x - global_position.x
 
 		if dir_x * facing_direction > 0 and dist_sq <= attack_range * attack_range:
-			var damage_to_apply: int = 999999 if GameManager.is_dev_mode else attack_damage
+			var damage_to_apply: int = 999999 if GameManager.is_dev_mode else PlayerStats.get_total_damage(attack_damage)
 			enemy.take_damage(damage_to_apply, global_position)
 
 	await anim.animation_finished
