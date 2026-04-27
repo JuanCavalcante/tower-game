@@ -44,9 +44,9 @@ func _process(_delta):
 		else:
 			pause_game()
 
-	health_label.text = "HP: " + str(PlayerStats.current_health) + "/" + str(PlayerStats.max_health)
-	xp_label.text = "XP: " + str(PlayerStats.xp) + "/" + str(int(PlayerStats.xp_to_next_level)) + "  Nivel: " + str(PlayerStats.level)
-	floor_label.text = "Andar: " + str(GameManager.current_floor)
+	health_label.text = "HP: %d/%d | Moedas: %d" % [PlayerStats.current_health, PlayerStats.max_health, PlayerStats.coins]
+	xp_label.text = "XP: %d/%d  Nivel: %d | Pocoes: %d (Q)" % [PlayerStats.xp, int(PlayerStats.xp_to_next_level), PlayerStats.level, PlayerStats.potions]
+	floor_label.text = "Andar: %d | Equip: %s (+%d)" % [GameManager.current_floor, PlayerStats.equipped_weapon_name, PlayerStats.weapon_damage_bonus]
 
 func show_main_menu():
 	get_tree().paused = false
