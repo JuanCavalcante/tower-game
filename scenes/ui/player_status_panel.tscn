@@ -1,7 +1,79 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/player_status_panel.gd" id="1"]
-[ext_resource type="Texture2D" path="res://assets/ui/crimson_fantasy/panel_reference_layout.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/ui/crimson_fantasy/UI_inventario_caracter.png" id="2"]
+
+[sub_resource type="AtlasTexture" id="panel_left"]
+atlas = ExtResource("2")
+region = Rect2(22, 22, 357, 501)
+
+[sub_resource type="AtlasTexture" id="panel_right"]
+atlas = ExtResource("2")
+region = Rect2(398, 22, 428, 501)
+
+[sub_resource type="AtlasTexture" id="title_plate"]
+atlas = ExtResource("2")
+region = Rect2(85, 34, 233, 58)
+
+[sub_resource type="AtlasTexture" id="value_box"]
+atlas = ExtResource("2")
+region = Rect2(841, 407, 144, 57)
+
+[sub_resource type="AtlasTexture" id="points_box"]
+atlas = ExtResource("2")
+region = Rect2(1346, 181, 185, 53)
+
+[sub_resource type="AtlasTexture" id="plus_btn"]
+atlas = ExtResource("2")
+region = Rect2(846, 496, 67, 67)
+
+[sub_resource type="AtlasTexture" id="action_btn"]
+atlas = ExtResource("2")
+region = Rect2(864, 863, 302, 90)
+
+[sub_resource type="AtlasTexture" id="icon_sword"]
+atlas = ExtResource("2")
+region = Rect2(1146, 613, 44, 44)
+
+[sub_resource type="AtlasTexture" id="icon_shield"]
+atlas = ExtResource("2")
+region = Rect2(1211, 613, 44, 44)
+
+[sub_resource type="AtlasTexture" id="icon_star"]
+atlas = ExtResource("2")
+region = Rect2(1276, 613, 44, 44)
+
+[sub_resource type="AtlasTexture" id="icon_boot"]
+atlas = ExtResource("2")
+region = Rect2(1340, 613, 44, 44)
+
+[sub_resource type="AtlasTexture" id="icon_target"]
+atlas = ExtResource("2")
+region = Rect2(1406, 613, 44, 44)
+
+[sub_resource type="AtlasTexture" id="icon_book"]
+atlas = ExtResource("2")
+region = Rect2(1471, 613, 44, 44)
+
+[sub_resource type="AtlasTexture" id="icon_strength"]
+atlas = ExtResource("2")
+region = Rect2(1145, 678, 44, 44)
+
+[sub_resource type="AtlasTexture" id="icon_vitality"]
+atlas = ExtResource("2")
+region = Rect2(1211, 678, 44, 44)
+
+[sub_resource type="AtlasTexture" id="icon_dexterity"]
+atlas = ExtResource("2")
+region = Rect2(1276, 678, 44, 44)
+
+[sub_resource type="AtlasTexture" id="icon_intelligence"]
+atlas = ExtResource("2")
+region = Rect2(1342, 678, 44, 44)
+
+[sub_resource type="AtlasTexture" id="icon_luck"]
+atlas = ExtResource("2")
+region = Rect2(1407, 678, 44, 44)
 
 [node name="PlayerStatusPanel" type="Control"]
 process_mode = 3
@@ -33,342 +105,644 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="LayoutRoot" type="Control" parent="CenterContainer"]
-custom_minimum_size = Vector2(1692, 930)
+custom_minimum_size = Vector2(1450, 860)
 layout_mode = 2
 
-[node name="Background" type="TextureRect" parent="CenterContainer/LayoutRoot"]
+[node name="Columns" type="HBoxContainer" parent="CenterContainer/LayoutRoot"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2")
+theme_override_constants/separation = 24
+
+[node name="StatusPanel" type="Control" parent="CenterContainer/LayoutRoot/Columns"]
+custom_minimum_size = Vector2(700, 840)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PanelBg" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/StatusPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("panel_left")
 stretch_mode = 5
 
-[node name="StatusHeader" type="Label" parent="CenterContainer/LayoutRoot"]
+[node name="TitlePlate" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/StatusPanel"]
 layout_mode = 0
-offset_left = 388.0
-offset_top = 91.0
-offset_right = 709.0
-offset_bottom = 141.0
+offset_left = 174.0
+offset_top = 16.0
+offset_right = 526.0
+offset_bottom = 92.0
+texture = SubResource("title_plate")
+stretch_mode = 5
+
+[node name="StatusHeader" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel"]
+layout_mode = 0
+offset_left = 210.0
+offset_top = 34.0
+offset_right = 490.0
+offset_bottom = 80.0
 text = "Status do Jogador"
 horizontal_alignment = 1
 
-[node name="AttributesTitle" type="Label" parent="CenterContainer/LayoutRoot"]
-layout_mode = 0
-offset_left = 1122.0
-offset_top = 91.0
-offset_right = 1395.0
-offset_bottom = 141.0
-text = "Atributos"
-horizontal_alignment = 1
+[node name="StatusContent" type="MarginContainer" parent="CenterContainer/LayoutRoot/Columns/StatusPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 130
+theme_override_constants/margin_right = 34
+theme_override_constants/margin_bottom = 40
 
-[node name="StatusContent" type="Control" parent="CenterContainer/LayoutRoot"]
-layout_mode = 0
-offset_left = 230.0
-offset_top = 194.0
-offset_right = 822.0
-offset_bottom = 834.0
-
-[node name="StatusNameList" type="VBoxContainer" parent="CenterContainer/LayoutRoot/StatusContent"]
-layout_mode = 0
-offset_left = 34.0
-offset_top = 0.0
-offset_right = 301.0
-offset_bottom = 620.0
+[node name="StatusRows" type="VBoxContainer" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent"]
+layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="LevelLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+[node name="RowLevel" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowLevel"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = SubResource("icon_star")
+stretch_mode = 5
+
+[node name="LevelLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowLevel"]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Nivel"
 
-[node name="XPLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+[node name="LevelValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowLevel"]
+layout_mode = 2
+text = "00"
+
+[node name="RowXP" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowXP"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = SubResource("icon_book")
+stretch_mode = 5
+
+[node name="XPLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowXP"]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Exp"
 
-[node name="Sep1" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
-custom_minimum_size = Vector2(0, 22)
+[node name="XPValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowXP"]
+layout_mode = 2
+text = "000/000"
+
+[node name="SepA" type="HSeparator" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
 layout_mode = 2
 
-[node name="HPLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+[node name="RowHP" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowHP"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = SubResource("icon_vitality")
+stretch_mode = 5
+
+[node name="HPLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowHP"]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Hp"
 
-[node name="SPLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+[node name="HPValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowHP"]
+layout_mode = 2
+text = "000/000"
+
+[node name="RowSP" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowSP"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = SubResource("icon_target")
+stretch_mode = 5
+
+[node name="SPLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowSP"]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Sp"
 
-[node name="MPLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+[node name="SPValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowSP"]
+layout_mode = 2
+text = "000/000"
+
+[node name="RowMP" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowMP"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = SubResource("icon_intelligence")
+stretch_mode = 5
+
+[node name="MPLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowMP"]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Mp"
 
-[node name="Sep2" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
-custom_minimum_size = Vector2(0, 22)
+[node name="MPValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowMP"]
+layout_mode = 2
+text = "000/000"
+
+[node name="SepB" type="HSeparator" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
 layout_mode = 2
 
-[node name="DamageLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+[node name="RowDamage" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowDamage"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = SubResource("icon_sword")
+stretch_mode = 5
+
+[node name="DamageLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowDamage"]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Dano"
 
-[node name="MagicDamageLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+[node name="DamageValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowDamage"]
+layout_mode = 2
+text = "000"
+
+[node name="RowMagicDamage" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowMagicDamage"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = SubResource("icon_star")
+stretch_mode = 5
+
+[node name="MagicDamageLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowMagicDamage"]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Dano magico"
 
-[node name="ArmorLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+[node name="MagicDamageValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowMagicDamage"]
+layout_mode = 2
+text = "000"
+
+[node name="RowArmor" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowArmor"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = SubResource("icon_shield")
+stretch_mode = 5
+
+[node name="ArmorLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowArmor"]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Armadura"
 
-[node name="Sep3" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
-custom_minimum_size = Vector2(0, 22)
+[node name="ArmorValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowArmor"]
+layout_mode = 2
+text = "000"
+
+[node name="SepC" type="HSeparator" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
 layout_mode = 2
 
-[node name="HitChanceLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+[node name="RowHitChance" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowHitChance"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = SubResource("icon_target")
+stretch_mode = 5
+
+[node name="HitChanceLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowHitChance"]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Chance de acerto"
 
-[node name="CritChanceLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+[node name="HitChanceValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowHitChance"]
+layout_mode = 2
+text = "00%"
+
+[node name="RowCritChance" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowCritChance"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = SubResource("icon_star")
+stretch_mode = 5
+
+[node name="CritChanceLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowCritChance"]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Chance critico"
 
-[node name="CritDamageLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+[node name="CritChanceValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowCritChance"]
+layout_mode = 2
+text = "00%"
+
+[node name="RowCritDamage" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowCritDamage"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = SubResource("icon_star")
+stretch_mode = 5
+
+[node name="CritDamageLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowCritDamage"]
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 text = "Dano critico"
 
-[node name="Sep4" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
-custom_minimum_size = Vector2(0, 22)
-layout_mode = 2
-
-[node name="SpeedLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
-layout_mode = 2
-text = "Velocidade"
-
-[node name="AttackSpeedLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
-layout_mode = 2
-text = "Velocidade ataque"
-
-[node name="HitRangeLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
-layout_mode = 2
-text = "Alcance hit"
-
-[node name="Sep5" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
-custom_minimum_size = Vector2(0, 22)
-layout_mode = 2
-
-[node name="KillsLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
-layout_mode = 2
-text = "Inimigos abatidos"
-
-[node name="StatusValueList" type="VBoxContainer" parent="CenterContainer/LayoutRoot/StatusContent"]
-layout_mode = 0
-offset_left = 368.0
-offset_top = 0.0
-offset_right = 541.0
-offset_bottom = 620.0
-theme_override_constants/separation = 8
-
-[node name="LevelValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
-layout_mode = 2
-text = "00"
-
-[node name="XPValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
-layout_mode = 2
-text = "000/000"
-
-[node name="Sep1" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
-custom_minimum_size = Vector2(0, 22)
-layout_mode = 2
-
-[node name="HPValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
-layout_mode = 2
-text = "000/000"
-
-[node name="SPValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
-layout_mode = 2
-text = "000/000"
-
-[node name="MPValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
-layout_mode = 2
-text = "000/000"
-
-[node name="Sep2" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
-custom_minimum_size = Vector2(0, 22)
-layout_mode = 2
-
-[node name="DamageValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
-layout_mode = 2
-text = "000"
-
-[node name="MagicDamageValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
-layout_mode = 2
-text = "000"
-
-[node name="ArmorValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
-layout_mode = 2
-text = "000"
-
-[node name="Sep3" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
-custom_minimum_size = Vector2(0, 22)
-layout_mode = 2
-
-[node name="HitChanceValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
-layout_mode = 2
-text = "00%"
-
-[node name="CritChanceValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
-layout_mode = 2
-text = "00%"
-
-[node name="CritDamageValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+[node name="CritDamageValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowCritDamage"]
 layout_mode = 2
 text = "000%"
 
-[node name="Sep4" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
-custom_minimum_size = Vector2(0, 22)
+[node name="SepD" type="HSeparator" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
 layout_mode = 2
 
-[node name="SpeedValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+[node name="RowSpeed" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowSpeed"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = SubResource("icon_boot")
+stretch_mode = 5
+
+[node name="SpeedLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowSpeed"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Velocidade"
+
+[node name="SpeedValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowSpeed"]
 layout_mode = 2
 text = "000"
 
-[node name="AttackSpeedValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+[node name="RowAttackSpeed" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowAttackSpeed"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = SubResource("icon_sword")
+stretch_mode = 5
+
+[node name="AttackSpeedLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowAttackSpeed"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Velocidade ataque"
+
+[node name="AttackSpeedValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowAttackSpeed"]
 layout_mode = 2
 text = "0.00"
 
-[node name="HitRangeValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+[node name="RowHitRange" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowHitRange"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = SubResource("icon_target")
+stretch_mode = 5
+
+[node name="HitRangeLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowHitRange"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Alcance hit"
+
+[node name="HitRangeValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowHitRange"]
 layout_mode = 2
 text = "000"
 
-[node name="Sep5" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
-custom_minimum_size = Vector2(0, 22)
+[node name="SepE" type="HSeparator" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
 layout_mode = 2
 
-[node name="KillsValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+[node name="RowKills" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowKills"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = SubResource("icon_shield")
+stretch_mode = 5
+
+[node name="KillsLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowKills"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Inimigos abatidos"
+
+[node name="KillsValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowKills"]
 layout_mode = 2
 text = "000"
 
-[node name="AttributesContent" type="Control" parent="CenterContainer/LayoutRoot"]
-layout_mode = 0
-offset_left = 953.0
-offset_top = 196.0
-offset_right = 1525.0
-offset_bottom = 837.0
+[node name="AttributesPanel" type="Control" parent="CenterContainer/LayoutRoot/Columns"]
+custom_minimum_size = Vector2(700, 840)
+layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="AttributesHeader" type="GridContainer" parent="CenterContainer/LayoutRoot/AttributesContent"]
-layout_mode = 0
-offset_left = 12.0
-offset_top = 4.0
-offset_right = 552.0
-offset_bottom = 131.0
-columns = 2
-theme_override_constants/h_separation = 36
-theme_override_constants/v_separation = 10
+[node name="PanelBg" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("panel_right")
+stretch_mode = 5
 
-[node name="AvailablePointsLabel" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesHeader"]
+[node name="TitlePlate" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel"]
+layout_mode = 0
+offset_left = 174.0
+offset_top = 16.0
+offset_right = 526.0
+offset_bottom = 92.0
+texture = SubResource("title_plate")
+stretch_mode = 5
+
+[node name="AttributesTitle" type="Label" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel"]
+layout_mode = 0
+offset_left = 220.0
+offset_top = 34.0
+offset_right = 490.0
+offset_bottom = 80.0
+text = "Atributos"
+horizontal_alignment = 1
+
+[node name="AttributesContent" type="MarginContainer" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 44
+theme_override_constants/margin_top = 132
+theme_override_constants/margin_right = 44
+theme_override_constants/margin_bottom = 40
+
+[node name="AttributesVBox" type="VBoxContainer" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="PointsRow1" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="AvailablePointsLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/PointsRow1"]
+custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 text = "Pontos disponiveis"
 
-[node name="AvailablePointsValue" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesHeader"]
+[node name="PointsBox" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/PointsRow1"]
+custom_minimum_size = Vector2(120, 48)
+layout_mode = 2
+texture = SubResource("points_box")
+stretch_mode = 5
+
+[node name="AvailablePointsValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/PointsRow1"]
 layout_mode = 2
 text = "00"
 
-[node name="TotalPointsLabel" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesHeader"]
+[node name="PointsRow2" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TotalPointsLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/PointsRow2"]
+custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 text = "Pontos totais"
 
-[node name="TotalPointsValue" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesHeader"]
+[node name="PointsBox" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/PointsRow2"]
+custom_minimum_size = Vector2(120, 48)
+layout_mode = 2
+texture = SubResource("points_box")
+stretch_mode = 5
+
+[node name="TotalPointsValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/PointsRow2"]
 layout_mode = 2
 text = "00"
 
-[node name="AttributesGrid" type="GridContainer" parent="CenterContainer/LayoutRoot/AttributesContent"]
-layout_mode = 0
-offset_left = 12.0
-offset_top = 164.0
-offset_right = 558.0
-offset_bottom = 531.0
-columns = 3
-theme_override_constants/h_separation = 14
-theme_override_constants/v_separation = 18
+[node name="SepAttr" type="HSeparator" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox"]
+layout_mode = 2
 
-[node name="StrengthLabel" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
+[node name="AttributesGrid" type="GridContainer" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox"]
+layout_mode = 2
+columns = 4
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 14
+
+[node name="StrengthIcon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = SubResource("icon_strength")
+stretch_mode = 5
+
+[node name="StrengthLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 text = "Forca"
 
-[node name="StrengthValue" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
+[node name="StrengthValueBg" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(118, 40)
 layout_mode = 2
-text = "00"
+texture = SubResource("value_box")
+stretch_mode = 5
 
-[node name="StrengthPlus" type="Button" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
-custom_minimum_size = Vector2(56, 42)
+[node name="StrengthPlus" type="TextureButton" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(58, 58)
 layout_mode = 2
-text = "+"
+texture_normal = SubResource("plus_btn")
 
-[node name="VitalityLabel" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
+[node name="VitalityIcon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = SubResource("icon_vitality")
+stretch_mode = 5
+
+[node name="VitalityLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 text = "Vitalidade"
 
-[node name="VitalityValue" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
+[node name="VitalityValueBg" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(118, 40)
 layout_mode = 2
-text = "00"
+texture = SubResource("value_box")
+stretch_mode = 5
 
-[node name="VitalityPlus" type="Button" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
-custom_minimum_size = Vector2(56, 42)
+[node name="VitalityPlus" type="TextureButton" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(58, 58)
 layout_mode = 2
-text = "+"
+texture_normal = SubResource("plus_btn")
 
-[node name="DexterityLabel" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
+[node name="DexterityIcon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = SubResource("icon_dexterity")
+stretch_mode = 5
+
+[node name="DexterityLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 text = "Destreza"
 
-[node name="DexterityValue" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
+[node name="DexterityValueBg" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(118, 40)
 layout_mode = 2
-text = "00"
+texture = SubResource("value_box")
+stretch_mode = 5
 
-[node name="DexterityPlus" type="Button" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
-custom_minimum_size = Vector2(56, 42)
+[node name="DexterityPlus" type="TextureButton" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(58, 58)
 layout_mode = 2
-text = "+"
+texture_normal = SubResource("plus_btn")
 
-[node name="IntelligenceLabel" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
+[node name="IntelligenceIcon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = SubResource("icon_intelligence")
+stretch_mode = 5
+
+[node name="IntelligenceLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 text = "Inteligencia"
 
-[node name="IntelligenceValue" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
+[node name="IntelligenceValueBg" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(118, 40)
 layout_mode = 2
-text = "00"
+texture = SubResource("value_box")
+stretch_mode = 5
 
-[node name="IntelligencePlus" type="Button" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
-custom_minimum_size = Vector2(56, 42)
+[node name="IntelligencePlus" type="TextureButton" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(58, 58)
 layout_mode = 2
-text = "+"
+texture_normal = SubResource("plus_btn")
 
-[node name="LuckLabel" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
+[node name="LuckIcon" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = SubResource("icon_luck")
+stretch_mode = 5
+
+[node name="LuckLabel" type="Label" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(190, 0)
 layout_mode = 2
 text = "Sorte"
 
-[node name="LuckValue" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
+[node name="LuckValueBg" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(118, 40)
 layout_mode = 2
-text = "00"
+texture = SubResource("value_box")
+stretch_mode = 5
 
-[node name="LuckPlus" type="Button" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
-custom_minimum_size = Vector2(56, 42)
+[node name="LuckPlus" type="TextureButton" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid"]
+custom_minimum_size = Vector2(58, 58)
 layout_mode = 2
-text = "+"
+texture_normal = SubResource("plus_btn")
 
-[node name="Actions" type="HBoxContainer" parent="CenterContainer/LayoutRoot/AttributesContent"]
+[node name="ValueOverlay" type="Control" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox"]
+custom_minimum_size = Vector2(0, 0)
+layout_mode = 2
+
+[node name="StrengthValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/ValueOverlay"]
 layout_mode = 0
-offset_left = 12.0
-offset_top = 556.0
-offset_right = 557.0
-offset_bottom = 627.0
-theme_override_constants/separation = 24
+offset_left = 374.0
+offset_top = 14.0
+offset_right = 430.0
+offset_bottom = 46.0
+text = "00"
+horizontal_alignment = 1
 
-[node name="ResetAttributesButton" type="Button" parent="CenterContainer/LayoutRoot/AttributesContent/Actions"]
-custom_minimum_size = Vector2(300, 68)
+[node name="VitalityValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/ValueOverlay"]
+layout_mode = 0
+offset_left = 374.0
+offset_top = 86.0
+offset_right = 430.0
+offset_bottom = 118.0
+text = "00"
+horizontal_alignment = 1
+
+[node name="DexterityValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/ValueOverlay"]
+layout_mode = 0
+offset_left = 374.0
+offset_top = 158.0
+offset_right = 430.0
+offset_bottom = 190.0
+text = "00"
+horizontal_alignment = 1
+
+[node name="IntelligenceValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/ValueOverlay"]
+layout_mode = 0
+offset_left = 374.0
+offset_top = 230.0
+offset_right = 430.0
+offset_bottom = 262.0
+text = "00"
+horizontal_alignment = 1
+
+[node name="LuckValue" type="Label" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/ValueOverlay"]
+layout_mode = 0
+offset_left = 374.0
+offset_top = 302.0
+offset_right = 430.0
+offset_bottom = 334.0
+text = "00"
+horizontal_alignment = 1
+
+[node name="Actions" type="HBoxContainer" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="ResetBg" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/Actions"]
+custom_minimum_size = Vector2(280, 78)
+layout_mode = 2
+texture = SubResource("action_btn")
+stretch_mode = 5
+
+[node name="ResetAttributesButton" type="Button" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/Actions"]
+custom_minimum_size = Vector2(280, 78)
 layout_mode = 2
 text = "Resetar atributos"
 
-[node name="CloseButton" type="Button" parent="CenterContainer/LayoutRoot/AttributesContent/Actions"]
-custom_minimum_size = Vector2(220, 68)
+[node name="CloseBg" type="TextureRect" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/Actions"]
+custom_minimum_size = Vector2(220, 78)
+layout_mode = 2
+texture = SubResource("action_btn")
+stretch_mode = 5
+
+[node name="CloseButton" type="Button" parent="CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/Actions"]
+custom_minimum_size = Vector2(220, 78)
 layout_mode = 2
 text = "Fechar"

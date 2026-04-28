@@ -2,37 +2,37 @@ extends Control
 
 const TOOLTIP_OFFSET := Vector2(16, 16)
 
-@onready var level_label: Label = $CenterContainer/LayoutRoot/StatusContent/StatusValueList/LevelValue
-@onready var xp_label: Label = $CenterContainer/LayoutRoot/StatusContent/StatusValueList/XPValue
-@onready var hp_label: Label = $CenterContainer/LayoutRoot/StatusContent/StatusValueList/HPValue
-@onready var sp_label: Label = $CenterContainer/LayoutRoot/StatusContent/StatusValueList/SPValue
-@onready var mp_label: Label = $CenterContainer/LayoutRoot/StatusContent/StatusValueList/MPValue
-@onready var damage_label: Label = $CenterContainer/LayoutRoot/StatusContent/StatusValueList/DamageValue
-@onready var magic_damage_label: Label = $CenterContainer/LayoutRoot/StatusContent/StatusValueList/MagicDamageValue
-@onready var armor_label: Label = $CenterContainer/LayoutRoot/StatusContent/StatusValueList/ArmorValue
-@onready var hit_chance_label: Label = $CenterContainer/LayoutRoot/StatusContent/StatusValueList/HitChanceValue
-@onready var crit_chance_label: Label = $CenterContainer/LayoutRoot/StatusContent/StatusValueList/CritChanceValue
-@onready var crit_damage_label: Label = $CenterContainer/LayoutRoot/StatusContent/StatusValueList/CritDamageValue
-@onready var speed_label: Label = $CenterContainer/LayoutRoot/StatusContent/StatusValueList/SpeedValue
-@onready var attack_speed_label: Label = $CenterContainer/LayoutRoot/StatusContent/StatusValueList/AttackSpeedValue
-@onready var hit_range_label: Label = $CenterContainer/LayoutRoot/StatusContent/StatusValueList/HitRangeValue
-@onready var kills_label: Label = $CenterContainer/LayoutRoot/StatusContent/StatusValueList/KillsValue
+@onready var level_value_label: Label = $CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowLevel/LevelValue
+@onready var xp_value_label: Label = $CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowXP/XPValue
+@onready var hp_value_label: Label = $CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowHP/HPValue
+@onready var sp_value_label: Label = $CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowSP/SPValue
+@onready var mp_value_label: Label = $CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowMP/MPValue
+@onready var damage_value_label: Label = $CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowDamage/DamageValue
+@onready var magic_damage_value_label: Label = $CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowMagicDamage/MagicDamageValue
+@onready var armor_value_label: Label = $CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowArmor/ArmorValue
+@onready var hit_chance_value_label: Label = $CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowHitChance/HitChanceValue
+@onready var crit_chance_value_label: Label = $CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowCritChance/CritChanceValue
+@onready var crit_damage_value_label: Label = $CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowCritDamage/CritDamageValue
+@onready var speed_value_label: Label = $CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowSpeed/SpeedValue
+@onready var attack_speed_value_label: Label = $CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowAttackSpeed/AttackSpeedValue
+@onready var hit_range_value_label: Label = $CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowHitRange/HitRangeValue
+@onready var kills_value_label: Label = $CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowKills/KillsValue
 
-@onready var available_points_label: Label = $CenterContainer/LayoutRoot/AttributesContent/AttributesHeader/AvailablePointsValue
-@onready var total_points_label: Label = $CenterContainer/LayoutRoot/AttributesContent/AttributesHeader/TotalPointsValue
-@onready var strength_value_label: Label = $CenterContainer/LayoutRoot/AttributesContent/AttributesGrid/StrengthValue
-@onready var vitality_value_label: Label = $CenterContainer/LayoutRoot/AttributesContent/AttributesGrid/VitalityValue
-@onready var dexterity_value_label: Label = $CenterContainer/LayoutRoot/AttributesContent/AttributesGrid/DexterityValue
-@onready var intelligence_value_label: Label = $CenterContainer/LayoutRoot/AttributesContent/AttributesGrid/IntelligenceValue
-@onready var luck_value_label: Label = $CenterContainer/LayoutRoot/AttributesContent/AttributesGrid/LuckValue
+@onready var available_points_label: Label = $CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/PointsRow1/AvailablePointsValue
+@onready var total_points_label: Label = $CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/PointsRow2/TotalPointsValue
+@onready var strength_value_label: Label = $CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/ValueOverlay/StrengthValue
+@onready var vitality_value_label: Label = $CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/ValueOverlay/VitalityValue
+@onready var dexterity_value_label: Label = $CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/ValueOverlay/DexterityValue
+@onready var intelligence_value_label: Label = $CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/ValueOverlay/IntelligenceValue
+@onready var luck_value_label: Label = $CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/ValueOverlay/LuckValue
 
-@onready var add_strength_button: Button = $CenterContainer/LayoutRoot/AttributesContent/AttributesGrid/StrengthPlus
-@onready var add_vitality_button: Button = $CenterContainer/LayoutRoot/AttributesContent/AttributesGrid/VitalityPlus
-@onready var add_dexterity_button: Button = $CenterContainer/LayoutRoot/AttributesContent/AttributesGrid/DexterityPlus
-@onready var add_intelligence_button: Button = $CenterContainer/LayoutRoot/AttributesContent/AttributesGrid/IntelligencePlus
-@onready var add_luck_button: Button = $CenterContainer/LayoutRoot/AttributesContent/AttributesGrid/LuckPlus
-@onready var reset_attributes_button: Button = $CenterContainer/LayoutRoot/AttributesContent/Actions/ResetAttributesButton
-@onready var close_button: Button = $CenterContainer/LayoutRoot/AttributesContent/Actions/CloseButton
+@onready var add_strength_button: BaseButton = $CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid/StrengthPlus
+@onready var add_vitality_button: BaseButton = $CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid/VitalityPlus
+@onready var add_dexterity_button: BaseButton = $CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid/DexterityPlus
+@onready var add_intelligence_button: BaseButton = $CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid/IntelligencePlus
+@onready var add_luck_button: BaseButton = $CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid/LuckPlus
+@onready var reset_attributes_button: Button = $CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/Actions/ResetAttributesButton
+@onready var close_button: Button = $CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/Actions/CloseButton
 
 var _hover_tooltip_panel: PanelContainer
 var _hover_tooltip_label: Label
@@ -55,17 +55,16 @@ func _process(_delta: float) -> void:
 		_update_tooltip_position()
 
 func refresh(player_node: Node) -> void:
-	level_label.text = str(PlayerStats.level)
-	xp_label.text = "%d/%d" % [PlayerStats.xp, int(PlayerStats.xp_to_next_level)]
-	hp_label.text = "%d/%d" % [PlayerStats.current_health, PlayerStats.max_health]
-	sp_label.text = "%d/%d" % [PlayerStats.current_stamina, PlayerStats.max_stamina]
-	mp_label.text = "%d/%d" % [PlayerStats.current_mana, PlayerStats.max_mana]
+	level_value_label.text = str(PlayerStats.level)
+	xp_value_label.text = "%d/%d" % [PlayerStats.xp, int(PlayerStats.xp_to_next_level)]
+	hp_value_label.text = "%d/%d" % [PlayerStats.current_health, PlayerStats.max_health]
+	sp_value_label.text = "%d/%d" % [PlayerStats.current_stamina, PlayerStats.max_stamina]
+	mp_value_label.text = "%d/%d" % [PlayerStats.current_mana, PlayerStats.max_mana]
 
 	var base_damage := 0
 	var attack_range := 0
 	var move_speed := 0
 	var attack_speed := 0.0
-
 	if is_instance_valid(player_node):
 		if "attack_damage" in player_node:
 			base_damage = int(player_node.attack_damage)
@@ -76,16 +75,16 @@ func refresh(player_node: Node) -> void:
 		if "attack_cooldown" in player_node:
 			attack_speed = PlayerStats.get_attack_speed_from_cooldown(float(player_node.attack_cooldown))
 
-	damage_label.text = str(PlayerStats.get_total_damage(base_damage))
-	magic_damage_label.text = str(PlayerStats.get_magic_damage(0))
-	armor_label.text = "0"
-	hit_chance_label.text = "%d%%" % PlayerStats.get_hit_chance_percent()
-	crit_chance_label.text = "%d%%" % PlayerStats.get_crit_chance_percent()
-	crit_damage_label.text = "%d%%" % PlayerStats.get_crit_damage_percent()
-	speed_label.text = str(move_speed)
-	attack_speed_label.text = "%.2f" % attack_speed
-	hit_range_label.text = str(attack_range)
-	kills_label.text = str(PlayerStats.enemy_kills)
+	damage_value_label.text = str(PlayerStats.get_total_damage(base_damage))
+	magic_damage_value_label.text = str(PlayerStats.get_magic_damage(0))
+	armor_value_label.text = "0"
+	hit_chance_value_label.text = "%d%%" % PlayerStats.get_hit_chance_percent()
+	crit_chance_value_label.text = "%d%%" % PlayerStats.get_crit_chance_percent()
+	crit_damage_value_label.text = "%d%%" % PlayerStats.get_crit_damage_percent()
+	speed_value_label.text = str(move_speed)
+	attack_speed_value_label.text = "%.2f" % attack_speed
+	hit_range_value_label.text = str(attack_range)
+	kills_value_label.text = str(PlayerStats.enemy_kills)
 
 	available_points_label.text = str(PlayerStats.available_attribute_points)
 	total_points_label.text = str(PlayerStats.total_attribute_points)
@@ -139,28 +138,12 @@ func _build_hover_tooltip() -> void:
 	add_child(_hover_tooltip_panel)
 
 func _bind_field_tooltips() -> void:
-	_bind_tooltip("CenterContainer/LayoutRoot/StatusContent/StatusNameList/LevelLabel", "Nivel atual do jogador e referencia de progressao geral.")
-	_bind_tooltip("CenterContainer/LayoutRoot/StatusContent/StatusNameList/XPLabel", "Experiencia atual e quanto falta para o proximo nivel.")
-	_bind_tooltip("CenterContainer/LayoutRoot/StatusContent/StatusNameList/HPLabel", "Vida atual e maxima do jogador.")
-	_bind_tooltip("CenterContainer/LayoutRoot/StatusContent/StatusNameList/SPLabel", "Stamina atual e maxima. Usada por habilidades de vigor.")
-	_bind_tooltip("CenterContainer/LayoutRoot/StatusContent/StatusNameList/MPLabel", "Mana atual e maxima. Base para habilidades magicas.")
-	_bind_tooltip("CenterContainer/LayoutRoot/StatusContent/StatusNameList/DamageLabel", "Dano fisico atual do jogador.")
-	_bind_tooltip("CenterContainer/LayoutRoot/StatusContent/StatusNameList/MagicDamageLabel", "Dano magico atual do jogador.")
-	_bind_tooltip("CenterContainer/LayoutRoot/StatusContent/StatusNameList/ArmorLabel", "Reducao de dano recebida por defesa/armadura.")
-	_bind_tooltip("CenterContainer/LayoutRoot/StatusContent/StatusNameList/HitChanceLabel", "Chance base de um ataque acertar o alvo.")
-	_bind_tooltip("CenterContainer/LayoutRoot/StatusContent/StatusNameList/CritChanceLabel", "Probabilidade de causar ataque critico.")
-	_bind_tooltip("CenterContainer/LayoutRoot/StatusContent/StatusNameList/CritDamageLabel", "Multiplicador percentual aplicado em acertos criticos.")
-	_bind_tooltip("CenterContainer/LayoutRoot/StatusContent/StatusNameList/SpeedLabel", "Velocidade atual de movimento do jogador.")
-	_bind_tooltip("CenterContainer/LayoutRoot/StatusContent/StatusNameList/AttackSpeedLabel", "Quantidade de ataques por segundo do jogador.")
-	_bind_tooltip("CenterContainer/LayoutRoot/StatusContent/StatusNameList/HitRangeLabel", "Distancia maxima para conectar ataques corpo a corpo.")
-	_bind_tooltip("CenterContainer/LayoutRoot/StatusContent/StatusNameList/KillsLabel", "Total de inimigos derrotados nesta campanha.")
-	_bind_tooltip("CenterContainer/LayoutRoot/AttributesContent/AttributesHeader/AvailablePointsLabel", "Pontos livres para distribuir nos atributos.")
-	_bind_tooltip("CenterContainer/LayoutRoot/AttributesContent/AttributesHeader/TotalPointsLabel", "Soma total de pontos conquistados por nivel.")
-	_bind_tooltip("CenterContainer/LayoutRoot/AttributesContent/AttributesGrid/StrengthLabel", "Forca representa a capacidade de causar dano, interferindo diretamente no dano causado.")
-	_bind_tooltip("CenterContainer/LayoutRoot/AttributesContent/AttributesGrid/VitalityLabel", "Vitalidade aumenta HP e SP maximos do jogador.")
-	_bind_tooltip("CenterContainer/LayoutRoot/AttributesContent/AttributesGrid/DexterityLabel", "Destreza melhora acerto, velocidade de movimento e velocidade de ataque.")
-	_bind_tooltip("CenterContainer/LayoutRoot/AttributesContent/AttributesGrid/IntelligenceLabel", "Inteligencia aumenta MP maximo e escala dano magico.")
-	_bind_tooltip("CenterContainer/LayoutRoot/AttributesContent/AttributesGrid/LuckLabel", "Sorte aumenta a chance de acertos criticos.")
+	_bind_tooltip("CenterContainer/LayoutRoot/Columns/StatusPanel/StatusContent/StatusRows/RowDamage/DamageLabel", "Dano fisico atual do jogador.")
+	_bind_tooltip("CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid/StrengthLabel", "Forca representa a capacidade de causar dano, interferindo diretamente no dano causado.")
+	_bind_tooltip("CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid/VitalityLabel", "Vitalidade aumenta HP e SP maximos do jogador.")
+	_bind_tooltip("CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid/DexterityLabel", "Destreza melhora acerto, velocidade de movimento e velocidade de ataque.")
+	_bind_tooltip("CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid/IntelligenceLabel", "Inteligencia aumenta MP maximo e escala dano magico.")
+	_bind_tooltip("CenterContainer/LayoutRoot/Columns/AttributesPanel/AttributesContent/AttributesVBox/AttributesGrid/LuckLabel", "Sorte aumenta a chance de acertos criticos.")
 
 func _bind_tooltip(node_path: String, description: String) -> void:
 	var target: Control = get_node_or_null(node_path) as Control
