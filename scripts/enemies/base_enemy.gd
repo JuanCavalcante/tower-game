@@ -56,6 +56,7 @@ var _health_bar_fill: ColorRect = null
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_PAUSABLE
 	current_health = max_health
 	_refresh_player_reference()
 	add_to_group("enemies")
@@ -345,7 +346,7 @@ func attack_player() -> void:
 
 		used_attack_animation = true
 
-	await get_tree().create_timer(BASE_ATTACK_HIT_DELAY).timeout
+	await get_tree().create_timer(BASE_ATTACK_HIT_DELAY, false).timeout
 
 	if player.has_method("take_damage") and _can_land_attack_on(player):
 		player.take_damage(damage)
@@ -353,7 +354,7 @@ func attack_player() -> void:
 	if used_attack_animation and anim.animation == "attack":
 		await anim.animation_finished
 	
-	await get_tree().create_timer(attack_cooldown).timeout
+	await get_tree().create_timer(attack_cooldown, false).timeout
 	can_attack = true
 
 
@@ -372,7 +373,7 @@ func take_damage(amount: int, from_position: Vector2 = Vector2.ZERO) -> void:
 		die()
 	else:
 		state = State.HURT
-		await get_tree().create_timer(0.2).timeout
+		await get_tree().create_timer(0.2, false).timeout
 		state = State.IDLE
 
 
@@ -383,7 +384,7 @@ func apply_knockback(delta: float) -> void:
 
 func flash() -> void:
 	modulate = Color(1, 0.3, 0.3)
-	await get_tree().create_timer(0.1).timeout
+	await get_tree().create_timer(0.1, false).timeout
 	modulate = Color(1, 1, 1)
 
 
@@ -432,6 +433,8 @@ func _is_player_inside_damage_area(player_node: Node2D) -> bool:
 	var damage_area: Area2D = get_node_or_null("DamageArea") as Area2D
 	if damage_area == null:
 		return false
+	if not damage_area.monitoring:
+		return false
 
 	for body in damage_area.get_overlapping_bodies():
 		if body == player_node:
@@ -440,7 +443,16 @@ func _is_player_inside_damage_area(player_node: Node2D) -> bool:
 	return false
 
 func _can_land_attack_on(player_node: Node2D) -> bool:
+	if _is_gameplay_paused():
+		return false
+	if state == State.DEAD:
+		return false
+
 	return _is_player_inside_damage_area(player_node) or _is_player_in_attack_hitbox(player_node)
+
+
+func _is_gameplay_paused() -> bool:
+	return get_tree() != null and get_tree().paused
 
 
 func _is_player_in_attack_hitbox(player_node: Node2D) -> bool:

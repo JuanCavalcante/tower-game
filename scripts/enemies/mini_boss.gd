@@ -40,6 +40,8 @@ func _physics_process(delta: float) -> void:
 
 
 func attack_player() -> void:
+	if _is_gameplay_paused():
+		return
 	if _is_casting_special:
 		return
 	if not can_attack:
@@ -47,7 +49,7 @@ func attack_player() -> void:
 	if _should_trigger_stomp_special():
 		can_attack = false
 		await _cast_stomp_special()
-		await get_tree().create_timer(attack_cooldown * 0.8).timeout
+		await get_tree().create_timer(attack_cooldown * 0.8, false).timeout
 		can_attack = true
 		return
 
@@ -65,7 +67,7 @@ func attack_player() -> void:
 	else:
 		anim.play("attack")
 
-	await get_tree().create_timer(0.35).timeout
+	await get_tree().create_timer(0.35, false).timeout
 	if player and player.has_method("take_damage") and _can_land_attack_on(player):
 		player.take_damage(damage)
 		_special_charge += 1
@@ -74,9 +76,9 @@ func attack_player() -> void:
 
 	if use_stun_attack and anim.sprite_frames.has_animation("stun"):
 		anim.play("stun")
-		await get_tree().create_timer(0.25).timeout
+		await get_tree().create_timer(0.25, false).timeout
 
-	await get_tree().create_timer(attack_cooldown).timeout
+	await get_tree().create_timer(attack_cooldown, false).timeout
 	can_attack = true
 
 
@@ -109,20 +111,20 @@ func _cast_stomp_special() -> void:
 		anim.play("attack")
 
 	_play_effect(EFFECT_SMOKE, Vector2(0, -8), Vector2(0.42, 0.42), Color(1, 1, 1, 0.95), 0.42)
-	await get_tree().create_timer(0.12).timeout
+	await get_tree().create_timer(0.12, false).timeout
 	if state == State.DEAD:
 		return
 	_play_effect(EFFECT_GREEN_FIRE, Vector2(0, -22), Vector2(0.28, 0.28), Color(1, 1, 1, 0.85), 0.35)
 
-	if player and is_instance_valid(player) and player.has_method("take_damage"):
+	if player and is_instance_valid(player) and player.has_method("take_damage") and not _is_gameplay_paused():
 		player.take_damage(damage + 6)
 
-	await get_tree().create_timer(0.25).timeout
+	await get_tree().create_timer(0.25, false).timeout
 	if state == State.DEAD:
 		return
 	_is_casting_special = false
 
-	await get_tree().create_timer(1.3).timeout
+	await get_tree().create_timer(1.3, false).timeout
 	_stomp_on_cooldown = false
 
 
@@ -187,21 +189,21 @@ func _cast_toxic_special() -> void:
 		anim.play("attack")
 
 	_play_effect(EFFECT_GREEN_FIRE, Vector2(0, -36), Vector2(0.26, 0.26), Color(1, 1, 1, 0.9), 0.55)
-	await get_tree().create_timer(0.2).timeout
+	await get_tree().create_timer(0.2, false).timeout
 	if state == State.DEAD:
 		return
 	_play_effect(EFFECT_POISON, Vector2(0, -15), Vector2(0.32, 0.32), Color(1, 1, 1, 0.95), 0.6)
 
-	if player and player.has_method("take_damage"):
+	if player and player.has_method("take_damage") and not _is_gameplay_paused():
 		var distance: float = global_position.distance_to(player.global_position)
 		if distance <= detection_range * 0.9:
 			player.take_damage(damage + 8)
-			await get_tree().create_timer(0.2).timeout
-			if player and is_instance_valid(player):
+			await get_tree().create_timer(0.2, false).timeout
+			if player and is_instance_valid(player) and not _is_gameplay_paused():
 				player.take_damage(4)
 
 	_play_effect(EFFECT_SMOKE, Vector2(0, -24), Vector2(0.25, 0.25), Color(1, 1, 1, 0.8), 0.5)
-	await get_tree().create_timer(0.55).timeout
+	await get_tree().create_timer(0.55, false).timeout
 	if state == State.DEAD:
 		return
 

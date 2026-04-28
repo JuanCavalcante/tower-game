@@ -22,6 +22,7 @@ var is_status_panel_open := false
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	game.process_mode = Node.PROCESS_MODE_PAUSABLE
 	main_continue_button.disabled = not GameManager.has_save_game()
 	$UI/MainMenu/MenuPanel/MenuItems/NewGameButton.pressed.connect(_on_new_game_pressed)
 	$UI/MainMenu/MenuPanel/MenuItems/ContinueButton.pressed.connect(_on_continue_pressed)

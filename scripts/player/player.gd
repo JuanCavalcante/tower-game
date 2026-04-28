@@ -20,6 +20,7 @@ var is_dead := false
 var _sword_sfx_player: AudioStreamPlayer2D = null
 
 func _ready():
+	process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_to_group("player")
 	_sword_sfx_player = AudioStreamPlayer2D.new()
 	_sword_sfx_player.name = "SwordSfx"
@@ -74,7 +75,7 @@ func die():
 		anim.play("die")
 		await anim.animation_finished
 	else:
-		await get_tree().create_timer(0.2).timeout
+		await get_tree().create_timer(0.2, false).timeout
 
 	PlayerStats.current_health = PlayerStats.max_health
 	GameManager.return_to_hub()
@@ -139,7 +140,7 @@ func attack():
 	anim.play("attack")
 	_play_sword_sfx_start()
 	
-	await get_tree().create_timer(0.45).timeout
+	await get_tree().create_timer(0.45, false).timeout
 
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	var effective_attack_range: float = float(attack_range) + 8.0
@@ -170,5 +171,5 @@ func attack():
 	is_attacking = false
 
 	var dynamic_cooldown: float = PlayerStats.get_attack_cooldown(float(attack_cooldown))
-	await get_tree().create_timer(dynamic_cooldown).timeout
+	await get_tree().create_timer(dynamic_cooldown, false).timeout
 	can_attack = true

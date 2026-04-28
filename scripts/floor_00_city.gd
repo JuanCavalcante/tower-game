@@ -12,6 +12,7 @@ var _player_in_portal_range := false
 var _player_in_vendor_range := false
 var _ui_open := false
 var _active_ui_mode := ""
+var _paused_by_hub_ui := false
 
 @onready var interact_prompt: Label = $InteractPrompt
 @onready var portal_ui: CanvasLayer = $PortalUI
@@ -28,12 +29,15 @@ var _vendor_label: Label = null
 var _buy_sfx_player: AudioStreamPlayer2D = null
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	_sync_portal_layout_to_sprite()
 	_ensure_vendor_area()
 
 	interact_prompt.visible = false
 	portal_overlay.visible = false
 	portal_panel.visible = false
+	portal_ui.process_mode = Node.PROCESS_MODE_ALWAYS
+	portal_panel.process_mode = Node.PROCESS_MODE_ALWAYS
 	_ensure_audio()
 
 	_build_portal_buttons()
@@ -265,6 +269,7 @@ func _update_interaction_prompt() -> void:
 func _open_portal_ui() -> void:
 	_active_ui_mode = "portal"
 	_ui_open = true
+	_pause_game_for_hub_ui()
 	_build_portal_buttons()
 	_refresh_floor_buttons()
 	portal_overlay.visible = true
@@ -274,6 +279,7 @@ func _open_portal_ui() -> void:
 func _open_vendor_ui() -> void:
 	_active_ui_mode = "vendor"
 	_ui_open = true
+	_pause_game_for_hub_ui()
 	_build_vendor_buttons()
 	portal_overlay.visible = true
 	portal_panel.visible = true
@@ -283,10 +289,27 @@ func _close_ui() -> void:
 	_active_ui_mode = ""
 	portal_overlay.visible = false
 	portal_panel.visible = false
+	_resume_game_from_hub_ui()
 
 func _enter_floor(floor_number: int) -> void:
 	_close_ui()
 	GameManager.load_floor(floor_number, true, GameManager.SpawnContext.ENTER_TOWER)
+
+
+func _pause_game_for_hub_ui() -> void:
+	if get_tree().paused:
+		return
+
+	_paused_by_hub_ui = true
+	get_tree().paused = true
+
+
+func _resume_game_from_hub_ui() -> void:
+	if not _paused_by_hub_ui:
+		return
+
+	_paused_by_hub_ui = false
+	get_tree().paused = false
 
 
 func _buy_potion() -> void:

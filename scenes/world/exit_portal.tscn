@@ -72,3 +72,4 @@ autoplay = "Portal"
 frame_progress = 0.6974392
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
