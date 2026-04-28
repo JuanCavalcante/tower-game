@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://vdfv1gnikqp7"]
 
 [ext_resource type="Script" uid="uid://htpo6sc1w7fv" path="res://scripts/enemies/skeleton_boss.gd" id="1_skel"]
-[ext_resource type="Texture2D" uid="uid://bxb6b467vhld4" path="res://assets/sprites/enimies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Idle.png" id="2_idle"]
-[ext_resource type="Texture2D" uid="uid://c3nm60dohh5cc" path="res://assets/sprites/enimies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Walk.png" id="3_walk"]
-[ext_resource type="Texture2D" uid="uid://bn48mbow0uwxn" path="res://assets/sprites/enimies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Hurt.png" id="4_hurt"]
-[ext_resource type="Texture2D" uid="uid://dqe8k0ych5tqm" path="res://assets/sprites/enimies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Attack1.png" id="5_atk1"]
-[ext_resource type="Texture2D" uid="uid://cdktve31fe0au" path="res://assets/sprites/enimies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Attack2.png" id="6_atk2"]
-[ext_resource type="Texture2D" uid="uid://lii2wt7od2tg" path="res://assets/sprites/enimies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Die.png" id="7_die"]
+[ext_resource type="Texture2D" uid="uid://bxb6b467vhld4" path="res://assets/sprites/enemies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Idle.png" id="2_idle"]
+[ext_resource type="Texture2D" uid="uid://c3nm60dohh5cc" path="res://assets/sprites/enemies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Walk.png" id="3_walk"]
+[ext_resource type="Texture2D" uid="uid://bn48mbow0uwxn" path="res://assets/sprites/enemies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Hurt.png" id="4_hurt"]
+[ext_resource type="Texture2D" uid="uid://dqe8k0ych5tqm" path="res://assets/sprites/enemies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Attack1.png" id="5_atk1"]
+[ext_resource type="Texture2D" uid="uid://cdktve31fe0au" path="res://assets/sprites/enemies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Attack2.png" id="6_atk2"]
+[ext_resource type="Texture2D" uid="uid://lii2wt7od2tg" path="res://assets/sprites/enemies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Die.png" id="7_die"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_atk10"]
 atlas = ExtResource("5_atk1")
@@ -458,3 +458,4 @@ position = Vector2(-6, -12)
 shape = SubResource("CircleShape2D_skel")
 
 [connection signal="body_entered" from="DamageArea" to="." method="_on_damage_area_body_entered"]
+

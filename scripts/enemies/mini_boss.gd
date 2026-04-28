@@ -17,6 +17,7 @@ func _ready() -> void:
 	speed = 95.0
 	damage = 16
 	knockback_force = 260.0
+	knockback_immune = true
 	attack_cooldown = 1.0
 	detection_range = 300.0
 	attack_range = 44.0
@@ -65,7 +66,7 @@ func attack_player() -> void:
 		anim.play("attack")
 
 	await get_tree().create_timer(0.35).timeout
-	if player and player.has_method("take_damage") and _is_player_in_attack_hitbox(player):
+	if player and player.has_method("take_damage") and _can_land_attack_on(player):
 		player.take_damage(damage)
 		_special_charge += 1
 		if _special_charge >= 4:
