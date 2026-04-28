@@ -7,6 +7,8 @@ const INITIAL_MUSIC_VOLUME_LINEAR := 0.5
 @onready var theme_music = $ThemeMusic
 @onready var main_menu = $UI/MainMenu
 @onready var pause_menu = $UI/PauseMenu
+@onready var death_overlay = $UI/DeathOverlay
+@onready var respawn_button = $UI/DeathOverlay/MenuPanel/MenuItems/RespawnButton
 @onready var hud = $UI/HUD
 @onready var main_continue_button = $UI/MainMenu/MenuPanel/MenuItems/ContinueButton
 @onready var music_volume_slider = $UI/MainMenu/MenuPanel/MenuItems/MusicVolumeSlider
@@ -19,6 +21,7 @@ const INITIAL_MUSIC_VOLUME_LINEAR := 0.5
 
 var is_entry_pause_active := false
 var is_status_panel_open := false
+var is_death_overlay_open := false
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -34,6 +37,7 @@ func _ready():
 	$UI/PauseMenu/MenuPanel/MenuItems/ResumeButton.pressed.connect(_on_resume_pressed)
 	$UI/PauseMenu/MenuPanel/MenuItems/NewGameButton.pressed.connect(_on_new_game_pressed)
 	$UI/PauseMenu/MenuPanel/MenuItems/QuitButton.pressed.connect(_on_quit_pressed)
+	respawn_button.pressed.connect(_on_respawn_pressed)
 	dev_mode_button.toggled.connect(_on_dev_mode_toggled)
 	dev_mode_button.button_pressed = GameManager.is_dev_mode
 	_update_dev_button_text(GameManager.is_dev_mode)
@@ -42,13 +46,15 @@ func _ready():
 	show_main_menu()
 
 func _process(_delta):
+	_ensure_player_death_signal()
+
 	if Input.is_action_just_pressed("toggle_status_panel") and not main_menu.visible and game.visible and not is_entry_pause_active and not pause_menu.visible:
 		if is_status_panel_open:
 			_close_status_panel()
 		else:
 			_open_status_panel()
 
-	if Input.is_action_just_pressed("ui_cancel") and not main_menu.visible and game.visible and not is_entry_pause_active and not is_status_panel_open:
+	if Input.is_action_just_pressed("ui_cancel") and not main_menu.visible and game.visible and not is_entry_pause_active and not is_status_panel_open and not is_death_overlay_open:
 		if get_tree().paused:
 			resume_game()
 		else:
@@ -66,6 +72,8 @@ func show_main_menu():
 	hud.visible = false
 	main_menu.visible = true
 	pause_menu.visible = false
+	death_overlay.visible = false
+	is_death_overlay_open = false
 
 func start_game():
 	get_tree().paused = false
@@ -73,6 +81,8 @@ func start_game():
 	hud.visible = true
 	main_menu.visible = false
 	pause_menu.visible = false
+	death_overlay.visible = false
+	is_death_overlay_open = false
 
 func pause_game():
 	if is_status_panel_open:
@@ -93,11 +103,37 @@ func _open_status_panel() -> void:
 func _close_status_panel() -> void:
 	is_status_panel_open = false
 	player_status_panel.visible = false
-	if not pause_menu.visible and not main_menu.visible and game.visible and not is_entry_pause_active:
+	if not pause_menu.visible and not main_menu.visible and game.visible and not is_entry_pause_active and not is_death_overlay_open:
 		get_tree().paused = false
 
 func _get_player_node() -> Node:
 	return get_tree().get_first_node_in_group("player")
+
+func _ensure_player_death_signal() -> void:
+	var player := _get_player_node()
+	if player == null:
+		return
+	if player.has_signal("death_sequence_finished"):
+		var callback := Callable(self, "_on_player_death_sequence_finished")
+		if not player.death_sequence_finished.is_connected(callback):
+			player.death_sequence_finished.connect(callback)
+
+func _on_player_death_sequence_finished() -> void:
+	is_death_overlay_open = true
+	if is_status_panel_open:
+		_close_status_panel()
+	pause_menu.visible = false
+	death_overlay.visible = true
+	get_tree().paused = true
+
+func _on_respawn_pressed() -> void:
+	var player := _get_player_node()
+	if player == null or not player.has_method("respawn_to_hub"):
+		return
+	is_death_overlay_open = false
+	death_overlay.visible = false
+	get_tree().paused = false
+	player.respawn_to_hub()
 
 func _on_new_game_pressed():
 	start_game()

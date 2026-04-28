@@ -421,6 +421,56 @@ custom_minimum_size = Vector2(240, 42)
 layout_mode = 2
 text = "Sair do jogo"
 
+[node name="DeathOverlay" type="Control" parent="UI"]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backdrop" type="ColorRect" parent="UI/DeathOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.55)
+
+[node name="MenuPanel" type="PanelContainer" parent="UI/DeathOverlay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -120.0
+offset_right = 180.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuItems" type="VBoxContainer" parent="UI/DeathOverlay/MenuPanel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="DeathLabel" type="Label" parent="UI/DeathOverlay/MenuPanel/MenuItems"]
+custom_minimum_size = Vector2(300, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 34
+text = "Você morreu"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RespawnButton" type="Button" parent="UI/DeathOverlay/MenuPanel/MenuItems"]
+custom_minimum_size = Vector2(240, 46)
+layout_mode = 2
+text = "Renascer"
+
 [node name="PlayerStatusPanel" parent="UI" instance=ExtResource("2_status_panel")]
 
 [node name="Managers" type="Node" parent="." unique_id=1209282052]
