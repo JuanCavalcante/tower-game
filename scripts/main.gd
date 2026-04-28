@@ -11,12 +11,14 @@ const INITIAL_MUSIC_VOLUME_LINEAR := 0.5
 @onready var main_continue_button = $UI/MainMenu/MenuPanel/MenuItems/ContinueButton
 @onready var music_volume_slider = $UI/MainMenu/MenuPanel/MenuItems/MusicVolumeSlider
 @onready var music_pause_button = $UI/MainMenu/MenuPanel/MenuItems/MusicPauseButton
+@onready var player_status_panel = $UI/PlayerStatusPanel
 @onready var health_label = $UI/HUD/HealthLabel
 @onready var xp_label = $UI/HUD/XPLabel
 @onready var floor_label = $UI/HUD/FloorLabel
 @onready var dev_mode_button = $UI/HUD/DevModeButton
 
 var is_entry_pause_active := false
+var is_status_panel_open := false
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -35,18 +37,28 @@ func _ready():
 	dev_mode_button.toggled.connect(_on_dev_mode_toggled)
 	dev_mode_button.button_pressed = GameManager.is_dev_mode
 	_update_dev_button_text(GameManager.is_dev_mode)
+	player_status_panel.close_requested.connect(_close_status_panel)
+	xp_label.visible = false
 	show_main_menu()
 
 func _process(_delta):
-	if Input.is_action_just_pressed("ui_cancel") and not main_menu.visible and game.visible and not is_entry_pause_active:
+	if Input.is_action_just_pressed("toggle_status_panel") and not main_menu.visible and game.visible and not is_entry_pause_active and not pause_menu.visible:
+		if is_status_panel_open:
+			_close_status_panel()
+		else:
+			_open_status_panel()
+
+	if Input.is_action_just_pressed("ui_cancel") and not main_menu.visible and game.visible and not is_entry_pause_active and not is_status_panel_open:
 		if get_tree().paused:
 			resume_game()
 		else:
 			pause_game()
 
+	if is_status_panel_open:
+		player_status_panel.refresh(_get_player_node())
+
 	health_label.text = "HP: %d/%d | Moedas: %d" % [PlayerStats.current_health, PlayerStats.max_health, PlayerStats.coins]
-	xp_label.text = "XP: %d/%d  Nivel: %d | Pocoes: %d (Q)" % [PlayerStats.xp, int(PlayerStats.xp_to_next_level), PlayerStats.level, PlayerStats.potions]
-	floor_label.text = "Andar: %d | Equip: %s (+%d)" % [GameManager.current_floor, PlayerStats.equipped_weapon_name, PlayerStats.weapon_damage_bonus]
+	floor_label.text = "Andar: %d" % [GameManager.current_floor]
 
 func show_main_menu():
 	get_tree().paused = false
@@ -63,12 +75,29 @@ func start_game():
 	pause_menu.visible = false
 
 func pause_game():
+	if is_status_panel_open:
+		_close_status_panel()
 	get_tree().paused = true
 	pause_menu.visible = true
 
 func resume_game():
 	get_tree().paused = false
 	pause_menu.visible = false
+
+func _open_status_panel() -> void:
+	is_status_panel_open = true
+	player_status_panel.visible = true
+	player_status_panel.refresh(_get_player_node())
+	get_tree().paused = true
+
+func _close_status_panel() -> void:
+	is_status_panel_open = false
+	player_status_panel.visible = false
+	if not pause_menu.visible and not main_menu.visible and game.visible and not is_entry_pause_active:
+		get_tree().paused = false
+
+func _get_player_node() -> Node:
+	return get_tree().get_first_node_in_group("player")
 
 func _on_new_game_pressed():
 	start_game()

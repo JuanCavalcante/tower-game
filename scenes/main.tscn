@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dro1v0tsut0oj" path="res://scripts/main.gd" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://csmmwqcvmouk8" path="res://scenes/player/player.tscn" id="1_o5qli"]
+[ext_resource type="PackedScene" path="res://scenes/ui/player_status_panel.tscn" id="2_status_panel"]
 [ext_resource type="Texture2D" uid="uid://dynj5g1n2ds04" path="res://midia/TWGame.png" id="2_i0i0k"]
 [ext_resource type="AudioStream" uid="uid://uip0ovcpp0b8" path="res://midia/TowerGame_Theme.mp3" id="3_8q6rq"]
 [ext_resource type="Texture2D" uid="uid://bt5riy1r6dufa" path="res://assets/sprites/tailmap/GandalfHardcore Pixel Art Medieval Fantasy Assets/Castle Tiles.png" id="4_tbgi4"]
@@ -419,5 +420,7 @@ text = "Novo Jogo"
 custom_minimum_size = Vector2(240, 42)
 layout_mode = 2
 text = "Sair do jogo"
+
+[node name="PlayerStatusPanel" parent="UI" instance=ExtResource("2_status_panel")]
 
 [node name="Managers" type="Node" parent="." unique_id=1209282052]

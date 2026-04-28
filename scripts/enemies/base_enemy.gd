@@ -396,6 +396,7 @@ func die() -> void:
 		await anim.animation_finished
 	
 	PlayerStats.add_xp(xp_reward)
+	PlayerStats.register_enemy_kill()
 	_drop_coin_pickups(coin_reward)
 	
 	var floor_node: Node = _find_floor_node()
