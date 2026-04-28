@@ -40,6 +40,8 @@ func _physics_process(delta: float) -> void:
 
 
 func attack_player() -> void:
+	if _is_gameplay_paused():
+		return
 	if _is_casting_special:
 		return
 	if not can_attack:
@@ -114,7 +116,7 @@ func _cast_stomp_special() -> void:
 		return
 	_play_effect(EFFECT_GREEN_FIRE, Vector2(0, -22), Vector2(0.28, 0.28), Color(1, 1, 1, 0.85), 0.35)
 
-	if player and is_instance_valid(player) and player.has_method("take_damage"):
+	if player and is_instance_valid(player) and player.has_method("take_damage") and not _is_gameplay_paused():
 		player.take_damage(damage + 6)
 
 	await get_tree().create_timer(0.25).timeout
@@ -192,12 +194,12 @@ func _cast_toxic_special() -> void:
 		return
 	_play_effect(EFFECT_POISON, Vector2(0, -15), Vector2(0.32, 0.32), Color(1, 1, 1, 0.95), 0.6)
 
-	if player and player.has_method("take_damage"):
+	if player and player.has_method("take_damage") and not _is_gameplay_paused():
 		var distance: float = global_position.distance_to(player.global_position)
 		if distance <= detection_range * 0.9:
 			player.take_damage(damage + 8)
 			await get_tree().create_timer(0.2).timeout
-			if player and is_instance_valid(player):
+			if player and is_instance_valid(player) and not _is_gameplay_paused():
 				player.take_damage(4)
 
 	_play_effect(EFFECT_SMOKE, Vector2(0, -24), Vector2(0.25, 0.25), Color(1, 1, 1, 0.8), 0.5)

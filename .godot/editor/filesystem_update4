@@ -1,2 +1,2 @@
-res://scripts/coin/coin.tscn
-res://scripts/coin/coin_pickup.gd
+res://scripts/floor_04.gd
+res://scripts/enemies/base_enemy.gd

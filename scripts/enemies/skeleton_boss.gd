@@ -58,6 +58,8 @@ func _start_special_cooldown() -> void:
 	_special_on_cooldown = false
 
 func _apply_boss_attack_damage(hit_damage: int) -> void:
+	if _is_gameplay_paused():
+		return
 	if not is_instance_valid(player) or not player.has_method("take_damage"):
 		return
 

@@ -13,7 +13,7 @@ func _ensure_floor4_enemies_active() -> void:
 		if enemy_node == null:
 			continue
 
-		enemy_node.process_mode = Node.PROCESS_MODE_INHERIT
+		enemy_node.process_mode = Node.PROCESS_MODE_PAUSABLE
 		enemy_node.set_process(true)
 		enemy_node.set_physics_process(true)
 
