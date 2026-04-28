@@ -3,6 +3,14 @@
 [ext_resource type="Script" path="res://scripts/ui/player_status_panel.gd" id="1"]
 [ext_resource type="Texture2D" path="res://assets/ui/crimson_fantasy/Inventory.png" id="2"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_panel_card"]
+atlas = ExtResource("2")
+region = Rect2(82, 80, 62, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_header_bar"]
+atlas = ExtResource("2")
+region = Rect2(16, 15, 62, 15)
+
 [node name="PlayerStatusPanel" type="Control"]
 process_mode = 3
 visible = false
@@ -57,13 +65,17 @@ theme_override_constants/separation = 8
 layout_mode = 2
 text = "Status do Jogador"
 
-[node name="StatusBackground" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn"]
-modulate = Color(1, 1, 1, 0.2)
-custom_minimum_size = Vector2(0, 120)
+[node name="StatusHeaderFrame" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn"]
+custom_minimum_size = Vector2(260, 32)
 layout_mode = 2
-texture = ExtResource("2")
-expand_mode = 1
-stretch_mode = 6
+texture = SubResource("AtlasTexture_header_bar")
+stretch_mode = 5
+
+[node name="StatusBackground" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn"]
+custom_minimum_size = Vector2(260, 200)
+layout_mode = 2
+texture = SubResource("AtlasTexture_panel_card")
+stretch_mode = 5
 
 [node name="StatusGrid" type="GridContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn"]
 layout_mode = 2
@@ -202,13 +214,17 @@ theme_override_constants/separation = 10
 layout_mode = 2
 text = "Atributos"
 
-[node name="AttributesBackground" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn"]
-modulate = Color(1, 1, 1, 0.2)
-custom_minimum_size = Vector2(0, 120)
+[node name="AttributesHeaderFrame" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn"]
+custom_minimum_size = Vector2(260, 32)
 layout_mode = 2
-texture = ExtResource("2")
-expand_mode = 1
-stretch_mode = 6
+texture = SubResource("AtlasTexture_header_bar")
+stretch_mode = 5
+
+[node name="AttributesBackground" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn"]
+custom_minimum_size = Vector2(260, 200)
+layout_mode = 2
+texture = SubResource("AtlasTexture_panel_card")
+stretch_mode = 5
 
 [node name="AttributesHeader" type="GridContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn"]
 layout_mode = 2
