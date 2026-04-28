@@ -1,18 +1,27 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/player_status_panel.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/ui/crimson_fantasy/UI_inventario_caracter.png" id="2"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_card"]
-bg_color = Color(0.66, 0.22, 0.22, 0.95)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.95, 0.86, 0.67, 0.95)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+[sub_resource type="AtlasTexture" id="AtlasTexture_status_title"]
+atlas = ExtResource("2")
+region = Rect2(85, 34, 233, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_attr_title"]
+atlas = ExtResource("2")
+region = Rect2(460, 33, 233, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_status_panel"]
+atlas = ExtResource("2")
+region = Rect2(22, 22, 357, 501)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_attr_panel"]
+atlas = ExtResource("2")
+region = Rect2(398, 22, 428, 501)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_action_button"]
+atlas = ExtResource("2")
+region = Rect2(863, 863, 302, 90)
 
 [node name="PlayerStatusPanel" type="Control"]
 process_mode = 3
@@ -33,7 +42,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.45)
+color = Color(0, 0, 0, 0.55)
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -44,47 +53,67 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
-custom_minimum_size = Vector2(1080, 620)
+custom_minimum_size = Vector2(1260, 760)
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 24
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 24
+theme_override_constants/separation = 18
 
 [node name="StatusColumn" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(500, 0)
+custom_minimum_size = Vector2(560, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
+[node name="StatusTitleFrame" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn"]
+custom_minimum_size = Vector2(360, 70)
+layout_mode = 2
+texture = SubResource("AtlasTexture_status_title")
+stretch_mode = 5
+
 [node name="StatusHeader" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn"]
 layout_mode = 2
 text = "Status do Jogador"
+horizontal_alignment = 1
 
-[node name="StatusCard" type="PanelContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn"]
-custom_minimum_size = Vector2(0, 520)
+[node name="StatusCard" type="Control" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn"]
+custom_minimum_size = Vector2(0, 620)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_panel_card")
+
+[node name="Background" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_status_panel")
+stretch_mode = 5
 
 [node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard"]
-layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 84
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 28
 
 [node name="StatusGrid" type="GridContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer"]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/h_separation = 16
+theme_override_constants/h_separation = 24
 theme_override_constants/v_separation = 8
 columns = 2
 
@@ -209,32 +238,53 @@ layout_mode = 2
 text = "000"
 
 [node name="AttributesColumn" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(500, 0)
+custom_minimum_size = Vector2(620, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
+[node name="AttributesTitleFrame" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn"]
+custom_minimum_size = Vector2(360, 70)
+layout_mode = 2
+texture = SubResource("AtlasTexture_attr_title")
+stretch_mode = 5
+
 [node name="AttributesTitle" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn"]
 layout_mode = 2
 text = "Atributos"
+horizontal_alignment = 1
 
-[node name="AttributesCard" type="PanelContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn"]
-custom_minimum_size = Vector2(0, 520)
+[node name="AttributesCard" type="Control" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn"]
+custom_minimum_size = Vector2(0, 620)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_panel_card")
+
+[node name="Background" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AtlasTexture_attr_panel")
+stretch_mode = 5
 
 [node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard"]
-layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 36
+theme_override_constants/margin_top = 84
+theme_override_constants/margin_right = 34
+theme_override_constants/margin_bottom = 28
 
 [node name="AttributesContent" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 10
+theme_override_constants/separation = 12
 
 [node name="AttributesHeader" type="GridContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent"]
 layout_mode = 2
@@ -332,12 +382,24 @@ text = "+"
 layout_mode = 2
 theme_override_constants/separation = 12
 
+[node name="ResetButtonBg" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/Actions"]
+custom_minimum_size = Vector2(230, 62)
+layout_mode = 2
+texture = SubResource("AtlasTexture_action_button")
+stretch_mode = 5
+
 [node name="ResetAttributesButton" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/Actions"]
-custom_minimum_size = Vector2(220, 36)
+custom_minimum_size = Vector2(230, 62)
 layout_mode = 2
 text = "Resetar atributos"
 
+[node name="CloseButtonBg" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/Actions"]
+custom_minimum_size = Vector2(190, 62)
+layout_mode = 2
+texture = SubResource("AtlasTexture_action_button")
+stretch_mode = 5
+
 [node name="CloseButton" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/Actions"]
-custom_minimum_size = Vector2(120, 36)
+custom_minimum_size = Vector2(190, 62)
 layout_mode = 2
 text = "Fechar"
