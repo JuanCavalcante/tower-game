@@ -1,27 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/player_status_panel.gd" id="1"]
-[ext_resource type="Texture2D" path="res://assets/ui/crimson_fantasy/UI_inventario_caracter.png" id="2"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_status_title"]
-atlas = ExtResource("2")
-region = Rect2(85, 34, 233, 58)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_attr_title"]
-atlas = ExtResource("2")
-region = Rect2(460, 33, 233, 58)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_status_panel"]
-atlas = ExtResource("2")
-region = Rect2(22, 22, 357, 501)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_attr_panel"]
-atlas = ExtResource("2")
-region = Rect2(398, 22, 428, 501)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_action_button"]
-atlas = ExtResource("2")
-region = Rect2(863, 863, 302, 90)
+[ext_resource type="Texture2D" path="res://assets/ui/crimson_fantasy/panel_reference_layout.png" id="2"]
 
 [node name="PlayerStatusPanel" type="Control"]
 process_mode = 3
@@ -42,7 +22,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.55)
+color = Color(0, 0, 0, 0.45)
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -52,354 +32,343 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
-custom_minimum_size = Vector2(1260, 760)
+[node name="LayoutRoot" type="Control" parent="CenterContainer"]
+custom_minimum_size = Vector2(1692, 930)
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 18
-theme_override_constants/margin_top = 18
-theme_override_constants/margin_right = 18
-theme_override_constants/margin_bottom = 18
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 18
-
-[node name="StatusColumn" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(560, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 8
-
-[node name="StatusTitleFrame" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn"]
-custom_minimum_size = Vector2(360, 70)
-layout_mode = 2
-texture = SubResource("AtlasTexture_status_title")
+[node name="Background" type="TextureRect" parent="CenterContainer/LayoutRoot"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2")
 stretch_mode = 5
 
-[node name="StatusHeader" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn"]
-layout_mode = 2
+[node name="StatusHeader" type="Label" parent="CenterContainer/LayoutRoot"]
+layout_mode = 0
+offset_left = 388.0
+offset_top = 91.0
+offset_right = 709.0
+offset_bottom = 141.0
 text = "Status do Jogador"
 horizontal_alignment = 1
 
-[node name="StatusCard" type="Control" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn"]
-custom_minimum_size = Vector2(0, 620)
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Background" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("AtlasTexture_status_panel")
-stretch_mode = 5
-
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 38
-theme_override_constants/margin_top = 84
-theme_override_constants/margin_right = 28
-theme_override_constants/margin_bottom = 28
-
-[node name="StatusGrid" type="GridContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer"]
-layout_mode = 2
-theme_override_constants/h_separation = 24
-theme_override_constants/v_separation = 8
-columns = 2
-
-[node name="LevelLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "Nivel"
-
-[node name="LevelValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "00"
-
-[node name="XPLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "Exp"
-
-[node name="XPValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "000/000"
-
-[node name="HPLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "Hp"
-
-[node name="HPValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "000/000"
-
-[node name="SPLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "Sp"
-
-[node name="SPValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "000/000"
-
-[node name="MPLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "Mp"
-
-[node name="MPValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "000/000"
-
-[node name="DamageLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "Dano"
-
-[node name="DamageValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "000"
-
-[node name="MagicDamageLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "Dano magico"
-
-[node name="MagicDamageValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "000"
-
-[node name="ArmorLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "Armadura"
-
-[node name="ArmorValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "000"
-
-[node name="HitChanceLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "Chance de acerto"
-
-[node name="HitChanceValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "00%"
-
-[node name="CritChanceLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "Chance critico"
-
-[node name="CritChanceValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "00%"
-
-[node name="CritDamageLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "Dano critico"
-
-[node name="CritDamageValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "000%"
-
-[node name="SpeedLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "Velocidade"
-
-[node name="SpeedValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "000"
-
-[node name="AttackSpeedLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "Velocidade ataque"
-
-[node name="AttackSpeedValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "0.00"
-
-[node name="HitRangeLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "Alcance hit"
-
-[node name="HitRangeValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "000"
-
-[node name="KillsLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "Inimigos abatidos"
-
-[node name="KillsValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
-layout_mode = 2
-text = "000"
-
-[node name="AttributesColumn" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(620, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 8
-
-[node name="AttributesTitleFrame" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn"]
-custom_minimum_size = Vector2(360, 70)
-layout_mode = 2
-texture = SubResource("AtlasTexture_attr_title")
-stretch_mode = 5
-
-[node name="AttributesTitle" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn"]
-layout_mode = 2
+[node name="AttributesTitle" type="Label" parent="CenterContainer/LayoutRoot"]
+layout_mode = 0
+offset_left = 1122.0
+offset_top = 91.0
+offset_right = 1395.0
+offset_bottom = 141.0
 text = "Atributos"
 horizontal_alignment = 1
 
-[node name="AttributesCard" type="Control" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn"]
-custom_minimum_size = Vector2(0, 620)
+[node name="StatusContent" type="Control" parent="CenterContainer/LayoutRoot"]
+layout_mode = 0
+offset_left = 230.0
+offset_top = 194.0
+offset_right = 822.0
+offset_bottom = 834.0
+
+[node name="StatusNameList" type="VBoxContainer" parent="CenterContainer/LayoutRoot/StatusContent"]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 0.0
+offset_right = 301.0
+offset_bottom = 620.0
+theme_override_constants/separation = 8
+
+[node name="LevelLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
 layout_mode = 2
-size_flags_vertical = 3
+text = "Nivel"
 
-[node name="Background" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("AtlasTexture_attr_panel")
-stretch_mode = 5
-
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 36
-theme_override_constants/margin_top = 84
-theme_override_constants/margin_right = 34
-theme_override_constants/margin_bottom = 28
-
-[node name="AttributesContent" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer"]
+[node name="XPLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 12
+text = "Exp"
 
-[node name="AttributesHeader" type="GridContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent"]
+[node name="Sep1" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
+
+[node name="HPLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+layout_mode = 2
+text = "Hp"
+
+[node name="SPLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+layout_mode = 2
+text = "Sp"
+
+[node name="MPLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+layout_mode = 2
+text = "Mp"
+
+[node name="Sep2" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+
+[node name="DamageLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+layout_mode = 2
+text = "Dano"
+
+[node name="MagicDamageLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+layout_mode = 2
+text = "Dano magico"
+
+[node name="ArmorLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+layout_mode = 2
+text = "Armadura"
+
+[node name="Sep3" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+
+[node name="HitChanceLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+layout_mode = 2
+text = "Chance de acerto"
+
+[node name="CritChanceLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+layout_mode = 2
+text = "Chance critico"
+
+[node name="CritDamageLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+layout_mode = 2
+text = "Dano critico"
+
+[node name="Sep4" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+
+[node name="SpeedLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+layout_mode = 2
+text = "Velocidade"
+
+[node name="AttackSpeedLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+layout_mode = 2
+text = "Velocidade ataque"
+
+[node name="HitRangeLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+layout_mode = 2
+text = "Alcance hit"
+
+[node name="Sep5" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+
+[node name="KillsLabel" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusNameList"]
+layout_mode = 2
+text = "Inimigos abatidos"
+
+[node name="StatusValueList" type="VBoxContainer" parent="CenterContainer/LayoutRoot/StatusContent"]
+layout_mode = 0
+offset_left = 368.0
+offset_top = 0.0
+offset_right = 541.0
+offset_bottom = 620.0
+theme_override_constants/separation = 8
+
+[node name="LevelValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+layout_mode = 2
+text = "00"
+
+[node name="XPValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+layout_mode = 2
+text = "000/000"
+
+[node name="Sep1" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+
+[node name="HPValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+layout_mode = 2
+text = "000/000"
+
+[node name="SPValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+layout_mode = 2
+text = "000/000"
+
+[node name="MPValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+layout_mode = 2
+text = "000/000"
+
+[node name="Sep2" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+
+[node name="DamageValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+layout_mode = 2
+text = "000"
+
+[node name="MagicDamageValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+layout_mode = 2
+text = "000"
+
+[node name="ArmorValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+layout_mode = 2
+text = "000"
+
+[node name="Sep3" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+
+[node name="HitChanceValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+layout_mode = 2
+text = "00%"
+
+[node name="CritChanceValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+layout_mode = 2
+text = "00%"
+
+[node name="CritDamageValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+layout_mode = 2
+text = "000%"
+
+[node name="Sep4" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+
+[node name="SpeedValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+layout_mode = 2
+text = "000"
+
+[node name="AttackSpeedValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+layout_mode = 2
+text = "0.00"
+
+[node name="HitRangeValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+layout_mode = 2
+text = "000"
+
+[node name="Sep5" type="Control" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+
+[node name="KillsValue" type="Label" parent="CenterContainer/LayoutRoot/StatusContent/StatusValueList"]
+layout_mode = 2
+text = "000"
+
+[node name="AttributesContent" type="Control" parent="CenterContainer/LayoutRoot"]
+layout_mode = 0
+offset_left = 953.0
+offset_top = 196.0
+offset_right = 1525.0
+offset_bottom = 837.0
+
+[node name="AttributesHeader" type="GridContainer" parent="CenterContainer/LayoutRoot/AttributesContent"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 4.0
+offset_right = 552.0
+offset_bottom = 131.0
 columns = 2
+theme_override_constants/h_separation = 36
+theme_override_constants/v_separation = 10
 
-[node name="AvailablePointsLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesHeader"]
+[node name="AvailablePointsLabel" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesHeader"]
 layout_mode = 2
 text = "Pontos disponiveis"
 
-[node name="AvailablePointsValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesHeader"]
+[node name="AvailablePointsValue" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesHeader"]
 layout_mode = 2
 text = "00"
 
-[node name="TotalPointsLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesHeader"]
+[node name="TotalPointsLabel" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesHeader"]
 layout_mode = 2
 text = "Pontos totais"
 
-[node name="TotalPointsValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesHeader"]
+[node name="TotalPointsValue" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesHeader"]
 layout_mode = 2
 text = "00"
 
-[node name="AttributesGrid" type="GridContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 8
+[node name="AttributesGrid" type="GridContainer" parent="CenterContainer/LayoutRoot/AttributesContent"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 164.0
+offset_right = 558.0
+offset_bottom = 531.0
 columns = 3
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 18
 
-[node name="StrengthLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid"]
+[node name="StrengthLabel" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
 layout_mode = 2
 text = "Forca"
 
-[node name="StrengthValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid"]
+[node name="StrengthValue" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
 layout_mode = 2
 text = "00"
 
-[node name="StrengthPlus" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid"]
-custom_minimum_size = Vector2(38, 28)
+[node name="StrengthPlus" type="Button" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
+custom_minimum_size = Vector2(56, 42)
 layout_mode = 2
 text = "+"
 
-[node name="VitalityLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid"]
+[node name="VitalityLabel" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
 layout_mode = 2
 text = "Vitalidade"
 
-[node name="VitalityValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid"]
+[node name="VitalityValue" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
 layout_mode = 2
 text = "00"
 
-[node name="VitalityPlus" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid"]
-custom_minimum_size = Vector2(38, 28)
+[node name="VitalityPlus" type="Button" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
+custom_minimum_size = Vector2(56, 42)
 layout_mode = 2
 text = "+"
 
-[node name="DexterityLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid"]
+[node name="DexterityLabel" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
 layout_mode = 2
 text = "Destreza"
 
-[node name="DexterityValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid"]
+[node name="DexterityValue" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
 layout_mode = 2
 text = "00"
 
-[node name="DexterityPlus" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid"]
-custom_minimum_size = Vector2(38, 28)
+[node name="DexterityPlus" type="Button" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
+custom_minimum_size = Vector2(56, 42)
 layout_mode = 2
 text = "+"
 
-[node name="IntelligenceLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid"]
+[node name="IntelligenceLabel" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
 layout_mode = 2
 text = "Inteligencia"
 
-[node name="IntelligenceValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid"]
+[node name="IntelligenceValue" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
 layout_mode = 2
 text = "00"
 
-[node name="IntelligencePlus" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid"]
-custom_minimum_size = Vector2(38, 28)
+[node name="IntelligencePlus" type="Button" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
+custom_minimum_size = Vector2(56, 42)
 layout_mode = 2
 text = "+"
 
-[node name="LuckLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid"]
+[node name="LuckLabel" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
 layout_mode = 2
 text = "Sorte"
 
-[node name="LuckValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid"]
+[node name="LuckValue" type="Label" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
 layout_mode = 2
 text = "00"
 
-[node name="LuckPlus" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid"]
-custom_minimum_size = Vector2(38, 28)
+[node name="LuckPlus" type="Button" parent="CenterContainer/LayoutRoot/AttributesContent/AttributesGrid"]
+custom_minimum_size = Vector2(56, 42)
 layout_mode = 2
 text = "+"
 
-[node name="Actions" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent"]
-layout_mode = 2
-theme_override_constants/separation = 12
+[node name="Actions" type="HBoxContainer" parent="CenterContainer/LayoutRoot/AttributesContent"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 556.0
+offset_right = 557.0
+offset_bottom = 627.0
+theme_override_constants/separation = 24
 
-[node name="ResetButtonBg" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/Actions"]
-custom_minimum_size = Vector2(230, 62)
-layout_mode = 2
-texture = SubResource("AtlasTexture_action_button")
-stretch_mode = 5
-
-[node name="ResetAttributesButton" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/Actions"]
-custom_minimum_size = Vector2(230, 62)
+[node name="ResetAttributesButton" type="Button" parent="CenterContainer/LayoutRoot/AttributesContent/Actions"]
+custom_minimum_size = Vector2(300, 68)
 layout_mode = 2
 text = "Resetar atributos"
 
-[node name="CloseButtonBg" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/Actions"]
-custom_minimum_size = Vector2(190, 62)
-layout_mode = 2
-texture = SubResource("AtlasTexture_action_button")
-stretch_mode = 5
-
-[node name="CloseButton" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/Actions"]
-custom_minimum_size = Vector2(190, 62)
+[node name="CloseButton" type="Button" parent="CenterContainer/LayoutRoot/AttributesContent/Actions"]
+custom_minimum_size = Vector2(220, 68)
 layout_mode = 2
 text = "Fechar"
