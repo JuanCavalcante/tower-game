@@ -19,7 +19,7 @@ const DEXTERITY_MOVE_SPEED_PERCENT_PER_POINT := 0.005
 const DEXTERITY_ATTACK_SPEED_FLAT_PER_POINT := 0.05
 const DEXTERITY_HIT_CHANCE_PER_POINT := 1
 const LUCK_CRIT_CHANCE_PER_POINT := 1
-const BASE_HIT_CHANCE_PERCENT := 70
+const BASE_HIT_CHANCE_PERCENT := 65
 const BASE_CRIT_CHANCE_PERCENT := 5
 const BASE_CRIT_DAMAGE_PERCENT := 150
 
@@ -42,6 +42,8 @@ var potions := 0
 var equipped_weapon_name := "Espada Inicial"
 var weapon_damage_bonus := 0
 var enemy_kills := 0
+var level_resource_bonus := 0
+var level_damage_bonus := 0
 
 var total_attribute_points := STARTING_ATTRIBUTE_POINTS
 var available_attribute_points := STARTING_ATTRIBUTE_POINTS
@@ -60,6 +62,8 @@ func reset() -> void:
 	equipped_weapon_name = "Espada Inicial"
 	weapon_damage_bonus = 0
 	enemy_kills = 0
+	level_resource_bonus = 0
+	level_damage_bonus = 0
 	total_attribute_points = STARTING_ATTRIBUTE_POINTS
 	available_attribute_points = STARTING_ATTRIBUTE_POINTS
 	strength = BASE_STRENGTH
@@ -67,6 +71,7 @@ func reset() -> void:
 	dexterity = BASE_DEXTERITY
 	intelligence = BASE_INTELLIGENCE
 	luck = BASE_LUCK
+	_rebuild_level_scaling_from_level()
 	_recalculate_resource_caps(true)
 
 func to_save_data() -> Dictionary:
@@ -111,6 +116,7 @@ func load_save_data(data: Dictionary) -> void:
 	intelligence = int(data.get("intelligence", BASE_INTELLIGENCE))
 	luck = int(data.get("luck", BASE_LUCK))
 
+	_rebuild_level_scaling_from_level()
 	_recalculate_resource_caps(false)
 	current_health = int(data.get("current_health", max_health))
 	current_stamina = int(data.get("current_stamina", max_stamina))
@@ -135,6 +141,10 @@ func level_up() -> void:
 	xp_to_next_level *= 1.5
 	total_attribute_points += ATTRIBUTE_POINTS_PER_LEVEL
 	available_attribute_points += ATTRIBUTE_POINTS_PER_LEVEL
+	var level_gain: int = 25 if level % 5 == 0 else 10
+	level_resource_bonus += level_gain
+	level_damage_bonus += 2
+	_recalculate_resource_caps(true)
 	print("LEVEL UP! Agora nivel ", level)
 
 func add_coins(amount: int) -> void:
@@ -206,7 +216,7 @@ func reset_attributes() -> void:
 	_recalculate_resource_caps(false)
 
 func get_total_damage(base_damage: int) -> int:
-	var base_with_weapon: float = float(max(base_damage + weapon_damage_bonus, 0))
+	var base_with_weapon: float = float(max(base_damage + weapon_damage_bonus + level_damage_bonus, 0))
 	return int(round(base_with_weapon * get_strength_damage_multiplier()))
 
 func get_magic_damage(base_magic_damage: int = 0) -> int:
@@ -242,9 +252,9 @@ func get_crit_damage_percent() -> int:
 	return BASE_CRIT_DAMAGE_PERCENT
 
 func _recalculate_resource_caps(refill: bool) -> void:
-	var new_max_health: int = BASE_HEALTH + vitality * VITALITY_HEALTH_PER_POINT
-	var new_max_stamina: int = BASE_STAMINA + vitality * VITALITY_STAMINA_PER_POINT
-	var new_max_mana: int = BASE_MANA + intelligence * INTELLIGENCE_MANA_PER_POINT
+	var new_max_health: int = BASE_HEALTH + level_resource_bonus + vitality * VITALITY_HEALTH_PER_POINT
+	var new_max_stamina: int = BASE_STAMINA + level_resource_bonus + vitality * VITALITY_STAMINA_PER_POINT
+	var new_max_mana: int = BASE_MANA + level_resource_bonus + intelligence * INTELLIGENCE_MANA_PER_POINT
 
 	max_health = max(new_max_health, 1)
 	max_stamina = max(new_max_stamina, 1)
@@ -258,3 +268,10 @@ func _recalculate_resource_caps(refill: bool) -> void:
 		current_health = clampi(current_health, 0, max_health)
 		current_stamina = clampi(current_stamina, 0, max_stamina)
 		current_mana = clampi(current_mana, 0, max_mana)
+
+func _rebuild_level_scaling_from_level() -> void:
+	level_resource_bonus = 0
+	level_damage_bonus = 0
+	for current_level in range(2, level + 1):
+		level_resource_bonus += 25 if current_level % 5 == 0 else 10
+		level_damage_bonus += 2

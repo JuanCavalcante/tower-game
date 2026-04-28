@@ -156,6 +156,10 @@ func attack():
 
 		var is_in_front: bool = to_enemy.x * facing_direction >= -6.0
 		if is_in_front and dist_sq <= effective_range_sq:
+			if not GameManager.is_dev_mode:
+				var hit_roll: int = randi_range(1, 100)
+				if hit_roll > PlayerStats.get_hit_chance_percent():
+					continue
 			var damage_to_apply: int = 999999 if GameManager.is_dev_mode else PlayerStats.get_total_damage(attack_damage)
 			enemy.take_damage(damage_to_apply, global_position)
 
