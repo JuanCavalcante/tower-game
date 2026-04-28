@@ -286,7 +286,7 @@ func _close_ui() -> void:
 
 func _enter_floor(floor_number: int) -> void:
 	_close_ui()
-	GameManager.load_floor(floor_number)
+	GameManager.load_floor(floor_number, true, GameManager.SpawnContext.ENTER_TOWER)
 
 
 func _buy_potion() -> void:

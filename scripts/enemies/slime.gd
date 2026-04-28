@@ -1,4 +1,4 @@
-extends BaseEnemy
+extends "res://scripts/enemies/base_enemy.gd"
 
 const MUSHROOM_FRAME_WIDTH := 80
 const MUSHROOM_FRAME_HEIGHT := 64
@@ -71,7 +71,7 @@ func attack_player() -> void:
 		anim.play("attack")
 
 	await get_tree().create_timer(0.35).timeout
-	if player and player.has_method("take_damage"):
+	if player and player.has_method("take_damage") and _can_land_attack_on(player):
 		player.take_damage(damage)
 
 	if use_stun_attack and anim.sprite_frames.has_animation("stun"):

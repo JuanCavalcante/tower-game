@@ -77,7 +77,7 @@ func die():
 		await get_tree().create_timer(0.2).timeout
 
 	PlayerStats.current_health = PlayerStats.max_health
-	GameManager.load_floor(0)
+	GameManager.return_to_hub()
 
 	is_dead = false
 	set_physics_process(true)

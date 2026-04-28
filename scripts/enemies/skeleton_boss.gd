@@ -1,97 +1,86 @@
 extends "res://scripts/enemies/skeleton.gd"
 
-const EFFECT_FIRE := preload("res://assets/sprites/effect/fire.png")
-const EFFECT_SMOKE := preload("res://assets/sprites/effect/smoke.png")
-const EFFECT_THUNDER := preload("res://assets/sprites/effect/thunder.png")
+const BOSS_ATTACK_HIT_DELAY := 0.30
+const BOSS_SPECIAL_HIT_DELAY := 0.26
+const BOSS_SPECIAL_COOLDOWN := 3.0
+const BOSS_VERTICAL_TOLERANCE := 130.0
 
-var _attack_count: int = 0
-var _special_on_cooldown: bool = false
-var _effect_sprite: Sprite2D = null
-
+var _attack_count := 0
+var _special_on_cooldown := false
 
 func _ready() -> void:
 	max_health = 280
 	damage = 22
-	speed = 78.0
+	speed = 84.0
 	knockback_force = 110.0
-	attack_cooldown = 1.1
+	knockback_immune = true
+	attack_cooldown = 0.95
 	detection_range = 320.0
-	attack_range = 46.0
+	attack_range = 50.0
 	stop_distance = 30.0
 	xp_reward = 380
 	coin_reward = 80
 	super._ready()
 
-	_setup_effect_sprite()
-	_play_effect(EFFECT_FIRE, Vector2(0, -44), Vector2(0.22, 0.22), Color(1, 1, 1, 0.5), 0.5)
-
-
-func _on_damage_area_body_entered(body: Node) -> void:
-	if not body.is_in_group("player") or not can_damage or _is_dying:
+func attack_player() -> void:
+	if _is_dying or _is_hurt or _is_attacking or not can_attack:
 		return
 
-	body.take_damage(damage)
-	can_damage = false
+	can_attack = false
+	_is_attacking = true
 	_attack_count += 1
 
-	if _attack_count % 3 == 0 and not _special_on_cooldown:
-		await _cast_thunder_special(body)
-		await get_tree().create_timer(attack_cooldown + 0.2).timeout
-		can_damage = true
-		return
+	var use_special := _attack_count % 3 == 0 and not _special_on_cooldown
+	var attack_animation := "attack2" if use_special and anim.sprite_frames.has_animation("attack2") else "attack1"
+	if not anim.sprite_frames.has_animation(attack_animation):
+		attack_animation = "attack"
 
-	if not _is_hurt and not _is_attacking:
-		_is_attacking = true
-		anim.play("attack2" if _attack_count % 3 == 0 else "attack1")
-	await get_tree().create_timer(1.3).timeout
-	can_damage = true
+	anim.play(attack_animation)
 
+	if use_special:
+		_special_on_cooldown = true
+		await get_tree().create_timer(BOSS_SPECIAL_HIT_DELAY).timeout
+		_apply_boss_attack_damage(damage + 10)
+		_start_special_cooldown.call_deferred()
+	else:
+		await get_tree().create_timer(BOSS_ATTACK_HIT_DELAY).timeout
+		_apply_boss_attack_damage(damage)
 
-func _cast_thunder_special(body: Node) -> void:
-	_special_on_cooldown = true
-	_is_attacking = true
+	if anim.animation == attack_animation:
+		await anim.animation_finished
 
-	if anim.sprite_frames.has_animation("attack2"):
-		anim.play("attack2")
-
-	_play_effect(EFFECT_THUNDER, Vector2(0, -56), Vector2(0.46, 0.46), Color(1, 1, 1, 0.95), 0.45)
-	await get_tree().create_timer(0.2).timeout
-	_play_effect(EFFECT_SMOKE, Vector2(0, -28), Vector2(0.22, 0.22), Color(1, 1, 1, 0.85), 0.6)
-
-	if body and is_instance_valid(body) and body.has_method("take_damage"):
-		body.take_damage(damage + 10)
-
-	await get_tree().create_timer(0.4).timeout
 	_is_attacking = false
+	await get_tree().create_timer(attack_cooldown).timeout
+	can_attack = true
 
-	await get_tree().create_timer(3.0).timeout
+func _start_special_cooldown() -> void:
+	await get_tree().create_timer(BOSS_SPECIAL_COOLDOWN).timeout
 	_special_on_cooldown = false
 
-
-func _setup_effect_sprite() -> void:
-	_effect_sprite = Sprite2D.new()
-	_effect_sprite.name = "BossEffect"
-	_effect_sprite.centered = true
-	_effect_sprite.z_index = 12
-	_effect_sprite.visible = false
-	add_child(_effect_sprite)
-
-
-func _play_effect(texture: Texture2D, offset: Vector2, target_scale: Vector2, tint: Color, duration: float) -> void:
-	if _effect_sprite == null or texture == null:
+func _apply_boss_attack_damage(hit_damage: int) -> void:
+	if not is_instance_valid(player) or not player.has_method("take_damage"):
 		return
 
-	_effect_sprite.texture = texture
-	_effect_sprite.position = offset
-	_effect_sprite.scale = target_scale * 0.65
-	_effect_sprite.modulate = Color(tint.r, tint.g, tint.b, 0.0)
-	_effect_sprite.visible = true
+	if _can_land_attack_on(player):
+		player.take_damage(hit_damage)
+		return
 
-	var tween: Tween = create_tween()
-	tween.tween_property(_effect_sprite, "modulate:a", tint.a, duration * 0.25)
-	tween.parallel().tween_property(_effect_sprite, "scale", target_scale, duration * 0.6)
-	tween.tween_property(_effect_sprite, "modulate:a", 0.0, duration * 0.45)
-	tween.finished.connect(func() -> void:
-		if _effect_sprite:
-			_effect_sprite.visible = false
-	)
+	# Fallback para evitar falso negativo por diferença de tamanho entre boss e player.
+	var to_player: Vector2 = player.global_position - global_position
+	var in_vertical_range: bool = abs(to_player.y) <= BOSS_VERTICAL_TOLERANCE
+	var in_horizontal_range: bool = abs(to_player.x) <= maxf(attack_range + 42.0, 78.0)
+	var facing_sign := 1.0
+	if anim != null:
+		facing_sign = -1.0 if anim.flip_h == sprite_faces_right else 1.0
+	var in_front: bool = to_player.x * facing_sign >= -18.0
+
+	if in_vertical_range and in_horizontal_range and in_front:
+		player.take_damage(hit_damage)
+
+func _on_damage_area_body_entered(body) -> void:
+	# Sem dano por contato: apenas habilita o estado de ataque.
+	if not body.is_in_group("player") or _is_dying:
+		return
+
+	if can_attack:
+		state = State.ATTACK

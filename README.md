@@ -119,7 +119,7 @@ No hub, o jogador pode acessar andares desbloqueados e comprar itens essenciais 
 
 ### Skeleton Boss
 
-![Skeleton Boss](assets/sprites/enimies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Idle.png)
+![Skeleton Boss](assets/sprites/enemies/Skeleton_White/Skeleton_With_VFX/Skeleton_01_White_Idle.png)
 
 - Cena: `scenes/enemies/skeleton_boss.tscn`
 - Script: `scripts/enemies/skeleton_boss.gd`
@@ -138,3 +138,4 @@ O jogo salva progresso basico em `user://savegame.json`, incluindo estado releva
 - Evoluir feedback audiovisual de combate (SFX e VFX).
 - Criar checklist de QA manual por andar.
 - Expandir andares com novos tipos de inimigos e desafios.
+

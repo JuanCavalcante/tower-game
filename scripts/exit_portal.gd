@@ -13,5 +13,8 @@ func _on_body_entered(body):
 
 	if body.is_in_group("player"):
 		var next_floor: int = int(GameManager.current_floor) + 1
-		GameManager.unlock_floor(next_floor)
-		GameManager.load_floor(next_floor)
+		if GameManager.has_floor(next_floor):
+			GameManager.unlock_floor(next_floor)
+			GameManager.load_floor(next_floor, true, GameManager.SpawnContext.ADVANCE_FLOOR)
+		else:
+			GameManager.return_to_hub(true)
