@@ -37,7 +37,7 @@ func _ensure_death_animation() -> void:
 	if not anim.sprite_frames.has_animation("jump"):
 		return
 
-	var jump_frame_count := anim.sprite_frames.get_frame_count("jump")
+	var jump_frame_count: int = anim.sprite_frames.get_frame_count("jump")
 	if jump_frame_count <= 0:
 		return
 
@@ -47,7 +47,7 @@ func _ensure_death_animation() -> void:
 
 	var start_index := maxi(jump_frame_count - 4, 0)
 	for frame_index in range(start_index, jump_frame_count):
-		var frame_texture := anim.sprite_frames.get_frame_texture("jump", frame_index)
+		var frame_texture: Texture2D = anim.sprite_frames.get_frame_texture("jump", frame_index)
 		anim.sprite_frames.add_frame("die", frame_texture, 1.0)
 
 
