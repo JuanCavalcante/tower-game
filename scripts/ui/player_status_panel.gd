@@ -6,6 +6,7 @@ extends Control
 @onready var sp_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/SPValue
 @onready var mp_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/MPValue
 @onready var damage_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/DamageValue
+@onready var magic_damage_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/MagicDamageValue
 @onready var armor_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/ArmorValue
 @onready var hit_chance_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/HitChanceValue
 @onready var crit_chance_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/CritChanceValue
@@ -46,8 +47,8 @@ func refresh(player_node: Node) -> void:
 	level_label.text = str(PlayerStats.level)
 	xp_label.text = "%d/%d" % [PlayerStats.xp, int(PlayerStats.xp_to_next_level)]
 	hp_label.text = "%d/%d" % [PlayerStats.current_health, PlayerStats.max_health]
-	sp_label.text = "000/000"
-	mp_label.text = "000/000"
+	sp_label.text = "%d/%d" % [PlayerStats.current_stamina, PlayerStats.max_stamina]
+	mp_label.text = "%d/%d" % [PlayerStats.current_mana, PlayerStats.max_mana]
 
 	var base_damage := 0
 	var attack_range := 0
@@ -60,16 +61,16 @@ func refresh(player_node: Node) -> void:
 		if "attack_range" in player_node:
 			attack_range = int(player_node.attack_range)
 		if "speed" in player_node:
-			move_speed = int(player_node.speed)
+			move_speed = int(PlayerStats.get_move_speed(float(player_node.speed)))
 		if "attack_cooldown" in player_node:
-			var cooldown: float = max(float(player_node.attack_cooldown), 0.001)
-			attack_speed = 1.0 / cooldown
+			attack_speed = PlayerStats.get_attack_speed_from_cooldown(float(player_node.attack_cooldown))
 
 	damage_label.text = str(PlayerStats.get_total_damage(base_damage))
-	armor_label.text = str(PlayerStats.vitality)
-	hit_chance_label.text = "%d%%" % min(95, 70 + PlayerStats.dexterity)
-	crit_chance_label.text = "%d%%" % min(100, 5 + int(PlayerStats.luck * 0.6))
-	crit_damage_label.text = "%d%%" % (150 + PlayerStats.strength)
+	magic_damage_label.text = str(PlayerStats.get_magic_damage(0))
+	armor_label.text = "0"
+	hit_chance_label.text = "%d%%" % PlayerStats.get_hit_chance_percent()
+	crit_chance_label.text = "%d%%" % PlayerStats.get_crit_chance_percent()
+	crit_damage_label.text = "%d%%" % PlayerStats.get_crit_damage_percent()
 	speed_label.text = str(move_speed)
 	attack_speed_label.text = "%.2f" % attack_speed
 	hit_range_label.text = str(attack_range)

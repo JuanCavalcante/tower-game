@@ -38,6 +38,7 @@ func _ready():
 	dev_mode_button.button_pressed = GameManager.is_dev_mode
 	_update_dev_button_text(GameManager.is_dev_mode)
 	player_status_panel.close_requested.connect(_close_status_panel)
+	xp_label.visible = false
 	show_main_menu()
 
 func _process(_delta):
@@ -57,8 +58,7 @@ func _process(_delta):
 		player_status_panel.refresh(_get_player_node())
 
 	health_label.text = "HP: %d/%d | Moedas: %d" % [PlayerStats.current_health, PlayerStats.max_health, PlayerStats.coins]
-	xp_label.text = "XP: %d/%d  Nivel: %d | Pocoes: %d (Q)" % [PlayerStats.xp, int(PlayerStats.xp_to_next_level), PlayerStats.level, PlayerStats.potions]
-	floor_label.text = "Andar: %d | Equip: %s (+%d)" % [GameManager.current_floor, PlayerStats.equipped_weapon_name, PlayerStats.weapon_damage_bonus]
+	floor_label.text = "Andar: %d" % [GameManager.current_floor]
 
 func show_main_menu():
 	get_tree().paused = false

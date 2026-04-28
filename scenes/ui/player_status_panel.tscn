@@ -120,6 +120,14 @@ text = "Dano"
 layout_mode = 2
 text = "000"
 
+[node name="MagicDamageLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "Dano magico"
+
+[node name="MagicDamageValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "000"
+
 [node name="ArmorLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
 layout_mode = 2
 text = "Armadura"

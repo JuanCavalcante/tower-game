@@ -4,7 +4,7 @@ const SWORD_SFX_1 := preload("res://assets/sprites/effect/sound/sword1.mp3")
 const SWORD_SFX_2 := preload("res://assets/sprites/effect/sound/sword2.mp3")
 
 @export var speed := 200
-@export var attack_damage := 30
+@export var attack_damage := 10
 @export var attack_range := 50
 @export var attack_vertical_tolerance := 58
 @export var gravity := 900
@@ -107,7 +107,7 @@ func _physics_process(delta):
 		facing_direction = sign(direction.x)
 		anim.flip_h = facing_direction > 0
 
-	velocity.x = direction.x * speed
+	velocity.x = direction.x * PlayerStats.get_move_speed(float(speed))
 
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_force
@@ -165,5 +165,6 @@ func attack():
 
 	is_attacking = false
 
-	await get_tree().create_timer(attack_cooldown).timeout
+	var dynamic_cooldown: float = PlayerStats.get_attack_cooldown(float(attack_cooldown))
+	await get_tree().create_timer(dynamic_cooldown).timeout
 	can_attack = true
