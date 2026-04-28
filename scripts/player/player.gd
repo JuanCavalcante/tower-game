@@ -1,4 +1,5 @@
 extends CharacterBody2D
+signal death_sequence_finished
 
 const SWORD_SFX_1 := preload("res://assets/sprites/effect/sound/sword1.mp3")
 const SWORD_SFX_2 := preload("res://assets/sprites/effect/sound/sword2.mp3")
@@ -26,6 +27,29 @@ func _ready():
 	_sword_sfx_player.name = "SwordSfx"
 	_sword_sfx_player.volume_db = -7.0
 	add_child(_sword_sfx_player)
+	_ensure_death_animation()
+
+
+func _ensure_death_animation() -> void:
+	if anim == null or anim.sprite_frames == null:
+		return
+	if anim.sprite_frames.has_animation("die"):
+		return
+	if not anim.sprite_frames.has_animation("jump"):
+		return
+
+	var jump_frame_count: int = anim.sprite_frames.get_frame_count("jump")
+	if jump_frame_count <= 0:
+		return
+
+	anim.sprite_frames.add_animation("die")
+	anim.sprite_frames.set_animation_loop("die", false)
+	anim.sprite_frames.set_animation_speed("die", 7.0)
+
+	var start_index := maxi(jump_frame_count - 4, 0)
+	for frame_index in range(start_index, jump_frame_count):
+		var frame_texture: Texture2D = anim.sprite_frames.get_frame_texture("jump", frame_index)
+		anim.sprite_frames.add_frame("die", frame_texture, 1.0)
 
 
 func _play_sword_sfx_start() -> void:
@@ -77,9 +101,14 @@ func die():
 	else:
 		await get_tree().create_timer(0.2, false).timeout
 
+	death_sequence_finished.emit()
+
+func respawn_to_hub() -> void:
+	if not is_dead:
+		return
+
 	PlayerStats.current_health = PlayerStats.max_health
 	GameManager.return_to_hub()
-
 	is_dead = false
 	set_physics_process(true)
 	can_attack = true
