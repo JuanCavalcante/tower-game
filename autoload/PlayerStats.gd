@@ -137,8 +137,8 @@ func equip_weapon(weapon_name: String, damage_bonus: int) -> void:
 	weapon_damage_bonus = max(damage_bonus, 0)
 
 func get_total_damage(base_damage: int) -> int:
-	var strength_bonus := max(strength - BASE_STRENGTH, 0)
-	return max(base_damage + weapon_damage_bonus + strength_bonus, 0)
+	var strength_bonus: int = int(max(strength - BASE_STRENGTH, 0))
+	return int(max(base_damage + weapon_damage_bonus + strength_bonus, 0))
 
 func register_enemy_kill() -> void:
 	enemy_kills += 1
