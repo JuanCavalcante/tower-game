@@ -41,7 +41,7 @@ func _ready():
 	show_main_menu()
 
 func _process(_delta):
-	if Input.is_action_just_pressed("toggle_status_panel") and not main_menu.visible and game.visible and not is_entry_pause_active:
+	if Input.is_action_just_pressed("toggle_status_panel") and not main_menu.visible and game.visible and not is_entry_pause_active and not pause_menu.visible:
 		if is_status_panel_open:
 			_close_status_panel()
 		else:
