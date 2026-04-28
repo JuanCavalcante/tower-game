@@ -1,0 +1,309 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/player_status_panel.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/ui/crimson_fantasy/Inventory.png" id="2"]
+
+[node name="PlayerStatusPanel" type="Control"]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1")
+
+[node name="Overlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(980, 560)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="StatusColumn" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(440, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="StatusHeader" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn"]
+layout_mode = 2
+text = "Status do Jogador"
+
+[node name="StatusBackground" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn"]
+modulate = Color(1, 1, 1, 0.2)
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="StatusGrid" type="GridContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 6
+columns = 2
+
+[node name="LevelLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "Nivel"
+
+[node name="LevelValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "00"
+
+[node name="XPLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "Exp"
+
+[node name="XPValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "000/000"
+
+[node name="HPLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "Hp"
+
+[node name="HPValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "000/000"
+
+[node name="SPLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "Sp"
+
+[node name="SPValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "000/000"
+
+[node name="MPLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "Mp"
+
+[node name="MPValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "000/000"
+
+[node name="DamageLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "Dano"
+
+[node name="DamageValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "000"
+
+[node name="ArmorLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "Armadura"
+
+[node name="ArmorValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "000"
+
+[node name="HitChanceLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "Chance de acerto"
+
+[node name="HitChanceValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "00%"
+
+[node name="CritChanceLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "Chance critico"
+
+[node name="CritChanceValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "00%"
+
+[node name="CritDamageLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "Dano critico"
+
+[node name="CritDamageValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "000%"
+
+[node name="SpeedLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "Velocidade"
+
+[node name="SpeedValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "000"
+
+[node name="AttackSpeedLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "Velocidade ataque"
+
+[node name="AttackSpeedValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "0.00"
+
+[node name="HitRangeLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "Alcance hit"
+
+[node name="HitRangeValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "000"
+
+[node name="KillsLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "Inimigos abatidos"
+
+[node name="KillsValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid"]
+layout_mode = 2
+text = "000"
+
+[node name="AttributesColumn" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(440, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="AttributesTitle" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn"]
+layout_mode = 2
+text = "Atributos"
+
+[node name="AttributesBackground" type="TextureRect" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn"]
+modulate = Color(1, 1, 1, 0.2)
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="AttributesHeader" type="GridContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn"]
+layout_mode = 2
+columns = 2
+
+[node name="AvailablePointsLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesHeader"]
+layout_mode = 2
+text = "Pontos disponiveis"
+
+[node name="AvailablePointsValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesHeader"]
+layout_mode = 2
+text = "00"
+
+[node name="TotalPointsLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesHeader"]
+layout_mode = 2
+text = "Pontos totais"
+
+[node name="TotalPointsValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesHeader"]
+layout_mode = 2
+text = "00"
+
+[node name="AttributesGrid" type="GridContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 3
+
+[node name="StrengthLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid"]
+layout_mode = 2
+text = "Forca"
+
+[node name="StrengthValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid"]
+layout_mode = 2
+text = "00"
+
+[node name="StrengthPlus" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid"]
+custom_minimum_size = Vector2(38, 28)
+layout_mode = 2
+text = "+"
+
+[node name="VitalityLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid"]
+layout_mode = 2
+text = "Vitalidade"
+
+[node name="VitalityValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid"]
+layout_mode = 2
+text = "00"
+
+[node name="VitalityPlus" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid"]
+custom_minimum_size = Vector2(38, 28)
+layout_mode = 2
+text = "+"
+
+[node name="DexterityLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid"]
+layout_mode = 2
+text = "Destreza"
+
+[node name="DexterityValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid"]
+layout_mode = 2
+text = "00"
+
+[node name="DexterityPlus" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid"]
+custom_minimum_size = Vector2(38, 28)
+layout_mode = 2
+text = "+"
+
+[node name="IntelligenceLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid"]
+layout_mode = 2
+text = "Inteligencia"
+
+[node name="IntelligenceValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid"]
+layout_mode = 2
+text = "00"
+
+[node name="IntelligencePlus" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid"]
+custom_minimum_size = Vector2(38, 28)
+layout_mode = 2
+text = "+"
+
+[node name="LuckLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid"]
+layout_mode = 2
+text = "Sorte"
+
+[node name="LuckValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid"]
+layout_mode = 2
+text = "00"
+
+[node name="LuckPlus" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid"]
+custom_minimum_size = Vector2(38, 28)
+layout_mode = 2
+text = "+"
+
+[node name="Actions" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ResetAttributesButton" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/Actions"]
+custom_minimum_size = Vector2(220, 36)
+layout_mode = 2
+text = "Resetar atributos"
+
+[node name="CloseButton" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/Actions"]
+custom_minimum_size = Vector2(120, 36)
+layout_mode = 2
+text = "Fechar"
