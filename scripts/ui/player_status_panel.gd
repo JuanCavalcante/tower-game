@@ -1,36 +1,36 @@
-extends Control
+﻿extends Control
 
-@onready var level_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/LevelValue
-@onready var xp_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/XPValue
-@onready var hp_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/HPValue
-@onready var sp_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/SPValue
-@onready var mp_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/MPValue
-@onready var damage_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/DamageValue
-@onready var magic_damage_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/MagicDamageValue
-@onready var armor_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/ArmorValue
-@onready var hit_chance_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/HitChanceValue
-@onready var crit_chance_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/CritChanceValue
-@onready var crit_damage_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/CritDamageValue
-@onready var speed_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/SpeedValue
-@onready var attack_speed_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/AttackSpeedValue
-@onready var hit_range_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/HitRangeValue
-@onready var kills_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusGrid/KillsValue
+@onready var level_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/LevelValue
+@onready var xp_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/XPValue
+@onready var hp_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/HPValue
+@onready var sp_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/SPValue
+@onready var mp_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/MPValue
+@onready var damage_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/DamageValue
+@onready var magic_damage_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/MagicDamageValue
+@onready var armor_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/ArmorValue
+@onready var hit_chance_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/HitChanceValue
+@onready var crit_chance_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/CritChanceValue
+@onready var crit_damage_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/CritDamageValue
+@onready var speed_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/SpeedValue
+@onready var attack_speed_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/AttackSpeedValue
+@onready var hit_range_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/HitRangeValue
+@onready var kills_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/KillsValue
 
-@onready var available_points_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesHeader/AvailablePointsValue
-@onready var total_points_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesHeader/TotalPointsValue
-@onready var strength_value_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid/StrengthValue
-@onready var vitality_value_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid/VitalityValue
-@onready var dexterity_value_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid/DexterityValue
-@onready var intelligence_value_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid/IntelligenceValue
-@onready var luck_value_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid/LuckValue
-@onready var close_button: Button = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/Actions/CloseButton
+@onready var available_points_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesHeader/AvailablePointsValue
+@onready var total_points_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesHeader/TotalPointsValue
+@onready var strength_value_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid/StrengthValue
+@onready var vitality_value_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid/VitalityValue
+@onready var dexterity_value_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid/DexterityValue
+@onready var intelligence_value_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid/IntelligenceValue
+@onready var luck_value_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid/LuckValue
+@onready var close_button: Button = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/Actions/CloseButton
 
-@onready var add_strength_button: Button = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid/StrengthPlus
-@onready var add_vitality_button: Button = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid/VitalityPlus
-@onready var add_dexterity_button: Button = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid/DexterityPlus
-@onready var add_intelligence_button: Button = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid/IntelligencePlus
-@onready var add_luck_button: Button = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesGrid/LuckPlus
-@onready var reset_attributes_button: Button = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/Actions/ResetAttributesButton
+@onready var add_strength_button: Button = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid/StrengthPlus
+@onready var add_vitality_button: Button = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid/VitalityPlus
+@onready var add_dexterity_button: Button = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid/DexterityPlus
+@onready var add_intelligence_button: Button = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid/IntelligencePlus
+@onready var add_luck_button: Button = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/AttributesGrid/LuckPlus
+@onready var reset_attributes_button: Button = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/AttributesColumn/AttributesCard/MarginContainer/AttributesContent/Actions/ResetAttributesButton
 
 signal close_requested
 
