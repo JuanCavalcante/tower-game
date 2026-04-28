@@ -24,7 +24,7 @@ func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
 	_resolve_player_stack_state()
 
-func take_damage(amount, source_position = Vector2.ZERO) -> void:
+func take_damage(amount: int, source_position: Vector2 = Vector2.ZERO) -> void:
 	if _is_dying:
 		return
 
@@ -45,9 +45,9 @@ func attack_player() -> void:
 	_is_attacking = true
 	_attack_index = (_attack_index + 1) % 2
 
-	var attack_animation := "attack1" if _attack_index == 0 else "attack2"
+	var attack_animation: StringName = &"attack1" if _attack_index == 0 else &"attack2"
 	if not anim.sprite_frames.has_animation(attack_animation):
-		attack_animation = "attack"
+		attack_animation = &"attack"
 
 	anim.play(attack_animation)
 
@@ -102,7 +102,7 @@ func update_animation() -> void:
 	else:
 		anim.play("idle")
 
-func _on_damage_area_body_entered(body) -> void:
+func _on_damage_area_body_entered(body: Node) -> void:
 	# Sem dano por contato: apenas sinaliza oportunidade de ataque.
 	if not body.is_in_group("player") or _is_dying:
 		return
