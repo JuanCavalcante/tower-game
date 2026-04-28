@@ -346,7 +346,7 @@ func attack_player() -> void:
 
 		used_attack_animation = true
 
-	await get_tree().create_timer(BASE_ATTACK_HIT_DELAY).timeout
+	await get_tree().create_timer(BASE_ATTACK_HIT_DELAY, false).timeout
 
 	if player.has_method("take_damage") and _can_land_attack_on(player):
 		player.take_damage(damage)
@@ -354,7 +354,7 @@ func attack_player() -> void:
 	if used_attack_animation and anim.animation == "attack":
 		await anim.animation_finished
 	
-	await get_tree().create_timer(attack_cooldown).timeout
+	await get_tree().create_timer(attack_cooldown, false).timeout
 	can_attack = true
 
 
@@ -373,7 +373,7 @@ func take_damage(amount: int, from_position: Vector2 = Vector2.ZERO) -> void:
 		die()
 	else:
 		state = State.HURT
-		await get_tree().create_timer(0.2).timeout
+		await get_tree().create_timer(0.2, false).timeout
 		state = State.IDLE
 
 
@@ -384,7 +384,7 @@ func apply_knockback(delta: float) -> void:
 
 func flash() -> void:
 	modulate = Color(1, 0.3, 0.3)
-	await get_tree().create_timer(0.1).timeout
+	await get_tree().create_timer(0.1, false).timeout
 	modulate = Color(1, 1, 1)
 
 

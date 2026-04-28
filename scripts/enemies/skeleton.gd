@@ -51,14 +51,14 @@ func attack_player() -> void:
 
 	anim.play(attack_animation)
 
-	await get_tree().create_timer(SKELETON_ATTACK_HIT_DELAY).timeout
+	await get_tree().create_timer(SKELETON_ATTACK_HIT_DELAY, false).timeout
 	_apply_attack_damage(damage)
 
 	if anim.animation == attack_animation:
 		await anim.animation_finished
 
 	_is_attacking = false
-	await get_tree().create_timer(attack_cooldown).timeout
+	await get_tree().create_timer(attack_cooldown, false).timeout
 	can_attack = true
 
 func _apply_attack_damage(hit_damage: int) -> void:
@@ -145,7 +145,7 @@ func _resolve_player_stack_state() -> void:
 			_stop_player_collision_bypass()
 
 func _finish_stack_escape_cooldown() -> void:
-	await get_tree().create_timer(0.55).timeout
+	await get_tree().create_timer(0.55, false).timeout
 	_stack_escape_on_cooldown = false
 
 func _start_player_collision_bypass() -> void:

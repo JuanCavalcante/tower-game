@@ -70,15 +70,15 @@ func attack_player() -> void:
 	else:
 		anim.play("attack")
 
-	await get_tree().create_timer(0.35).timeout
+	await get_tree().create_timer(0.35, false).timeout
 	if player and player.has_method("take_damage") and _can_land_attack_on(player):
 		player.take_damage(damage)
 
 	if use_stun_attack and anim.sprite_frames.has_animation("stun"):
 		anim.play("stun")
-		await get_tree().create_timer(0.25).timeout
+		await get_tree().create_timer(0.25, false).timeout
 
-	await get_tree().create_timer(attack_cooldown).timeout
+	await get_tree().create_timer(attack_cooldown, false).timeout
 	can_attack = true
 
 
@@ -97,7 +97,7 @@ func take_damage(amount: int, source_position: Vector2 = Vector2.ZERO) -> void:
 		die()
 	else:
 		state = State.HURT
-		await get_tree().create_timer(0.2).timeout
+		await get_tree().create_timer(0.2, false).timeout
 		state = State.IDLE
 
 

@@ -39,22 +39,22 @@ func attack_player() -> void:
 
 	if use_special:
 		_special_on_cooldown = true
-		await get_tree().create_timer(BOSS_SPECIAL_HIT_DELAY).timeout
+		await get_tree().create_timer(BOSS_SPECIAL_HIT_DELAY, false).timeout
 		_apply_boss_attack_damage(damage + 10)
 		_start_special_cooldown.call_deferred()
 	else:
-		await get_tree().create_timer(BOSS_ATTACK_HIT_DELAY).timeout
+		await get_tree().create_timer(BOSS_ATTACK_HIT_DELAY, false).timeout
 		_apply_boss_attack_damage(damage)
 
 	if anim.animation == attack_animation:
 		await anim.animation_finished
 
 	_is_attacking = false
-	await get_tree().create_timer(attack_cooldown).timeout
+	await get_tree().create_timer(attack_cooldown, false).timeout
 	can_attack = true
 
 func _start_special_cooldown() -> void:
-	await get_tree().create_timer(BOSS_SPECIAL_COOLDOWN).timeout
+	await get_tree().create_timer(BOSS_SPECIAL_COOLDOWN, false).timeout
 	_special_on_cooldown = false
 
 func _apply_boss_attack_damage(hit_damage: int) -> void:

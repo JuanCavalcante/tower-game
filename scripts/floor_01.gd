@@ -41,7 +41,7 @@ func start_next_wave() -> void:
 
 	current_wave += 1
 
-	await get_tree().create_timer(1.0).timeout
+	await get_tree().create_timer(1.0, false).timeout
 
 	spawn_wave(wave_data)
 
@@ -59,7 +59,7 @@ func spawn_wave(wave_data: Dictionary) -> void:
 		var point: Node2D = spawn_points[randi() % spawn_points.size()] as Node2D
 		if point:
 			spawn_enemy_at(point)
-		await get_tree().create_timer(delay).timeout
+		await get_tree().create_timer(delay, false).timeout
 
 
 func spawn_enemy_at(point: Node2D) -> void:
