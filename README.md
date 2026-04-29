@@ -9,14 +9,26 @@ Jogo 2D em Godot 4 com loop de hub + torre: o jogador evolui atributos, enfrenta
 
 ## Visao Geral
 
-Estado atual da `main`:
+Estado atual da branch `feat/TG3-006-balanceamento-1-10`:
 
 - Hub de cidade (`floor_00_city`) como ponto central do loop.
-- Andares jogaveis mapeados no `GameManager`: `0, 1, 2, 3, 4`.
+- Andares jogaveis mapeados no `GameManager`: `0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10`.
 - Combate melee com hit chance, critico, cooldown dinamico e escalonamento por atributos.
-- Sistema global de stats, XP, level, moedas, poucoes e arma equipada.
+- Sistema global de stats, XP, level, moedas, poucoes e equipamentos comprados no hub.
 - Painel de status/atributos (`tecla C`) com distribuicao de pontos e tooltips contextuais.
 - Save/load em `user://savegame.json`.
+
+## Atualizacoes Recentes
+
+- Balanceamento inicial da curva 1..10 aplicado via tabela versionada.
+- Regra do andar 10 aplicada: encounter com boss unico (sem minions).
+- Boss do andar 10 reforcado (HP/dano/ritmo/mitigacao) com objetivo de luta final mais desafiadora.
+- Boss bar dedicada no topo da tela (cor vermelha) com nome do boss.
+- Spawn ajustado para nascer no portal em todos os andares da torre.
+- Mercador atualizado com novos itens:
+  - `Armadura de ferro` (400 moedas): reduz dano recebido.
+  - `Botas de couro` (300 moedas): concede +50% de velocidade de movimento.
+- Lista de itens do mercador ajustada para layout vertical e centralizado.
 
 ## Funcionalidades Implementadas
 
@@ -26,6 +38,7 @@ Estado atual da `main`:
 - Continuar sempre retorna para o hub preservando progresso.
 - Portal do hub com selecao de andares e bloqueio por desbloqueio.
 - Portal de saida nos andares de combate (ativa ao limpar o andar).
+- Spawn nos andares de combate posicionado pelo `ExitPortal` para evitar queda no load.
 
 ### Combate e inimigos
 
@@ -34,11 +47,15 @@ Estado atual da `main`:
 - Coin drops magneticos com coleta automatica por proximidade.
 - Mini boss (mushroom) com especial toxico e mecanica anti-head-lock.
 - Skeleton boss com padrao de ataques e especial ciclico.
+- Boss final do andar 10 com barra de vida no topo e ajustes de dificuldade para endgame.
 
 ### Progressao e atributos
 
 - Atributos: Forca, Vitalidade, Destreza, Inteligencia e Sorte.
 - Level up concede +5 pontos de atributo por nivel.
+- Equipamentos do mercador com persistencia:
+  - Armadura de ferro: reducao de dano recebido.
+  - Botas de couro: +50% de velocidade de movimento.
 - Escalonamento por nivel:
   - Recursos base (HP/SP/MP): +10 por nivel, e +25 em niveis multiplos de 5.
   - Dano base adicional: +2 por nivel.
@@ -56,6 +73,7 @@ Estado atual da `main`:
   - `Moedas`
   - `Andar atual`
   - Toggle de `Modo Dev`.
+- Boss bar no topo da tela durante o encontro do boss do andar 10.
 - Menu principal, menu de pausa e controle de volume/musica.
 - Painel de status (`C`) com:
   - Coluna esquerda: status detalhados do jogador.
@@ -83,10 +101,12 @@ Mapeados e carregados atualmente:
 - `2 -> scenes/world/floor_02.tscn`
 - `3 -> scenes/world/floor_03.tscn`
 - `4 -> scenes/world/floor_04.tscn`
-
-Observacao:
-
-- Existem scripts `floor_05.gd` e `floor_06.gd`, mas estes andares ainda nao estao ligados ao mapa de `floors` no `GameManager`.
+- `5 -> scenes/world/floor_05.tscn`
+- `6 -> scenes/world/floor_06.tscn`
+- `7 -> scenes/world/floor_07.tscn`
+- `8 -> scenes/world/floor_08.tscn`
+- `9 -> scenes/world/floor_09.tscn`
+- `10 -> scenes/world/floor_10.tscn`
 
 ## Controles
 
@@ -116,7 +136,7 @@ Dados persistidos:
 
 - andar atual
 - andares desbloqueados
-- estado completo de `PlayerStats` (nivel, xp, recursos, moedas, atributos etc.)
+- estado completo de `PlayerStats` (nivel, xp, recursos, moedas, atributos, arma e equipamentos do mercador)
 
 ## Limitacoes Conhecidas
 
