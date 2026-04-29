@@ -2,9 +2,11 @@ extends Node
 
 const ENTRY_PAUSE_SECONDS := 1.2
 const INITIAL_MUSIC_VOLUME_LINEAR := 0.5
+const BOSS_FLOOR := 10
 
 @onready var game = $Game
 @onready var theme_music = $ThemeMusic
+@onready var boss_music = $BossMusic
 @onready var main_menu = $UI/MainMenu
 @onready var pause_menu = $UI/PauseMenu
 @onready var death_overlay = $UI/DeathOverlay
@@ -19,7 +21,6 @@ const INITIAL_MUSIC_VOLUME_LINEAR := 0.5
 @onready var coins_label: Label = $UI/HUD/CoinsLabel
 @onready var xp_label = $UI/HUD/XPLabel
 @onready var floor_label = $UI/HUD/FloorLabel
-@onready var dev_mode_button = $UI/HUD/DevModeButton
 
 var is_entry_pause_active := false
 var is_status_panel_open := false
@@ -45,9 +46,7 @@ func _ready():
 	$UI/PauseMenu/MenuPanel/MenuItems/NewGameButton.pressed.connect(_on_new_game_pressed)
 	$UI/PauseMenu/MenuPanel/MenuItems/QuitButton.pressed.connect(_on_quit_pressed)
 	respawn_button.pressed.connect(_on_respawn_pressed)
-	dev_mode_button.toggled.connect(_on_dev_mode_toggled)
-	dev_mode_button.button_pressed = GameManager.is_dev_mode
-	_update_dev_button_text(GameManager.is_dev_mode)
+	_configure_boss_music_loop()
 	player_status_panel.close_requested.connect(_close_status_panel)
 	_setup_boss_health_ui()
 	xp_label.visible = false
@@ -72,8 +71,9 @@ func _process(_delta):
 		player_status_panel.refresh(_get_player_node())
 
 	_update_health_bar()
-	coins_label.text = "Moedas: %d" % [PlayerStats.coins]
+	coins_label.text = "%d" % [PlayerStats.coins]
 	floor_label.text = "Andar: %d" % [GameManager.current_floor]
+	_update_boss_music_state()
 	_update_boss_health_ui()
 
 func _update_health_bar() -> void:
@@ -93,6 +93,8 @@ func show_main_menu():
 	pause_menu.visible = false
 	death_overlay.visible = false
 	is_death_overlay_open = false
+	_stop_boss_music()
+	_play_menu_music()
 
 func start_game():
 	get_tree().paused = false
@@ -102,6 +104,7 @@ func start_game():
 	pause_menu.visible = false
 	death_overlay.visible = false
 	is_death_overlay_open = false
+	_stop_menu_music()
 
 func pause_game():
 	if is_status_panel_open:
@@ -143,6 +146,7 @@ func _on_player_death_sequence_finished() -> void:
 		_close_status_panel()
 	pause_menu.visible = false
 	death_overlay.visible = true
+	_stop_boss_music()
 	get_tree().paused = true
 
 func _on_respawn_pressed() -> void:
@@ -151,6 +155,7 @@ func _on_respawn_pressed() -> void:
 		return
 	is_death_overlay_open = false
 	death_overlay.visible = false
+	_stop_boss_music()
 	get_tree().paused = false
 	player.respawn_to_hub()
 
@@ -192,25 +197,73 @@ func _set_music_volume_from_linear(value: float) -> void:
 	var safe_value := clampf(value, 0.0, 1.0)
 	if safe_value <= 0.0:
 		theme_music.volume_db = -80.0
+		boss_music.volume_db = -80.0
 		return
 
-	theme_music.volume_db = linear_to_db(safe_value)
+	var volume_db := linear_to_db(safe_value)
+	theme_music.volume_db = volume_db
+	boss_music.volume_db = volume_db
 
-func _on_dev_mode_toggled(enabled: bool) -> void:
-	GameManager.set_dev_mode(enabled)
-	_update_dev_button_text(enabled)
+func _configure_boss_music_loop() -> void:
+	if boss_music == null or boss_music.stream == null:
+		return
+	var stream_mp3 := boss_music.stream as AudioStreamMP3
+	if stream_mp3 != null:
+		stream_mp3.loop = true
 
-func _update_dev_button_text(enabled: bool) -> void:
-	dev_mode_button.text = "Modo Dev: ON" if enabled else "Modo Dev: OFF"
+func _play_menu_music() -> void:
+	if theme_music == null:
+		return
+	if not theme_music.playing:
+		theme_music.stream_paused = false
+		theme_music.play()
+
+func _stop_menu_music() -> void:
+	if theme_music != null and theme_music.playing:
+		theme_music.stop()
+
+func _play_boss_music() -> void:
+	if boss_music == null:
+		return
+	if not boss_music.playing:
+		boss_music.stream_paused = false
+		boss_music.play()
+
+func _stop_boss_music() -> void:
+	if boss_music != null and boss_music.playing:
+		boss_music.stop()
+
+func _update_boss_music_state() -> void:
+	if _should_play_boss_music():
+		_stop_menu_music()
+		_play_boss_music()
+	else:
+		_stop_boss_music()
+
+func _should_play_boss_music() -> bool:
+	if not game.visible:
+		return false
+	if is_death_overlay_open:
+		return false
+	if GameManager.current_floor != BOSS_FLOOR:
+		return false
+
+	var boss := _find_floor_10_boss()
+	if boss == null or not is_instance_valid(boss):
+		return false
+	if "current_health" in boss and int(boss.get("current_health")) <= 0:
+		return false
+
+	return true
 
 func _setup_boss_health_ui() -> void:
 	_boss_health_root = Control.new()
 	_boss_health_root.name = "BossHealthUI"
 	_boss_health_root.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	_boss_health_root.anchor_left = 0.18
-	_boss_health_root.anchor_right = 0.82
-	_boss_health_root.offset_top = 14.0
-	_boss_health_root.offset_bottom = 86.0
+	_boss_health_root.anchor_left = 0.24
+	_boss_health_root.anchor_right = 0.76
+	_boss_health_root.offset_top = 10.0
+	_boss_health_root.offset_bottom = 64.0
 	_boss_health_root.visible = false
 	hud.add_child(_boss_health_root)
 
@@ -227,7 +280,7 @@ func _setup_boss_health_ui() -> void:
 	panel.add_child(content)
 
 	_boss_health_bar = ProgressBar.new()
-	_boss_health_bar.custom_minimum_size = Vector2(0, 28)
+	_boss_health_bar.custom_minimum_size = Vector2(0, 22)
 	_boss_health_bar.show_percentage = false
 	_boss_health_bar.max_value = 100.0
 	_boss_health_bar.value = 100.0

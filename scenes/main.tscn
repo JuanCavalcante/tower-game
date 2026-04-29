@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://dynj5g1n2ds04" path="res://midia/TWGame.png" id="2_i0i0k"]
 [ext_resource type="AudioStream" uid="uid://uip0ovcpp0b8" path="res://midia/TowerGame_Theme.mp3" id="3_8q6rq"]
 [ext_resource type="Texture2D" uid="uid://bt5riy1r6dufa" path="res://assets/sprites/tailmap/GandalfHardcore Pixel Art Medieval Fantasy Assets/Castle Tiles.png" id="4_tbgi4"]
+[ext_resource type="Texture2D" uid="uid://bdvfafcposmy6" path="res://assets/sprites/effect/coins-chests-etc-2-0.png" id="5_5yp7b"]
+[ext_resource type="AudioStream" path="res://midia/Glitch Crown Omega.mp3" id="6_fos8r"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tefeu"]
 texture = ExtResource("4_tbgi4")
@@ -258,6 +260,10 @@ texture = ExtResource("4_tbgi4")
 [sub_resource type="TileSet" id="TileSet_jyhfs"]
 sources/0 = SubResource("TileSetAtlasSource_tefeu")
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_coin_gold"]
+atlas = ExtResource("5_5yp7b")
+region = Rect2(17, 18, 14, 14)
+
 [node name="Main" type="Node" unique_id=40996065]
 script = ExtResource("1_0wfyh")
 
@@ -265,6 +271,10 @@ script = ExtResource("1_0wfyh")
 process_mode = 3
 stream = ExtResource("3_8q6rq")
 autoplay = true
+
+[node name="BossMusic" type="AudioStreamPlayer" parent="." unique_id=846190331]
+process_mode = 3
+stream = ExtResource("6_fos8r")
 
 [node name="Game" type="Node2D" parent="." unique_id=885062822]
 
@@ -288,8 +298,8 @@ grow_vertical = 2
 layout_mode = 0
 offset_left = 16.0
 offset_top = 16.0
-offset_right = 236.0
-offset_bottom = 42.0
+offset_right = 216.0
+offset_bottom = 38.0
 clip_contents = true
 
 [node name="Backdrop" type="ColorRect" parent="UI/HUD/HealthBar"]
@@ -320,16 +330,26 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
 theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 14
 text = "100/100"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CoinsLabel" type="Label" parent="UI/HUD"]
+[node name="CoinIcon" type="TextureRect" parent="UI/HUD"]
 layout_mode = 0
 offset_left = 16.0
 offset_top = 46.0
-offset_right = 200.0
+offset_right = 34.0
+offset_bottom = 64.0
+texture = SubResource("AtlasTexture_coin_gold")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CoinsLabel" type="Label" parent="UI/HUD"]
+layout_mode = 0
+offset_left = 38.0
+offset_top = 46.0
+offset_right = 122.0
 offset_bottom = 69.0
 
 [node name="XPLabel" type="Label" parent="UI/HUD" unique_id=1103687202]
@@ -345,14 +365,6 @@ offset_left = 16.0
 offset_top = 70.0
 offset_right = 136.0
 offset_bottom = 93.0
-
-[node name="DevModeButton" type="CheckButton" parent="UI/HUD" unique_id=576511546]
-layout_mode = 0
-offset_left = 940.0
-offset_top = 12.0
-offset_right = 1140.0
-offset_bottom = 38.0
-text = "Modo Dev: OFF"
 
 [node name="MainMenu" type="Control" parent="UI" unique_id=1103687205]
 process_mode = 3

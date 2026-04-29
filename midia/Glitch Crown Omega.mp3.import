@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bua1hv3m04ajy"
+path="res://.godot/imported/Glitch Crown Omega.mp3-7e386ff013ad31e165da57c25a84f9d1.mp3str"
+
+[deps]
+
+source_file="res://midia/Glitch Crown Omega.mp3"
+dest_files=["res://.godot/imported/Glitch Crown Omega.mp3-7e386ff013ad31e165da57c25a84f9d1.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
