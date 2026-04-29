@@ -79,7 +79,11 @@ func take_damage(amount):
 	if is_dead:
 		return
 
-	PlayerStats.current_health -= amount
+	var damage_to_apply: int = PlayerStats.get_incoming_damage(int(amount))
+	if damage_to_apply <= 0:
+		return
+
+	PlayerStats.current_health -= damage_to_apply
 	PlayerStats.current_health = max(PlayerStats.current_health, 0)
 	print("Player HP: ", PlayerStats.current_health)
 
