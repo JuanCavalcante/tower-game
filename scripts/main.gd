@@ -219,6 +219,12 @@ func _setup_boss_health_ui() -> void:
 	_boss_health_bar.show_percentage = false
 	_boss_health_bar.max_value = 100.0
 	_boss_health_bar.value = 100.0
+	var boss_bar_background := StyleBoxFlat.new()
+	boss_bar_background.bg_color = Color(0.15, 0.04, 0.04, 0.95)
+	_boss_health_bar.add_theme_stylebox_override("background", boss_bar_background)
+	var boss_bar_fill := StyleBoxFlat.new()
+	boss_bar_fill.bg_color = Color(0.87, 0.12, 0.12, 1.0)
+	_boss_health_bar.add_theme_stylebox_override("fill", boss_bar_fill)
 	content.add_child(_boss_health_bar)
 
 	_boss_name_label = Label.new()
