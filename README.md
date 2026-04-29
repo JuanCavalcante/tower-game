@@ -122,4 +122,79 @@ Dados persistidos:
 
 - Fluxo de portal entre andares ainda e automatico ao entrar no `ExitPortal` ativo (sem escolha de "voltar cidade / proximo andar" no portal de combate).
 - Inventario/equipamentos completos (drag and drop) ainda nao implementados.
-- Tela de morte dedicada com botao de renascer ainda nao esta integrada ao loop principal.
+
+## Roadmap por Fases
+
+Status de referencia atualizado em `2026-04-29`, com base na `main`, PRs mergeados e issues do board `Projects/TowerGame > Current iteration`.
+
+### Fase 1 - Fundacao jogavel (Concluida)
+
+- Loop base de combate + HUD + pausa.
+- Estrutura de save/load funcional.
+- Base de andares iniciais e bosses em funcionamento.
+
+Entregas relacionadas:
+- Fluxo base consolidado na `main`.
+
+### Fase 2 - Hub da Cidade e Progressao de Acesso (Concluida)
+
+- Floor 0 (cidade/hub) implementado.
+- Portal central com selecao de andares 1..10.
+- Andares bloqueados/desbloqueados com persistencia em save.
+- Fluxo cidade <-> torre com spawn consistente.
+
+Entregas relacionadas:
+- #6 (TG3-001) concluida.
+- #7 (TG3-002) concluida.
+- #8 (TG3-003) concluida.
+- #9 (TG3-004) concluida.
+
+### Fase 3 - Qualidade de Combate e UX de Morte/Status (Concluida)
+
+- Ajustes de hitbox/knockback/colisao para reduzir soft lock.
+- Painel de status (tecla `C`) com atributos e tooltips.
+- Fluxo de morte com animacao, overlay `Voce morreu` e botao `Renascer`.
+
+Entregas relacionadas:
+- #18 (TG3-008) concluida.
+- #12 (TG3-007) concluida.
+- #24 (TG3-011) concluida.
+
+### Fase 4 - Escala de Conteudo 1..10 e Balanceamento (Em andamento)
+
+Objetivo:
+- Fechar pacote de andares jogaveis ate 10.
+- Aplicar curva de dificuldade coerente (HP/dano/XP/spawn/waves).
+
+Pendencias principais:
+- #10 (TG3-005) em aberto.
+- #11 (TG3-006) em aberto.
+
+### Fase 5 - UX de Portal Tatico e HUD de Vida (Pendente)
+
+Objetivo:
+- Dar ao jogador decisao explicita no portal do andar.
+- Melhorar legibilidade de sobrevivencia em combate.
+
+Pendencias principais:
+- #23 (TG3-010): escolha `Retornar a cidade` vs `Ir Proximo Andar`.
+- #25 (TG3-012): barra de vida no HUD com `HP atual/maximo`.
+
+### Fase 6 - Inventario RPG e Equipamentos (Pendente)
+
+Objetivo:
+- Sistema de inventario com drag and drop entre mochila e equipamentos.
+- Base para progressao de itens e customizacao de build.
+
+Pendencia principal:
+- #22 (TG3-009) em aberto.
+
+## Proximo Marco Recomendado
+
+Para fechar o ciclo atual com menor risco tecnico:
+
+1. Concluir #10 (andares 7-10).
+2. Concluir #11 (balanceamento 1-10).
+3. Concluir #23 (decisao de portal no fim do andar).
+4. Concluir #25 (barra de vida da HUD).
+5. Iniciar #22 (inventario/equipamentos).
