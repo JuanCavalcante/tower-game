@@ -4,6 +4,12 @@ signal death_sequence_finished
 const SWORD_SFX_1 := preload("res://assets/sprites/effect/sound/sword1.mp3")
 const SWORD_SFX_2 := preload("res://assets/sprites/effect/sound/sword2.mp3")
 const ATTACK_HIT_PROGRESS := 0.6
+const DAMAGE_INDICATOR_OFFSET := Vector2(-18, -54)
+const DAMAGE_INDICATOR_RISE := Vector2(0, -28)
+const DAMAGE_INDICATOR_DURATION := 0.7
+const HEAL_INDICATOR_OFFSET := Vector2(-18, -70)
+const HEAL_INDICATOR_RISE := Vector2(0, -24)
+const HEAL_INDICATOR_DURATION := 0.8
 
 @export var speed := 100
 @export var attack_damage := 10
@@ -79,11 +85,51 @@ func take_damage(amount):
 	if is_dead:
 		return
 
+	var previous_health: int = PlayerStats.current_health
 	PlayerStats.take_damage(amount)
+	var damage_taken: int = max(previous_health - PlayerStats.current_health, 0)
+	if damage_taken > 0:
+		_show_damage_indicator(damage_taken)
 	print("Player HP: ", PlayerStats.current_health)
 
 	if PlayerStats.current_health <= 0:
 		await die()
+
+func _show_damage_indicator(damage_taken: int) -> void:
+	_show_floating_indicator(
+		"-%d" % damage_taken,
+		Color(1.0, 0.18, 0.12, 1.0),
+		DAMAGE_INDICATOR_OFFSET,
+		DAMAGE_INDICATOR_RISE,
+		DAMAGE_INDICATOR_DURATION
+	)
+
+func _show_heal_indicator(heal_received: int) -> void:
+	_show_floating_indicator(
+		"+%d" % heal_received,
+		Color(0.25, 1.0, 0.42, 1.0),
+		HEAL_INDICATOR_OFFSET,
+		HEAL_INDICATOR_RISE,
+		HEAL_INDICATOR_DURATION
+	)
+
+func _show_floating_indicator(text: String, color: Color, offset: Vector2, rise: Vector2, duration: float) -> void:
+	var indicator_label := Label.new()
+	indicator_label.text = text
+	indicator_label.z_index = 20
+	indicator_label.position = offset
+	indicator_label.modulate = color
+	indicator_label.add_theme_color_override("font_color", color)
+	indicator_label.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 0.9))
+	indicator_label.add_theme_constant_override("outline_size", 4)
+	indicator_label.add_theme_font_size_override("font_size", 18)
+	add_child(indicator_label)
+
+	var tween := create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(indicator_label, "position", offset + rise, duration)
+	tween.tween_property(indicator_label, "modulate:a", 0.0, duration)
+	tween.finished.connect(indicator_label.queue_free)
 
 func die():
 	if is_dead:
@@ -120,7 +166,11 @@ func _physics_process(delta):
 	var direction = Vector2.ZERO
 
 	if Input.is_action_just_pressed("use_potion"):
+		var previous_health: int = PlayerStats.current_health
 		if PlayerStats.use_potion(40):
+			var heal_received: int = max(PlayerStats.current_health - previous_health, 0)
+			if heal_received > 0:
+				_show_heal_indicator(heal_received)
 			print("Pocao usada. HP: ", PlayerStats.current_health, "/", PlayerStats.max_health)
 		else:
 			print("Sem pocao ou HP ja cheio.")
