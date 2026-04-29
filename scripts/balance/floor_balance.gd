@@ -42,7 +42,15 @@ const FLOOR_BALANCE := {
 		"boss": {"hp": 264, "damage": 38, "xp": 160, "speed": 296.0, "attack_cooldown": 0.38}
 	},
 	10: {
-		"boss": {"hp": 340, "damage": 44, "xp": 220, "speed": 320.0, "attack_cooldown": 0.34}
+		"boss": {
+			"hp": 1400,
+			"damage": 58,
+			"xp": 220,
+			"speed": 340.0,
+			"attack_cooldown": 0.28,
+			"damage_reduction_ratio": 0.48,
+			"damage_reduction_flat": 2
+		}
 	}
 }
 

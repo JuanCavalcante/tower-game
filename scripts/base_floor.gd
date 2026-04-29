@@ -52,6 +52,8 @@ func _apply_enemy_balance(enemy: Node, data: Dictionary) -> void:
 	_apply_stat(enemy, "xp_reward", int(stats.get("xp", 0)))
 	_apply_stat(enemy, "speed", float(stats.get("speed", 0.0)))
 	_apply_stat(enemy, "attack_cooldown", float(stats.get("attack_cooldown", 0.0)))
+	_apply_stat(enemy, "damage_reduction_ratio", float(stats.get("damage_reduction_ratio", 0.0)))
+	_apply_stat(enemy, "damage_reduction_flat", int(stats.get("damage_reduction_flat", 0)))
 	if "current_health" in enemy and int(stats.get("hp", 0)) > 0:
 		enemy.current_health = int(stats["hp"])
 
