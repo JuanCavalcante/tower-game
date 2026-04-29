@@ -18,7 +18,13 @@ var floors = {
 	1: "res://scenes/world/floor_01.tscn",
 	2: "res://scenes/world/floor_02.tscn",
 	3: "res://scenes/world/floor_03.tscn",
-	4: "res://scenes/world/floor_04.tscn"
+	4: "res://scenes/world/floor_04.tscn",
+	5: "res://scenes/world/floor_05.tscn",
+	6: "res://scenes/world/floor_06.tscn",
+	7: "res://scenes/world/floor_07.tscn",
+	8: "res://scenes/world/floor_08.tscn",
+	9: "res://scenes/world/floor_09.tscn",
+	10: "res://scenes/world/floor_10.tscn"
 }
 
 enum SpawnContext {
