@@ -21,9 +21,9 @@ Open and run via the Godot 4 editor — there is no CLI build command. Use **F5*
 Main (main.gd)
 └── Game              ← floor scenes are instantiated here
 └── UI
-    ├── MainMenu
-    ├── PauseMenu
-    └── HUD
+	├── MainMenu
+	├── PauseMenu
+	└── HUD
 ```
 `GameManager.load_floor()` looks up `Main/Game` by absolute node path and adds the floor scene as a child.
 

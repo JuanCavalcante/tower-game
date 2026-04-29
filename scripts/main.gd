@@ -14,7 +14,9 @@ const INITIAL_MUSIC_VOLUME_LINEAR := 0.5
 @onready var music_volume_slider = $UI/MainMenu/MenuPanel/MenuItems/MusicVolumeSlider
 @onready var music_pause_button = $UI/MainMenu/MenuPanel/MenuItems/MusicPauseButton
 @onready var player_status_panel = $UI/PlayerStatusPanel
-@onready var health_label = $UI/HUD/HealthLabel
+@onready var health_bar_fill: ColorRect = $UI/HUD/HealthBar/Fill
+@onready var health_bar_text: Label = $UI/HUD/HealthBar/HealthText
+@onready var coins_label: Label = $UI/HUD/CoinsLabel
 @onready var xp_label = $UI/HUD/XPLabel
 @onready var floor_label = $UI/HUD/FloorLabel
 @onready var dev_mode_button = $UI/HUD/DevModeButton
@@ -69,9 +71,19 @@ func _process(_delta):
 	if is_status_panel_open:
 		player_status_panel.refresh(_get_player_node())
 
-	health_label.text = "HP: %d/%d | Moedas: %d" % [PlayerStats.current_health, PlayerStats.max_health, PlayerStats.coins]
+	_update_health_bar()
+	coins_label.text = "Moedas: %d" % [PlayerStats.coins]
 	floor_label.text = "Andar: %d" % [GameManager.current_floor]
 	_update_boss_health_ui()
+
+func _update_health_bar() -> void:
+	var max_health: int = max(PlayerStats.max_health, 1)
+	var current_health: int = clampi(PlayerStats.current_health, 0, max_health)
+	var health_ratio: float = float(current_health) / float(max_health)
+
+	PlayerStats.current_health = current_health
+	health_bar_fill.anchor_right = health_ratio
+	health_bar_text.text = "%d/%d" % [current_health, max_health]
 
 func show_main_menu():
 	get_tree().paused = false
