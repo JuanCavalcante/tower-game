@@ -194,28 +194,24 @@ func _update_dev_button_text(enabled: bool) -> void:
 func _setup_boss_health_ui() -> void:
 	_boss_health_root = Control.new()
 	_boss_health_root.name = "BossHealthUI"
-	_boss_health_root.layout_mode = 1
+	_boss_health_root.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	_boss_health_root.anchor_left = 0.18
-	_boss_health_root.anchor_top = 0.0
 	_boss_health_root.anchor_right = 0.82
-	_boss_health_root.anchor_bottom = 0.0
 	_boss_health_root.offset_top = 14.0
 	_boss_health_root.offset_bottom = 86.0
 	_boss_health_root.visible = false
 	hud.add_child(_boss_health_root)
 
 	var panel := PanelContainer.new()
-	panel.layout_mode = 1
-	panel.anchors_preset = 15
-	panel.anchor_right = 1.0
-	panel.anchor_bottom = 1.0
-	panel.grow_horizontal = 2
-	panel.grow_vertical = 2
+	panel.set_anchors_preset(Control.PRESET_FULL_RECT)
+	panel.offset_left = 0.0
+	panel.offset_top = 0.0
+	panel.offset_right = 0.0
+	panel.offset_bottom = 0.0
 	_boss_health_root.add_child(panel)
 
 	var content := VBoxContainer.new()
-	content.layout_mode = 2
-	content.theme_override_constants.separation = 4
+	content.add_theme_constant_override("separation", 4)
 	panel.add_child(content)
 
 	_boss_health_bar = ProgressBar.new()
