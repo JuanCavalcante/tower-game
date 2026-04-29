@@ -152,6 +152,7 @@ func _clear_action_buttons() -> void:
 func _build_portal_buttons() -> void:
 	_clear_action_buttons()
 	floor_buttons_grid.columns = 5
+	floor_buttons_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	panel_title.text = "Escolha o Andar"
 
 	for floor_num in range(1, TOTAL_PORTAL_FLOORS + 1):
@@ -168,6 +169,7 @@ func _build_portal_buttons() -> void:
 func _build_vendor_buttons() -> void:
 	_clear_action_buttons()
 	floor_buttons_grid.columns = 1
+	floor_buttons_grid.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	panel_title.text = "Vendedor"
 
 	var status := Label.new()
