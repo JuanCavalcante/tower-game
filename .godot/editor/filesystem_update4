@@ -1,2 +1,4 @@
-res://scripts/floor_04.gd
-res://scripts/enemies/base_enemy.gd
+res://CLAUDE.md
+res://autoload/PlayerStats.gd
+res://scripts/main.gd
+res://scripts/player/player.gd

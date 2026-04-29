@@ -174,8 +174,21 @@ func use_potion(heal_amount: int = 40) -> bool:
 		return false
 
 	potions -= 1
-	current_health = min(current_health + max(heal_amount, 0), max_health)
+	heal(heal_amount)
 	return true
+
+func take_damage(amount: int) -> int:
+	var damage_taken: int = max(amount, 0)
+	current_health = clampi(current_health - damage_taken, 0, max_health)
+	return current_health
+
+func heal(amount: int) -> int:
+	var heal_amount: int = max(amount, 0)
+	current_health = clampi(current_health + heal_amount, 0, max_health)
+	return current_health
+
+func refill_health() -> void:
+	current_health = max_health
 
 func equip_weapon(weapon_name: String, damage_bonus: int) -> void:
 	equipped_weapon_name = weapon_name

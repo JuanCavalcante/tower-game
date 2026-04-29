@@ -79,8 +79,7 @@ func take_damage(amount):
 	if is_dead:
 		return
 
-	PlayerStats.current_health -= amount
-	PlayerStats.current_health = max(PlayerStats.current_health, 0)
+	PlayerStats.take_damage(amount)
 	print("Player HP: ", PlayerStats.current_health)
 
 	if PlayerStats.current_health <= 0:
@@ -108,7 +107,7 @@ func respawn_to_hub() -> void:
 	if not is_dead:
 		return
 
-	PlayerStats.current_health = PlayerStats.max_health
+	PlayerStats.refill_health()
 	GameManager.return_to_hub()
 	is_dead = false
 	set_physics_process(true)

@@ -284,22 +284,67 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HealthLabel" type="Label" parent="UI/HUD" unique_id=1103687201]
+[node name="HealthBar" type="Control" parent="UI/HUD" unique_id=1103687201]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 236.0
+offset_bottom = 42.0
+clip_contents = true
+
+[node name="Backdrop" type="ColorRect" parent="UI/HUD/HealthBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.05, 0.05, 0.82)
+
+[node name="Fill" type="ColorRect" parent="UI/HUD/HealthBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.76, 0.08, 0.1, 0.95)
+
+[node name="HealthText" type="Label" parent="UI/HUD/HealthBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.9)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 16
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CoinsLabel" type="Label" parent="UI/HUD"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 46.0
+offset_right = 200.0
+offset_bottom = 69.0
 
 [node name="XPLabel" type="Label" parent="UI/HUD" unique_id=1103687202]
 layout_mode = 0
-offset_top = 24.0
-offset_right = 200.0
-offset_bottom = 47.0
+offset_left = 16.0
+offset_top = 70.0
+offset_right = 216.0
+offset_bottom = 93.0
 
 [node name="FloorLabel" type="Label" parent="UI/HUD" unique_id=1103687203]
 layout_mode = 0
-offset_top = 48.0
-offset_right = 120.0
-offset_bottom = 71.0
+offset_left = 16.0
+offset_top = 70.0
+offset_right = 136.0
+offset_bottom = 93.0
 
 [node name="DevModeButton" type="CheckButton" parent="UI/HUD" unique_id=576511546]
 layout_mode = 0
