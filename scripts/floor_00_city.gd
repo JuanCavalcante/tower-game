@@ -151,6 +151,7 @@ func _clear_action_buttons() -> void:
 
 func _build_portal_buttons() -> void:
 	_clear_action_buttons()
+	floor_buttons_grid.columns = 5
 	panel_title.text = "Escolha o Andar"
 
 	for floor_num in range(1, TOTAL_PORTAL_FLOORS + 1):
@@ -166,6 +167,7 @@ func _build_portal_buttons() -> void:
 
 func _build_vendor_buttons() -> void:
 	_clear_action_buttons()
+	floor_buttons_grid.columns = 1
 	panel_title.text = "Vendedor"
 
 	var status := Label.new()
