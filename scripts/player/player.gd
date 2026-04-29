@@ -3,14 +3,15 @@ signal death_sequence_finished
 
 const SWORD_SFX_1 := preload("res://assets/sprites/effect/sound/sword1.mp3")
 const SWORD_SFX_2 := preload("res://assets/sprites/effect/sound/sword2.mp3")
+const ATTACK_HIT_PROGRESS := 0.6
 
-@export var speed := 200
+@export var speed := 100
 @export var attack_damage := 10
 @export var attack_range := 50
 @export var attack_vertical_tolerance := 58
 @export var gravity := 900
 @export var jump_force := -400
-@export var attack_cooldown := 0.5
+@export var attack_cooldown := 1.0
 
 @onready var anim = $AnimatedSprite2D
 
@@ -165,11 +166,39 @@ func update_animation():
 func attack():
 	can_attack = false
 	is_attacking = true
+	var attack_start_time: int = Time.get_ticks_msec()
+	var attacks_per_second: float = PlayerStats.get_attack_speed_from_cooldown(float(attack_cooldown))
+	var target_cycle_duration: float = 1.0 / attacks_per_second
+
+	var attack_frame_count: int = 0
+	var base_attack_anim_speed: float = 8.0
+	if anim != null and anim.sprite_frames != null and anim.sprite_frames.has_animation("attack"):
+		attack_frame_count = anim.sprite_frames.get_frame_count("attack")
+		base_attack_anim_speed = max(anim.sprite_frames.get_animation_speed("attack"), 0.01)
+
+	var base_attack_anim_duration: float = 0.0
+	if attack_frame_count > 0:
+		base_attack_anim_duration = float(attack_frame_count) / base_attack_anim_speed
+
+	if base_attack_anim_duration > 0.0:
+		var speed_scale: float = max(base_attack_anim_duration / target_cycle_duration, 1.0)
+		anim.sprite_frames.set_animation_speed("attack", base_attack_anim_speed * speed_scale)
+	else:
+		anim.sprite_frames.set_animation_speed("attack", base_attack_anim_speed)
 
 	anim.play("attack")
 	_play_sword_sfx_start()
 	
-	await get_tree().create_timer(0.45, false).timeout
+	var current_anim_speed: float = max(anim.sprite_frames.get_animation_speed("attack"), 0.01)
+	var current_anim_duration: float = 0.0
+	if attack_frame_count > 0:
+		current_anim_duration = float(attack_frame_count) / current_anim_speed
+
+	var hit_delay: float = 0.45
+	if current_anim_duration > 0.0:
+		hit_delay = current_anim_duration * ATTACK_HIT_PROGRESS
+
+	await get_tree().create_timer(hit_delay, false).timeout
 
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	var effective_attack_range: float = float(attack_range) + 8.0
@@ -199,6 +228,8 @@ func attack():
 
 	is_attacking = false
 
-	var dynamic_cooldown: float = PlayerStats.get_attack_cooldown(float(attack_cooldown))
-	await get_tree().create_timer(dynamic_cooldown, false).timeout
+	var elapsed_seconds: float = float(Time.get_ticks_msec() - attack_start_time) / 1000.0
+	var remaining_cycle: float = max(target_cycle_duration - elapsed_seconds, 0.0)
+	if remaining_cycle > 0.0:
+		await get_tree().create_timer(remaining_cycle, false).timeout
 	can_attack = true

@@ -233,6 +233,10 @@ func get_move_speed(base_speed: float) -> float:
 	var speed_multiplier: float = 1.0 + float(dexterity) * DEXTERITY_MOVE_SPEED_PERCENT_PER_POINT
 	return max(base_speed * speed_multiplier, 0.0)
 
+func get_move_speed_percent() -> int:
+	var speed_multiplier: float = 1.0 + float(dexterity) * DEXTERITY_MOVE_SPEED_PERCENT_PER_POINT
+	return int(round(max(speed_multiplier, 0.0) * 100.0))
+
 func get_attack_speed_from_cooldown(base_cooldown: float) -> float:
 	var safe_cooldown: float = max(base_cooldown, 0.001)
 	var base_attack_speed: float = 1.0 / safe_cooldown

@@ -64,7 +64,7 @@ func refresh(player_node: Node) -> void:
 
 	var base_damage := 0
 	var attack_range := 0
-	var move_speed := 0
+	var move_speed_percent := 100
 	var attack_speed := 0.0
 
 	if is_instance_valid(player_node):
@@ -72,8 +72,7 @@ func refresh(player_node: Node) -> void:
 			base_damage = int(player_node.attack_damage)
 		if "attack_range" in player_node:
 			attack_range = int(player_node.attack_range)
-		if "speed" in player_node:
-			move_speed = int(PlayerStats.get_move_speed(float(player_node.speed)))
+		move_speed_percent = PlayerStats.get_move_speed_percent()
 		if "attack_cooldown" in player_node:
 			attack_speed = PlayerStats.get_attack_speed_from_cooldown(float(player_node.attack_cooldown))
 
@@ -83,7 +82,7 @@ func refresh(player_node: Node) -> void:
 	hit_chance_label.text = "%d%%" % PlayerStats.get_hit_chance_percent()
 	crit_chance_label.text = "%d%%" % PlayerStats.get_crit_chance_percent()
 	crit_damage_label.text = "%d%%" % PlayerStats.get_crit_damage_percent()
-	speed_label.text = str(move_speed)
+	speed_label.text = "%d%%" % move_speed_percent
 	attack_speed_label.text = "%.2f" % attack_speed
 	hit_range_label.text = str(attack_range)
 	kills_label.text = str(PlayerStats.enemy_kills)
@@ -156,7 +155,7 @@ func _bind_field_tooltips() -> void:
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/HitChanceLabel", "Chance base de um ataque acertar o alvo.")
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/CritChanceLabel", "Probabilidade de causar ataque critico.")
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/CritDamageLabel", "Multiplicador percentual aplicado em acertos criticos.")
-	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/SpeedLabel", "Velocidade atual de movimento do jogador.")
+	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/SpeedLabel", "Velocidade de movimento em percentual. 100% e a velocidade base; aumenta com Destreza.")
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/AttackSpeedLabel", "Quantidade de ataques por segundo do jogador.")
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/HitRangeLabel", "Distancia maxima para conectar ataques corpo a corpo.")
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/KillsLabel", "Total de inimigos derrotados nesta campanha.")
