@@ -590,8 +590,8 @@ texture = ExtResource("2_ihrxy")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_dbd3n")
 
-[node name="Floor04" type="Node2D" unique_id=-293732729]
-script = ExtResource("1_f04sc")
+[node name="Floor05" type="Node2D" unique_id=-293732729]
+script = ExtResource("1_f05sc")
 
 [node name="29f167d5A09c4Dcf8a37Eabc412d5513" type="Sprite2D" parent="." unique_id=535888165]
 position = Vector2(646, 519)
@@ -624,3 +624,4 @@ position = Vector2(823, 561)
 
 [node name="ExitPortal" parent="." unique_id=-284967288 instance=ExtResource("4_ihrxy")]
 position = Vector2(55, 603)
+
