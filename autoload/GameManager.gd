@@ -141,6 +141,8 @@ func load_floor(floor_number: int, save_progress := true, spawn_context: int = S
 	current_level_instance = scene.instantiate()
 	game_node.add_child(current_level_instance)
 	_reset_player_position(game_node, spawn_context)
+	if _should_refill_health_on_floor_load(floor_number, spawn_context):
+		PlayerStats.refill_health()
 
 	if save_progress:
 		save_game()
@@ -164,6 +166,12 @@ func _reset_player_position(game_node: Node, spawn_context: int) -> void:
 
 	player.global_position = _resolve_spawn_position(spawn_context)
 	player.velocity = Vector2.ZERO
+
+func _should_refill_health_on_floor_load(floor_number: int, spawn_context: int) -> bool:
+	return spawn_context in [
+		SpawnContext.ADVANCE_FLOOR,
+		SpawnContext.RETURN_TO_HUB
+	]
 
 func _resolve_spawn_position(spawn_context: int) -> Vector2:
 	if current_floor == HUB_FLOOR:
