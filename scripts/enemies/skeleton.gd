@@ -28,7 +28,11 @@ func take_damage(amount: int, source_position: Vector2 = Vector2.ZERO) -> void:
 	if _is_dying:
 		return
 
-	current_health -= amount
+	var incoming_damage: int = _compute_incoming_damage(amount)
+	if incoming_damage <= 0:
+		return
+
+	current_health -= incoming_damage
 	_update_health_bar()
 	knockback_velocity = _build_knockback_velocity(source_position)
 

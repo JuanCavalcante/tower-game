@@ -6,6 +6,7 @@ const HUB_FLOOR := 0
 const FIRST_FLOOR := 1
 const MAX_PORTAL_FLOOR := 10
 const HUB_RETURN_SPAWN_OFFSET := Vector2(120, 18)
+const FLOOR_PORTAL_SPAWN_OFFSET := Vector2(64, 18)
 
 var current_floor = 0
 var current_level_instance = null
@@ -177,7 +178,7 @@ func _resolve_spawn_position(spawn_context: int) -> Vector2:
 	if current_floor == HUB_FLOOR:
 		return _resolve_hub_spawn_position(spawn_context)
 
-	return PLAYER_START_POSITION
+	return _resolve_floor_portal_spawn_position()
 
 func _resolve_hub_spawn_position(spawn_context: int) -> Vector2:
 	var should_use_portal_spawn := spawn_context in [
@@ -202,6 +203,22 @@ func _resolve_hub_spawn_position(spawn_context: int) -> Vector2:
 		return PLAYER_START_POSITION
 
 	return anchor.global_position + HUB_RETURN_SPAWN_OFFSET
+
+func _resolve_floor_portal_spawn_position() -> Vector2:
+	if current_level_instance == null:
+		return PLAYER_START_POSITION
+
+	var anchor := current_level_instance.get_node_or_null("ExitPortal") as Node2D
+	if anchor == null:
+		anchor = _find_node2d_by_paths(current_level_instance, [
+			"Arena/ExitPortal",
+			"World/ExitPortal"
+		])
+
+	if anchor == null:
+		return PLAYER_START_POSITION
+
+	return anchor.global_position + FLOOR_PORTAL_SPAWN_OFFSET
 
 func _find_node2d_by_paths(root: Node, paths: Array[String]) -> Node2D:
 	for path in paths:

@@ -78,7 +78,7 @@ func refresh(player_node: Node) -> void:
 
 	damage_label.text = str(PlayerStats.get_total_damage(base_damage))
 	magic_damage_label.text = str(PlayerStats.get_magic_damage(0))
-	armor_label.text = "0"
+	armor_label.text = "%d%%" % PlayerStats.get_armor_damage_reduction_percent()
 	hit_chance_label.text = "%d%%" % PlayerStats.get_hit_chance_percent()
 	crit_chance_label.text = "%d%%" % PlayerStats.get_crit_chance_percent()
 	crit_damage_label.text = "%d%%" % PlayerStats.get_crit_damage_percent()
@@ -155,7 +155,7 @@ func _bind_field_tooltips() -> void:
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/HitChanceLabel", "Chance base de um ataque acertar o alvo.")
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/CritChanceLabel", "Probabilidade de causar ataque critico.")
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/CritDamageLabel", "Multiplicador percentual aplicado em acertos criticos.")
-	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/SpeedLabel", "Velocidade de movimento em percentual. 100% e a velocidade base; aumenta com Destreza.")
+	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/SpeedLabel", "Velocidade de movimento em percentual. 100% e a velocidade base; aumenta com Destreza e equipamentos como Botas de Couro.")
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/AttackSpeedLabel", "Quantidade de ataques por segundo do jogador.")
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/HitRangeLabel", "Distancia maxima para conectar ataques corpo a corpo.")
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/KillsLabel", "Total de inimigos derrotados nesta campanha.")

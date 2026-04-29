@@ -22,6 +22,8 @@ const LUCK_CRIT_CHANCE_PER_POINT := 1
 const BASE_HIT_CHANCE_PERCENT := 65
 const BASE_CRIT_CHANCE_PERCENT := 5
 const BASE_CRIT_DAMAGE_PERCENT := 150
+const IRON_ARMOR_DAMAGE_REDUCTION_RATIO := 0.20
+const LEATHER_BOOTS_MOVE_SPEED_BONUS_RATIO := 0.50
 
 const STARTING_ATTRIBUTE_POINTS := 10
 const ATTRIBUTE_POINTS_PER_LEVEL := 5
@@ -41,6 +43,8 @@ var coins := 0
 var potions := 0
 var equipped_weapon_name := "Espada Inicial"
 var weapon_damage_bonus := 0
+var has_iron_armor := false
+var has_leather_boots := false
 var enemy_kills := 0
 var level_resource_bonus := 0
 var level_damage_bonus := 0
@@ -61,6 +65,8 @@ func reset() -> void:
 	potions = 0
 	equipped_weapon_name = "Espada Inicial"
 	weapon_damage_bonus = 0
+	has_iron_armor = false
+	has_leather_boots = false
 	enemy_kills = 0
 	level_resource_bonus = 0
 	level_damage_bonus = 0
@@ -89,6 +95,8 @@ func to_save_data() -> Dictionary:
 		"potions": potions,
 		"equipped_weapon_name": equipped_weapon_name,
 		"weapon_damage_bonus": weapon_damage_bonus,
+		"has_iron_armor": has_iron_armor,
+		"has_leather_boots": has_leather_boots,
 		"enemy_kills": enemy_kills,
 		"total_attribute_points": total_attribute_points,
 		"available_attribute_points": available_attribute_points,
@@ -107,6 +115,8 @@ func load_save_data(data: Dictionary) -> void:
 	potions = int(data.get("potions", 0))
 	equipped_weapon_name = str(data.get("equipped_weapon_name", "Espada Inicial"))
 	weapon_damage_bonus = int(data.get("weapon_damage_bonus", 0))
+	has_iron_armor = bool(data.get("has_iron_armor", false))
+	has_leather_boots = bool(data.get("has_leather_boots", false))
 	enemy_kills = int(data.get("enemy_kills", 0))
 	total_attribute_points = int(data.get("total_attribute_points", STARTING_ATTRIBUTE_POINTS))
 	available_attribute_points = int(data.get("available_attribute_points", total_attribute_points))
@@ -194,6 +204,12 @@ func equip_weapon(weapon_name: String, damage_bonus: int) -> void:
 	equipped_weapon_name = weapon_name
 	weapon_damage_bonus = max(damage_bonus, 0)
 
+func equip_iron_armor() -> void:
+	has_iron_armor = true
+
+func equip_leather_boots() -> void:
+	has_leather_boots = true
+
 func register_enemy_kill() -> void:
 	enemy_kills += 1
 
@@ -243,11 +259,11 @@ func get_magic_damage_multiplier() -> float:
 	return 1.0 + float(intelligence) * INTELLIGENCE_MAGIC_DAMAGE_PERCENT_PER_POINT
 
 func get_move_speed(base_speed: float) -> float:
-	var speed_multiplier: float = 1.0 + float(dexterity) * DEXTERITY_MOVE_SPEED_PERCENT_PER_POINT
+	var speed_multiplier: float = _get_move_speed_multiplier()
 	return max(base_speed * speed_multiplier, 0.0)
 
 func get_move_speed_percent() -> int:
-	var speed_multiplier: float = 1.0 + float(dexterity) * DEXTERITY_MOVE_SPEED_PERCENT_PER_POINT
+	var speed_multiplier: float = _get_move_speed_multiplier()
 	return int(round(max(speed_multiplier, 0.0) * 100.0))
 
 func get_attack_speed_from_cooldown(base_cooldown: float) -> float:
@@ -267,6 +283,19 @@ func get_crit_chance_percent() -> int:
 
 func get_crit_damage_percent() -> int:
 	return BASE_CRIT_DAMAGE_PERCENT
+
+func get_armor_damage_reduction_percent() -> int:
+	return int(round(get_damage_reduction_ratio() * 100.0))
+
+func get_damage_reduction_ratio() -> float:
+	return IRON_ARMOR_DAMAGE_REDUCTION_RATIO if has_iron_armor else 0.0
+
+func get_incoming_damage(raw_damage: int) -> int:
+	if raw_damage <= 0:
+		return 0
+
+	var reduced_damage: float = float(raw_damage) * (1.0 - get_damage_reduction_ratio())
+	return maxi(int(ceil(reduced_damage)), 1)
 
 func _recalculate_resource_caps(refill: bool) -> void:
 	var new_max_health: int = BASE_HEALTH + level_resource_bonus + vitality * VITALITY_HEALTH_PER_POINT
@@ -292,3 +321,9 @@ func _rebuild_level_scaling_from_level() -> void:
 	for current_level in range(2, level + 1):
 		level_resource_bonus += 25 if current_level % 5 == 0 else 10
 		level_damage_bonus += 2
+
+func _get_move_speed_multiplier() -> float:
+	var speed_multiplier: float = 1.0 + float(dexterity) * DEXTERITY_MOVE_SPEED_PERCENT_PER_POINT
+	if has_leather_boots:
+		speed_multiplier += LEATHER_BOOTS_MOVE_SPEED_BONUS_RATIO
+	return speed_multiplier

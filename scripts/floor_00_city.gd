@@ -4,8 +4,13 @@ class_name Floor00City
 const TOTAL_PORTAL_FLOORS := 10
 const POTION_COST := 15
 const WEAPON_COST := 60
+const IRON_ARMOR_COST := 400
+const LEATHER_BOOTS_COST := 300
+const IRON_ARMOR_REDUCTION_PERCENT := 20
 const WEAPON_NAME := "Lamina de Aco"
 const WEAPON_DAMAGE_BONUS := 15
+const IRON_ARMOR_NAME := "Armadura de ferro"
+const LEATHER_BOOTS_NAME := "Botas de couro"
 const BUY_SOUND := preload("res://assets/sprites/effect/sound/buySound.mp3")
 
 var _player_in_portal_range := false
@@ -146,6 +151,8 @@ func _clear_action_buttons() -> void:
 
 func _build_portal_buttons() -> void:
 	_clear_action_buttons()
+	floor_buttons_grid.columns = 5
+	floor_buttons_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	panel_title.text = "Escolha o Andar"
 
 	for floor_num in range(1, TOTAL_PORTAL_FLOORS + 1):
@@ -161,6 +168,8 @@ func _build_portal_buttons() -> void:
 
 func _build_vendor_buttons() -> void:
 	_clear_action_buttons()
+	floor_buttons_grid.columns = 1
+	floor_buttons_grid.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	panel_title.text = "Vendedor"
 
 	var status := Label.new()
@@ -180,6 +189,28 @@ func _build_vendor_buttons() -> void:
 	weapon_btn.disabled = PlayerStats.weapon_damage_bonus >= WEAPON_DAMAGE_BONUS
 	weapon_btn.pressed.connect(_buy_weapon)
 	floor_buttons_grid.add_child(weapon_btn)
+
+	var armor_btn := Button.new()
+	armor_btn.custom_minimum_size = Vector2(260, 40)
+	armor_btn.text = "Comprar %s (-%d%% dano) - %d moedas" % [IRON_ARMOR_NAME, IRON_ARMOR_REDUCTION_PERCENT, IRON_ARMOR_COST]
+	armor_btn.disabled = PlayerStats.has_iron_armor
+	armor_btn.pressed.connect(_buy_iron_armor)
+	floor_buttons_grid.add_child(armor_btn)
+
+	var boots_btn := Button.new()
+	boots_btn.custom_minimum_size = Vector2(260, 40)
+	boots_btn.text = "Comprar %s (+50%% velocidade) - %d moedas" % [LEATHER_BOOTS_NAME, LEATHER_BOOTS_COST]
+	boots_btn.disabled = PlayerStats.has_leather_boots
+	boots_btn.pressed.connect(_buy_leather_boots)
+	floor_buttons_grid.add_child(boots_btn)
+
+	var equipment_status := Label.new()
+	equipment_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	equipment_status.text = "Equipamentos: Armadura[%s] | Botas[%s]" % [
+		"OK" if PlayerStats.has_iron_armor else "--",
+		"OK" if PlayerStats.has_leather_boots else "--"
+	]
+	floor_buttons_grid.add_child(equipment_status)
 
 func _apply_floor_button_state(btn: Button, floor_num: int) -> void:
 	var unlocked: bool = GameManager.is_floor_unlocked(floor_num)
@@ -333,6 +364,34 @@ func _buy_weapon() -> void:
 		return
 
 	PlayerStats.equip_weapon(WEAPON_NAME, WEAPON_DAMAGE_BONUS)
+	_build_vendor_buttons()
+	_play_buy_sound()
+	GameManager.save_game()
+
+func _buy_iron_armor() -> void:
+	if PlayerStats.has_iron_armor:
+		push_warning("Armadura de ferro ja comprada.")
+		return
+
+	if not PlayerStats.spend_coins(IRON_ARMOR_COST):
+		push_warning("Moedas insuficientes para comprar armadura.")
+		return
+
+	PlayerStats.equip_iron_armor()
+	_build_vendor_buttons()
+	_play_buy_sound()
+	GameManager.save_game()
+
+func _buy_leather_boots() -> void:
+	if PlayerStats.has_leather_boots:
+		push_warning("Botas de couro ja compradas.")
+		return
+
+	if not PlayerStats.spend_coins(LEATHER_BOOTS_COST):
+		push_warning("Moedas insuficientes para comprar botas.")
+		return
+
+	PlayerStats.equip_leather_boots()
 	_build_vendor_buttons()
 	_play_buy_sound()
 	GameManager.save_game()

@@ -86,7 +86,10 @@ func take_damage(amount):
 		return
 
 	var previous_health: int = PlayerStats.current_health
-	PlayerStats.take_damage(amount)
+	var damage_to_apply: int = PlayerStats.get_incoming_damage(int(amount))
+	if damage_to_apply <= 0:
+		return
+	PlayerStats.take_damage(damage_to_apply)
 	var damage_taken: int = max(previous_health - PlayerStats.current_health, 0)
 	if damage_taken > 0:
 		_show_damage_indicator(damage_taken)

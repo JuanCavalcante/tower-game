@@ -1,4 +1,4 @@
-extends Node2D
+extends BaseFloor
 
 @export var enemy_scene: PackedScene
 
@@ -16,8 +16,10 @@ var current_wave: int = 0
 
 
 func _ready() -> void:
+	super._ready()
 	randomize()
 	_remove_baked_enemies()
+	_apply_floor_01_waves_balance()
 	enemies_alive = 0
 	current_wave = 0
 	start_next_wave()
@@ -41,7 +43,8 @@ func start_next_wave() -> void:
 
 	current_wave += 1
 
-	await get_tree().create_timer(1.0, false).timeout
+	var rest: float = float(wave_data.get("rest", 1.0))
+	await get_tree().create_timer(rest, false).timeout
 
 	spawn_wave(wave_data)
 
@@ -74,6 +77,7 @@ func spawn_enemy_at(point: Node2D) -> void:
 	var jitter_x: float = randf_range(-22.0, 22.0)
 	enemy.global_position = point.global_position + Vector2(jitter_x, 0)
 	_ensure_enemies_container().add_child(enemy)
+	_apply_runtime_enemy_balance(enemy)
 	enemies_alive += 1
 
 
@@ -101,3 +105,28 @@ func _ensure_enemies_container() -> Node2D:
 	container.name = "Enemies"
 	add_child(container)
 	return container
+
+func _apply_floor_01_waves_balance() -> void:
+	var data: Dictionary = FloorBalance.get_floor_data(1)
+	var balanced_waves: Array = data.get("waves", [])
+	if not balanced_waves.is_empty():
+		waves = balanced_waves.duplicate(true)
+
+func _apply_runtime_enemy_balance(enemy: Node) -> void:
+	var data: Dictionary = FloorBalance.get_floor_data(1)
+	var minion_stats: Dictionary = data.get("minion", {})
+	if minion_stats.is_empty():
+		return
+
+	if "max_health" in enemy:
+		enemy.max_health = int(minion_stats.get("hp", enemy.max_health))
+	if "current_health" in enemy:
+		enemy.current_health = int(minion_stats.get("hp", enemy.current_health))
+	if "damage" in enemy:
+		enemy.damage = int(minion_stats.get("damage", enemy.damage))
+	if "xp_reward" in enemy:
+		enemy.xp_reward = int(minion_stats.get("xp", enemy.xp_reward))
+	if "speed" in enemy:
+		enemy.speed = float(minion_stats.get("speed", enemy.speed))
+	if "attack_cooldown" in enemy:
+		enemy.attack_cooldown = float(minion_stats.get("attack_cooldown", enemy.attack_cooldown))

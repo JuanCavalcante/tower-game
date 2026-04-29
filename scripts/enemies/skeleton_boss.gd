@@ -1,9 +1,11 @@
 extends "res://scripts/enemies/skeleton.gd"
 
-const BOSS_ATTACK_HIT_DELAY := 0.30
-const BOSS_SPECIAL_HIT_DELAY := 0.26
+const BOSS_ATTACK_HIT_PROGRESS := 0.56
+const BOSS_SPECIAL_HIT_PROGRESS := 0.62
 const BOSS_SPECIAL_COOLDOWN := 3.0
 const BOSS_VERTICAL_TOLERANCE := 130.0
+const FLOOR_10_RECOMMENDED_LEVEL := 12
+const FLOOR_10_UNDERLEVEL_RESIST_PER_LEVEL := 0.04
 
 var _attack_count := 0
 var _special_on_cooldown := false
@@ -20,6 +22,9 @@ func _ready() -> void:
 	stop_distance = 30.0
 	xp_reward = 380
 	coin_reward = 80
+	if GameManager.current_floor == 10:
+		show_overhead_health_bar = false
+	add_to_group("boss_enemy")
 	super._ready()
 
 func attack_player() -> void:
@@ -31,27 +36,53 @@ func attack_player() -> void:
 	_attack_count += 1
 
 	var use_special := _attack_count % 3 == 0 and not _special_on_cooldown
-	var attack_animation := "attack2" if use_special and anim.sprite_frames.has_animation("attack2") else "attack1"
+	var attack_animation: StringName = &"attack2" if use_special and anim.sprite_frames.has_animation("attack2") else &"attack1"
 	if not anim.sprite_frames.has_animation(attack_animation):
-		attack_animation = "attack"
+		attack_animation = &"attack"
+
+	var target_cycle_duration: float = maxf(attack_cooldown, 0.08)
+	var attack_started_at: int = Time.get_ticks_msec()
+	var hit_progress: float = BOSS_SPECIAL_HIT_PROGRESS if use_special else BOSS_ATTACK_HIT_PROGRESS
+	var hit_delay: float = _resolve_attack_hit_delay(attack_animation, target_cycle_duration, hit_progress)
 
 	anim.play(attack_animation)
 
 	if use_special:
 		_special_on_cooldown = true
-		await get_tree().create_timer(BOSS_SPECIAL_HIT_DELAY, false).timeout
-		_apply_boss_attack_damage(damage + 10)
+		await get_tree().create_timer(hit_delay, false).timeout
+		_apply_boss_attack_damage(damage + 14)
 		_start_special_cooldown.call_deferred()
 	else:
-		await get_tree().create_timer(BOSS_ATTACK_HIT_DELAY, false).timeout
+		await get_tree().create_timer(hit_delay, false).timeout
 		_apply_boss_attack_damage(damage)
 
 	if anim.animation == attack_animation:
 		await anim.animation_finished
 
 	_is_attacking = false
-	await get_tree().create_timer(attack_cooldown, false).timeout
+	var elapsed_seconds: float = float(Time.get_ticks_msec() - attack_started_at) / 1000.0
+	var remaining_cycle: float = maxf(target_cycle_duration - elapsed_seconds, 0.0)
+	if remaining_cycle > 0.0:
+		await get_tree().create_timer(remaining_cycle, false).timeout
 	can_attack = true
+
+func _resolve_attack_hit_delay(animation_name: StringName, target_cycle_duration: float, hit_progress: float) -> float:
+	if anim == null or anim.sprite_frames == null:
+		return target_cycle_duration * hit_progress
+
+	if not anim.sprite_frames.has_animation(animation_name):
+		return target_cycle_duration * hit_progress
+
+	var frame_count: int = anim.sprite_frames.get_frame_count(animation_name)
+	var base_speed: float = maxf(anim.sprite_frames.get_animation_speed(animation_name), 0.01)
+	var base_duration: float = float(frame_count) / base_speed if frame_count > 0 else 0.0
+	if base_duration <= 0.0:
+		return target_cycle_duration * hit_progress
+
+	var speed_scale: float = maxf(base_duration / target_cycle_duration, 1.0)
+	anim.sprite_frames.set_animation_speed(animation_name, base_speed * speed_scale)
+	var scaled_duration: float = base_duration / speed_scale
+	return scaled_duration * hit_progress
 
 func _start_special_cooldown() -> void:
 	await get_tree().create_timer(BOSS_SPECIAL_COOLDOWN, false).timeout
@@ -67,7 +98,7 @@ func _apply_boss_attack_damage(hit_damage: int) -> void:
 		player.take_damage(hit_damage)
 		return
 
-	# Fallback para evitar falso negativo por diferença de tamanho entre boss e player.
+	# Fallback para evitar falso negativo por diferenca de tamanho entre boss e player.
 	var to_player: Vector2 = player.global_position - global_position
 	var in_vertical_range: bool = abs(to_player.y) <= BOSS_VERTICAL_TOLERANCE
 	var in_horizontal_range: bool = abs(to_player.x) <= maxf(attack_range + 42.0, 78.0)
@@ -78,6 +109,22 @@ func _apply_boss_attack_damage(hit_damage: int) -> void:
 
 	if in_vertical_range and in_horizontal_range and in_front:
 		player.take_damage(hit_damage)
+
+func _compute_incoming_damage(raw_amount: int) -> int:
+	if raw_amount <= 0:
+		return 0
+
+	var adjusted_amount: int = raw_amount
+	if GameManager.current_floor == 10:
+		var missing_levels: int = maxi(FLOOR_10_RECOMMENDED_LEVEL - PlayerStats.level, 0)
+		if missing_levels > 0:
+			var level_penalty_ratio: float = clampf(float(missing_levels) * FLOOR_10_UNDERLEVEL_RESIST_PER_LEVEL, 0.0, 0.32)
+			adjusted_amount = maxi(int(ceil(float(raw_amount) * (1.0 - level_penalty_ratio))), 1)
+
+	return super._compute_incoming_damage(adjusted_amount)
+
+func get_boss_display_name() -> String:
+	return "Rei Esqueleto"
 
 func _on_damage_area_body_entered(body) -> void:
 	# Sem dano por contato: apenas habilita o estado de ataque.

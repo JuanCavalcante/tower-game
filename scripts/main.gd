@@ -24,6 +24,10 @@ const INITIAL_MUSIC_VOLUME_LINEAR := 0.5
 var is_entry_pause_active := false
 var is_status_panel_open := false
 var is_death_overlay_open := false
+var _boss_health_root: Control = null
+var _boss_health_bar: ProgressBar = null
+var _boss_name_label: Label = null
+var _tracked_boss: Node = null
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -45,6 +49,7 @@ func _ready():
 	dev_mode_button.button_pressed = GameManager.is_dev_mode
 	_update_dev_button_text(GameManager.is_dev_mode)
 	player_status_panel.close_requested.connect(_close_status_panel)
+	_setup_boss_health_ui()
 	xp_label.visible = false
 	show_main_menu()
 
@@ -69,6 +74,7 @@ func _process(_delta):
 	_update_health_bar()
 	coins_label.text = "Moedas: %d" % [PlayerStats.coins]
 	floor_label.text = "Andar: %d" % [GameManager.current_floor]
+	_update_boss_health_ui()
 
 func _update_health_bar() -> void:
 	var max_health: int = max(PlayerStats.max_health, 1)
@@ -196,3 +202,84 @@ func _on_dev_mode_toggled(enabled: bool) -> void:
 
 func _update_dev_button_text(enabled: bool) -> void:
 	dev_mode_button.text = "Modo Dev: ON" if enabled else "Modo Dev: OFF"
+
+func _setup_boss_health_ui() -> void:
+	_boss_health_root = Control.new()
+	_boss_health_root.name = "BossHealthUI"
+	_boss_health_root.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	_boss_health_root.anchor_left = 0.18
+	_boss_health_root.anchor_right = 0.82
+	_boss_health_root.offset_top = 14.0
+	_boss_health_root.offset_bottom = 86.0
+	_boss_health_root.visible = false
+	hud.add_child(_boss_health_root)
+
+	var panel := PanelContainer.new()
+	panel.set_anchors_preset(Control.PRESET_FULL_RECT)
+	panel.offset_left = 0.0
+	panel.offset_top = 0.0
+	panel.offset_right = 0.0
+	panel.offset_bottom = 0.0
+	_boss_health_root.add_child(panel)
+
+	var content := VBoxContainer.new()
+	content.add_theme_constant_override("separation", 4)
+	panel.add_child(content)
+
+	_boss_health_bar = ProgressBar.new()
+	_boss_health_bar.custom_minimum_size = Vector2(0, 28)
+	_boss_health_bar.show_percentage = false
+	_boss_health_bar.max_value = 100.0
+	_boss_health_bar.value = 100.0
+	var boss_bar_background := StyleBoxFlat.new()
+	boss_bar_background.bg_color = Color(0.15, 0.04, 0.04, 0.95)
+	_boss_health_bar.add_theme_stylebox_override("background", boss_bar_background)
+	var boss_bar_fill := StyleBoxFlat.new()
+	boss_bar_fill.bg_color = Color(0.87, 0.12, 0.12, 1.0)
+	_boss_health_bar.add_theme_stylebox_override("fill", boss_bar_fill)
+	content.add_child(_boss_health_bar)
+
+	_boss_name_label = Label.new()
+	_boss_name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_boss_name_label.text = ""
+	content.add_child(_boss_name_label)
+
+func _update_boss_health_ui() -> void:
+	if _boss_health_root == null or _boss_health_bar == null or _boss_name_label == null:
+		return
+
+	if GameManager.current_floor != 10 or not game.visible:
+		_boss_health_root.visible = false
+		_tracked_boss = null
+		return
+
+	if _tracked_boss == null or not is_instance_valid(_tracked_boss):
+		_tracked_boss = _find_floor_10_boss()
+
+	if _tracked_boss == null or not is_instance_valid(_tracked_boss):
+		_boss_health_root.visible = false
+		return
+
+	var max_hp: int = int(_tracked_boss.get("max_health"))
+	var current_hp: int = int(_tracked_boss.get("current_health"))
+	if max_hp <= 0 or current_hp <= 0:
+		_boss_health_root.visible = false
+		return
+
+	_boss_health_bar.max_value = max_hp
+	_boss_health_bar.value = clampi(current_hp, 0, max_hp)
+	if _tracked_boss.has_method("get_boss_display_name"):
+		_boss_name_label.text = _tracked_boss.get_boss_display_name()
+	else:
+		_boss_name_label.text = "Boss do Andar 10"
+
+	_boss_health_root.visible = true
+
+func _find_floor_10_boss() -> Node:
+	for enemy in get_tree().get_nodes_in_group("boss_enemy"):
+		if enemy == null or not is_instance_valid(enemy):
+			continue
+		if "state" in enemy and int(enemy.get("state")) == 4:
+			continue
+		return enemy
+	return null

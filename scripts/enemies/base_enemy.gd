@@ -35,6 +35,9 @@ enum State {
 @export var health_bar_width := 34.0
 @export var health_bar_height := 5.0
 @export var health_bar_offset_y := 10.0
+@export var show_overhead_health_bar := true
+@export_range(0.0, 0.95, 0.01) var damage_reduction_ratio := 0.0
+@export var damage_reduction_flat := 0
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 
@@ -131,6 +134,9 @@ func _get_shape_half_height(collision_shape: CollisionShape2D) -> float:
 
 
 func _create_health_bar() -> void:
+	if not show_overhead_health_bar:
+		return
+
 	_health_bar_root = Node2D.new()
 	_health_bar_root.name = "HealthBar"
 	add_child(_health_bar_root)
@@ -175,6 +181,12 @@ func _update_health_bar() -> void:
 	_health_bar_fill.size.x = health_bar_width * ratio
 	_health_bar_fill.visible = ratio > 0.0
 	_health_bar_bg.visible = true
+
+
+func set_overhead_health_bar_visible(visible: bool) -> void:
+	show_overhead_health_bar = visible
+	if _health_bar_root != null:
+		_health_bar_root.visible = visible
 
 
 func _physics_process(delta: float) -> void:
@@ -361,8 +373,12 @@ func attack_player() -> void:
 func take_damage(amount: int, from_position: Vector2 = Vector2.ZERO) -> void:
 	if state == State.DEAD:
 		return
-	
-	current_health -= amount
+
+	var incoming_damage: int = _compute_incoming_damage(amount)
+	if incoming_damage <= 0:
+		return
+
+	current_health -= incoming_damage
 	_update_health_bar()
 	
 	knockback_velocity = _build_knockback_velocity(from_position)
@@ -375,6 +391,16 @@ func take_damage(amount: int, from_position: Vector2 = Vector2.ZERO) -> void:
 		state = State.HURT
 		await get_tree().create_timer(0.2, false).timeout
 		state = State.IDLE
+
+
+func _compute_incoming_damage(raw_amount: int) -> int:
+	if raw_amount <= 0:
+		return 0
+
+	var reduced_damage: float = float(raw_amount)
+	reduced_damage *= 1.0 - clampf(damage_reduction_ratio, 0.0, 0.95)
+	reduced_damage -= float(max(damage_reduction_flat, 0))
+	return maxi(int(ceil(reduced_damage)), 1)
 
 
 func apply_knockback(delta: float) -> void:
