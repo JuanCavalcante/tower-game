@@ -18,6 +18,7 @@ func _ready() -> void:
 	damage = 16
 	knockback_force = 260.0
 	knockback_immune = true
+	receives_hit_knockback = false
 	attack_cooldown = 1.0
 	detection_range = 300.0
 	attack_range = 44.0
@@ -210,6 +211,22 @@ func _cast_toxic_special() -> void:
 	_special_charge = 0
 	_special_ready = false
 	_is_casting_special = false
+
+
+func take_damage(amount: int, source_position: Vector2 = Vector2.ZERO) -> void:
+	if state == State.DEAD:
+		return
+
+	var incoming_damage: int = _compute_incoming_damage(amount)
+	if incoming_damage <= 0:
+		return
+
+	current_health -= incoming_damage
+	_update_health_bar()
+	flash()
+
+	if current_health <= 0:
+		die()
 
 
 func die() -> void:

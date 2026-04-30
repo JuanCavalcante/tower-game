@@ -5,7 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://dynmfgd206jls" path="res://assets/tilesets/Floor Tiles2.png" id="2_ihrxy"]
 [ext_resource type="PackedScene" uid="uid://cbceuq2n756e0" path="res://scenes/enemies/slime.tscn" id="3_3boyv"]
 [ext_resource type="PackedScene" uid="uid://bsso1o3lu3okb" path="res://scenes/world/exit_portal.tscn" id="4_ihrxy"]
-[ext_resource type="PackedScene" uid="uid://cak2mx4r7hn5q" path="res://scenes/enemies/mini_boss.tscn" id="5_mboss"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dbd3n"]
 texture = ExtResource("2_ihrxy")
@@ -628,8 +627,6 @@ position = Vector2(645, 459)
 [node name="Slime8" parent="Enemies" unique_id=-1284967287 instance=ExtResource("3_3boyv")]
 position = Vector2(1096, 580)
 
-[node name="MiniBoss" parent="Enemies" unique_id=-1284967286 instance=ExtResource("5_mboss")]
-position = Vector2(646, 559)
-
 [node name="ExitPortal" parent="." unique_id=-1284967285 instance=ExtResource("4_ihrxy")]
 position = Vector2(55, 603)
+

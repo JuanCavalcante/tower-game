@@ -16,6 +16,7 @@ func _ready() -> void:
 	speed = 84.0
 	knockback_force = 110.0
 	knockback_immune = true
+	receives_hit_knockback = false
 	attack_cooldown = 0.95
 	detection_range = 320.0
 	attack_range = 50.0
@@ -109,6 +110,23 @@ func _apply_boss_attack_damage(hit_damage: int) -> void:
 
 	if in_vertical_range and in_horizontal_range and in_front:
 		player.take_damage(hit_damage)
+
+
+func take_damage(amount: int, source_position: Vector2 = Vector2.ZERO) -> void:
+	if _is_dying:
+		return
+
+	var incoming_damage: int = _compute_incoming_damage(amount)
+	if incoming_damage <= 0:
+		return
+
+	current_health -= incoming_damage
+	_update_health_bar()
+	flash()
+
+	if current_health <= 0:
+		_start_death()
+
 
 func _compute_incoming_damage(raw_amount: int) -> int:
 	if raw_amount <= 0:

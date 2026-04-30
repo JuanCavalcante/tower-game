@@ -152,6 +152,14 @@ text = "Armadura"
 layout_mode = 2
 text = "000"
 
+[node name="DamageReductionLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
+layout_mode = 2
+text = "Reducao de dano"
+
+[node name="DamageReductionValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
+layout_mode = 2
+text = "00%"
+
 [node name="HitChanceLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid"]
 layout_mode = 2
 text = "Chance de acerto"
