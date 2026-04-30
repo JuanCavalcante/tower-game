@@ -10,6 +10,7 @@ const TOOLTIP_OFFSET := Vector2(16, 16)
 @onready var damage_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/DamageValue
 @onready var magic_damage_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/MagicDamageValue
 @onready var armor_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/ArmorValue
+@onready var damage_reduction_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/DamageReductionValue
 @onready var hit_chance_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/HitChanceValue
 @onready var crit_chance_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/CritChanceValue
 @onready var crit_damage_label: Label = $CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/CritDamageValue
@@ -78,7 +79,8 @@ func refresh(player_node: Node) -> void:
 
 	damage_label.text = str(PlayerStats.get_total_damage(base_damage))
 	magic_damage_label.text = str(PlayerStats.get_magic_damage(0))
-	armor_label.text = "%d%%" % PlayerStats.get_armor_damage_reduction_percent()
+	armor_label.text = str(PlayerStats.get_total_armor())
+	damage_reduction_label.text = "%d%%" % PlayerStats.get_damage_reduction_percent()
 	hit_chance_label.text = "%d%%" % PlayerStats.get_hit_chance_percent()
 	crit_chance_label.text = "%d%%" % PlayerStats.get_crit_chance_percent()
 	crit_damage_label.text = "%d%%" % PlayerStats.get_crit_damage_percent()
@@ -151,7 +153,8 @@ func _bind_field_tooltips() -> void:
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/MPLabel", "Mana atual e maxima. Base para habilidades magicas.")
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/DamageLabel", "Dano fisico atual do jogador.")
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/MagicDamageLabel", "Dano magico atual do jogador.")
-	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/ArmorLabel", "Reducao de dano recebida por defesa/armadura.")
+	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/ArmorLabel", "Valor total numerico de armadura dos equipamentos.")
+	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/DamageReductionLabel", "Reducao final de dano recebida (armadura convertida + itens), limitada a 75%.")
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/HitChanceLabel", "Chance base de um ataque acertar o alvo.")
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/CritChanceLabel", "Probabilidade de causar ataque critico.")
 	_bind_tooltip("CenterContainer/PanelContainer/MarginContainer/HBoxContainer/StatusColumn/StatusCard/MarginContainer/StatusGrid/CritDamageLabel", "Multiplicador percentual aplicado em acertos criticos.")

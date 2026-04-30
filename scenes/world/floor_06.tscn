@@ -5,7 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://dynmfgd206jls" path="res://assets/tilesets/Floor Tiles2.png" id="2_ihrxy"]
 [ext_resource type="PackedScene" uid="uid://brmt17c21m775" path="res://scenes/enemies/skeleton.tscn" id="3_skel"]
 [ext_resource type="PackedScene" uid="uid://bsso1o3lu3okb" path="res://scenes/world/exit_portal.tscn" id="4_ihrxy"]
-[ext_resource type="PackedScene" uid="uid://vdfv1gnikqp7" path="res://scenes/enemies/skeleton_boss.tscn" id="5_sboss"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dbd3n"]
 texture = ExtResource("2_ihrxy")
@@ -619,9 +618,6 @@ position = Vector2(1003, 585)
 [node name="Skeleton5" parent="Enemies" unique_id=-284967290 instance=ExtResource("3_skel")]
 position = Vector2(286, 585)
 
-[node name="SkeletonBoss" parent="Enemies" unique_id=-284967289 instance=ExtResource("5_sboss")]
-position = Vector2(823, 561)
 
 [node name="ExitPortal" parent="." unique_id=-284967288 instance=ExtResource("4_ihrxy")]
 position = Vector2(55, 603)
-

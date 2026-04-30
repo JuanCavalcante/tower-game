@@ -3,9 +3,8 @@
 [ext_resource type="Script" uid="uid://bkigwjomr1sp2" path="res://scripts/floor_04.gd" id="1_f04sc"]
 [ext_resource type="Texture2D" uid="uid://iol3btpbyomi" path="res://assets/sprites/sprite_generator/29f167d5-a09c-4dcf-8a37-eabc412d5513.png" id="2_fhcyc"]
 [ext_resource type="Texture2D" uid="uid://dynmfgd206jls" path="res://assets/tilesets/Floor Tiles2.png" id="2_ihrxy"]
-[ext_resource type="PackedScene" uid="uid://brmt17c21m775" path="res://scenes/enemies/skeleton.tscn" id="3_skel"]
+[ext_resource type="PackedScene" uid="uid://brmt17c21m775" path="res://scenes/enemies/slime.tscn" id="3_3boyv"]
 [ext_resource type="PackedScene" uid="uid://bsso1o3lu3okb" path="res://scenes/world/exit_portal.tscn" id="4_ihrxy"]
-[ext_resource type="PackedScene" uid="uid://vdfv1gnikqp7" path="res://scenes/enemies/skeleton_boss.tscn" id="5_sboss"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dbd3n"]
 texture = ExtResource("2_ihrxy")
@@ -604,23 +603,21 @@ tile_set = SubResource("TileSet_yyb8y")
 
 [node name="Enemies" type="Node2D" parent="." unique_id=-284967295]
 
-[node name="Skeleton1" parent="Enemies" unique_id=-284967294 instance=ExtResource("3_skel")]
+[node name="Slime1" parent="Enemies" unique_id=-284967294 instance=ExtResource("3_3boyv")]
 position = Vector2(153, 586)
 
-[node name="Skeleton2" parent="Enemies" unique_id=-284967293 instance=ExtResource("3_skel")]
+[node name="Slime2" parent="Enemies" unique_id=-284967293 instance=ExtResource("3_3boyv")]
 position = Vector2(404, 585)
 
-[node name="Skeleton3" parent="Enemies" unique_id=-284967292 instance=ExtResource("3_skel")]
+[node name="Slime3" parent="Enemies" unique_id=-284967292 instance=ExtResource("3_3boyv")]
 position = Vector2(699, 586)
 
-[node name="Skeleton4" parent="Enemies" unique_id=-284967291 instance=ExtResource("3_skel")]
+[node name="Slime4" parent="Enemies" unique_id=-284967291 instance=ExtResource("3_3boyv")]
 position = Vector2(1003, 585)
 
-[node name="Skeleton5" parent="Enemies" unique_id=-284967290 instance=ExtResource("3_skel")]
+[node name="Slime5" parent="Enemies" unique_id=-284967290 instance=ExtResource("3_3boyv")]
 position = Vector2(286, 585)
-
-[node name="SkeletonBoss" parent="Enemies" unique_id=-284967289 instance=ExtResource("5_sboss")]
-position = Vector2(823, 561)
 
 [node name="ExitPortal" parent="." unique_id=-284967288 instance=ExtResource("4_ihrxy")]
 position = Vector2(55, 603)
+

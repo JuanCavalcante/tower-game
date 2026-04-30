@@ -17,6 +17,7 @@ enum State {
 @export var gravity := 900.0
 @export var knockback_force := 200.0
 @export var knockback_immune := false
+@export var receives_hit_knockback := true
 @export var xp_reward := 20
 @export var coin_reward := 3
 @export var sprite_faces_right := false
@@ -434,7 +435,7 @@ func die() -> void:
 
 
 func _build_knockback_velocity(from_position: Vector2) -> Vector2:
-	if knockback_immune:
+	if knockback_immune or not receives_hit_knockback:
 		return Vector2.ZERO
 
 	var knockback_direction: Vector2 = global_position - from_position

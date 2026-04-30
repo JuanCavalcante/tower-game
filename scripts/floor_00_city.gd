@@ -4,12 +4,18 @@ class_name Floor00City
 const TOTAL_PORTAL_FLOORS := 10
 const POTION_COST := 15
 const WEAPON_COST := 60
-const IRON_ARMOR_COST := 400
+const RESISTANCE_COLLAR_COST := 400
+const IRON_CHESTPLATE_COST := 500
+const IRON_PANTS_COST := 360
+const IRON_HELMET_COST := 280
 const LEATHER_BOOTS_COST := 300
-const IRON_ARMOR_REDUCTION_PERCENT := 20
+const RESISTANCE_COLLAR_REDUCTION_PERCENT := 20
 const WEAPON_NAME := "Lamina de Aco"
 const WEAPON_DAMAGE_BONUS := 15
-const IRON_ARMOR_NAME := "Armadura de ferro"
+const RESISTANCE_COLLAR_NAME := "Colar da Resistencia"
+const IRON_CHESTPLATE_NAME := "Peitoral de ferro"
+const IRON_PANTS_NAME := "Calcas de ferro"
+const IRON_HELMET_NAME := "Elmo de ferro"
 const LEATHER_BOOTS_NAME := "Botas de couro"
 const BUY_SOUND := preload("res://assets/sprites/effect/sound/buySound.mp3")
 
@@ -190,12 +196,33 @@ func _build_vendor_buttons() -> void:
 	weapon_btn.pressed.connect(_buy_weapon)
 	floor_buttons_grid.add_child(weapon_btn)
 
-	var armor_btn := Button.new()
-	armor_btn.custom_minimum_size = Vector2(260, 40)
-	armor_btn.text = "Comprar %s (-%d%% dano) - %d moedas" % [IRON_ARMOR_NAME, IRON_ARMOR_REDUCTION_PERCENT, IRON_ARMOR_COST]
-	armor_btn.disabled = PlayerStats.has_iron_armor
-	armor_btn.pressed.connect(_buy_iron_armor)
-	floor_buttons_grid.add_child(armor_btn)
+	var collar_btn := Button.new()
+	collar_btn.custom_minimum_size = Vector2(260, 40)
+	collar_btn.text = "Comprar %s (-%d%% dano) - %d moedas" % [RESISTANCE_COLLAR_NAME, RESISTANCE_COLLAR_REDUCTION_PERCENT, RESISTANCE_COLLAR_COST]
+	collar_btn.disabled = PlayerStats.has_resistance_collar
+	collar_btn.pressed.connect(_buy_resistance_collar)
+	floor_buttons_grid.add_child(collar_btn)
+
+	var chest_btn := Button.new()
+	chest_btn.custom_minimum_size = Vector2(260, 40)
+	chest_btn.text = "Comprar %s (+%d armadura) - %d moedas" % [IRON_CHESTPLATE_NAME, PlayerStats.IRON_CHESTPLATE_ARMOR, IRON_CHESTPLATE_COST]
+	chest_btn.disabled = PlayerStats.has_iron_chestplate
+	chest_btn.pressed.connect(_buy_iron_chestplate)
+	floor_buttons_grid.add_child(chest_btn)
+
+	var pants_btn := Button.new()
+	pants_btn.custom_minimum_size = Vector2(260, 40)
+	pants_btn.text = "Comprar %s (+%d armadura) - %d moedas" % [IRON_PANTS_NAME, PlayerStats.IRON_PANTS_ARMOR, IRON_PANTS_COST]
+	pants_btn.disabled = PlayerStats.has_iron_pants
+	pants_btn.pressed.connect(_buy_iron_pants)
+	floor_buttons_grid.add_child(pants_btn)
+
+	var helmet_btn := Button.new()
+	helmet_btn.custom_minimum_size = Vector2(260, 40)
+	helmet_btn.text = "Comprar %s (+%d armadura) - %d moedas" % [IRON_HELMET_NAME, PlayerStats.IRON_HELMET_ARMOR, IRON_HELMET_COST]
+	helmet_btn.disabled = PlayerStats.has_iron_helmet
+	helmet_btn.pressed.connect(_buy_iron_helmet)
+	floor_buttons_grid.add_child(helmet_btn)
 
 	var boots_btn := Button.new()
 	boots_btn.custom_minimum_size = Vector2(260, 40)
@@ -206,9 +233,14 @@ func _build_vendor_buttons() -> void:
 
 	var equipment_status := Label.new()
 	equipment_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	equipment_status.text = "Equipamentos: Armadura[%s] | Botas[%s]" % [
-		"OK" if PlayerStats.has_iron_armor else "--",
+	equipment_status.text = "Equipamentos: Colar[%s] | Peitoral[%s] | Calcas[%s] | Elmo[%s] | Botas[%s] | Armadura total[%d]" % [
+		"OK" if PlayerStats.has_resistance_collar else "--",
+		"OK" if PlayerStats.has_iron_chestplate else "--",
+		"OK" if PlayerStats.has_iron_pants else "--",
+		"OK" if PlayerStats.has_iron_helmet else "--",
 		"OK" if PlayerStats.has_leather_boots else "--"
+		,
+		PlayerStats.get_total_armor()
 	]
 	floor_buttons_grid.add_child(equipment_status)
 
@@ -368,16 +400,58 @@ func _buy_weapon() -> void:
 	_play_buy_sound()
 	GameManager.save_game()
 
-func _buy_iron_armor() -> void:
-	if PlayerStats.has_iron_armor:
-		push_warning("Armadura de ferro ja comprada.")
+func _buy_resistance_collar() -> void:
+	if PlayerStats.has_resistance_collar:
+		push_warning("Colar da resistencia ja comprado.")
 		return
 
-	if not PlayerStats.spend_coins(IRON_ARMOR_COST):
-		push_warning("Moedas insuficientes para comprar armadura.")
+	if not PlayerStats.spend_coins(RESISTANCE_COLLAR_COST):
+		push_warning("Moedas insuficientes para comprar colar.")
 		return
 
-	PlayerStats.equip_iron_armor()
+	PlayerStats.equip_resistance_collar()
+	_build_vendor_buttons()
+	_play_buy_sound()
+	GameManager.save_game()
+
+func _buy_iron_chestplate() -> void:
+	if PlayerStats.has_iron_chestplate:
+		push_warning("Peitoral de ferro ja comprado.")
+		return
+
+	if not PlayerStats.spend_coins(IRON_CHESTPLATE_COST):
+		push_warning("Moedas insuficientes para comprar peitoral.")
+		return
+
+	PlayerStats.equip_iron_chestplate()
+	_build_vendor_buttons()
+	_play_buy_sound()
+	GameManager.save_game()
+
+func _buy_iron_pants() -> void:
+	if PlayerStats.has_iron_pants:
+		push_warning("Calcas de ferro ja compradas.")
+		return
+
+	if not PlayerStats.spend_coins(IRON_PANTS_COST):
+		push_warning("Moedas insuficientes para comprar calcas.")
+		return
+
+	PlayerStats.equip_iron_pants()
+	_build_vendor_buttons()
+	_play_buy_sound()
+	GameManager.save_game()
+
+func _buy_iron_helmet() -> void:
+	if PlayerStats.has_iron_helmet:
+		push_warning("Elmo de ferro ja comprado.")
+		return
+
+	if not PlayerStats.spend_coins(IRON_HELMET_COST):
+		push_warning("Moedas insuficientes para comprar elmo.")
+		return
+
+	PlayerStats.equip_iron_helmet()
 	_build_vendor_buttons()
 	_play_buy_sound()
 	GameManager.save_game()
