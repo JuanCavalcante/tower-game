@@ -16,16 +16,16 @@ var _is_loading_floor := false
 
 var floors = {
 	0: "res://scenes/world/floor_00_city.tscn",
-	1: "res://scenes/world/floor_01.tscn",
-	2: "res://scenes/world/floor_02.tscn",
-	3: "res://scenes/world/floor_03.tscn",
-	4: "res://scenes/world/floor_04.tscn",
-	5: "res://scenes/world/floor_05.tscn",
-	6: "res://scenes/world/floor_06.tscn",
-	7: "res://scenes/world/floor_07.tscn",
-	8: "res://scenes/world/floor_08.tscn",
-	9: "res://scenes/world/floor_09.tscn",
-	10: "res://scenes/world/floor_10.tscn"
+	1: "res://scenes/world/floors/floor_01_10/floor_01.tscn",
+	2: "res://scenes/world/floors/floor_01_10/floor_02.tscn",
+	3: "res://scenes/world/floors/floor_01_10/floor_03.tscn",
+	4: "res://scenes/world/floors/floor_01_10/floor_04.tscn",
+	5: "res://scenes/world/floors/floor_01_10/floor_05.tscn",
+	6: "res://scenes/world/floors/floor_01_10/floor_06.tscn",
+	7: "res://scenes/world/floors/floor_01_10/floor_07.tscn",
+	8: "res://scenes/world/floors/floor_01_10/floor_08.tscn",
+	9: "res://scenes/world/floors/floor_01_10/floor_09.tscn",
+	10: "res://scenes/world/floors/floor_01_10/floor_10.tscn"
 }
 
 enum SpawnContext {

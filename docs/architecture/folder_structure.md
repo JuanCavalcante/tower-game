@@ -14,7 +14,9 @@ Padronizar a organizacao de codigo e cenas para reduzir acoplamento por caminho 
 - `scripts/items/`: scripts de itens/coletaveis.
 - `scripts/ui/`: scripts de interface.
 - `scripts/autoload/`: singletons globais.
-- `scenes/world/`: cenas de mapa/floors.
+- `scenes/world/`: cenas de mundo base (hub, portal, etc.).
+- `scenes/world/floors/floor_01_10/`: andares 1 a 10.
+- Convencao de escala: `scenes/world/floors/floor_11_20/`, `floor_21_30/` e assim por diante.
 - `scenes/enemies/`: cenas de inimigos.
 - `scenes/player/`: cena do player.
 - `scenes/ui/`: cenas de UI.
@@ -31,6 +33,7 @@ Padronizar a organizacao de codigo e cenas para reduzir acoplamento por caminho 
 - `scripts/coin/coin_pickup.gd` -> `scripts/items/coin_pickup.gd`
 - `scripts/coin/coin.tscn` -> `scenes/items/coin.tscn`
 - `autoload/*.gd` -> `scripts/autoload/*.gd`
+- `scenes/world/floor_01.tscn` ... `floor_10.tscn` -> `scenes/world/floors/floor_01_10/`
 
 ## Regras
 
