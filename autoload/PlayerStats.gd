@@ -1,4 +1,5 @@
 extends Node
+signal coins_changed(value: int)
 
 const BASE_STRENGTH := 0
 const BASE_VITALITY := 0
@@ -29,6 +30,9 @@ const IRON_CHESTPLATE_ARMOR := 75
 const IRON_PANTS_ARMOR := 50
 const IRON_HELMET_ARMOR := 30
 const LEATHER_BOOTS_MOVE_SPEED_BONUS_RATIO := 0.50
+const INVENTORY_TOTAL_BACKPACK_SLOTS := 30
+const INVENTORY_UNLOCKED_BACKPACK_SLOTS := 15
+const INVENTORY_EQUIPMENT_SLOT_IDS := ["head", "necklace", "left_hand", "chest", "right_hand", "ring_1", "legs", "ring_2", "feet"]
 
 const STARTING_ATTRIBUTE_POINTS := 10
 const ATTRIBUTE_POINTS_PER_LEVEL := 5
@@ -56,6 +60,13 @@ var has_leather_boots := false
 var enemy_kills := 0
 var level_resource_bonus := 0
 var level_damage_bonus := 0
+var inventory_weapon_damage_bonus := 0
+var inventory_flat_armor_bonus := 0
+var inventory_damage_reduction_bonus_ratio := 0.0
+var inventory_move_speed_bonus_ratio := 0.0
+var inventory_crit_chance_bonus_percent := 0
+var inventory_backpack_slots: Array = []
+var inventory_equipment_slots: Dictionary = {}
 
 var total_attribute_points := STARTING_ATTRIBUTE_POINTS
 var available_attribute_points := STARTING_ATTRIBUTE_POINTS
@@ -81,6 +92,13 @@ func reset() -> void:
 	enemy_kills = 0
 	level_resource_bonus = 0
 	level_damage_bonus = 0
+	inventory_weapon_damage_bonus = 0
+	inventory_flat_armor_bonus = 0
+	inventory_damage_reduction_bonus_ratio = 0.0
+	inventory_move_speed_bonus_ratio = 0.0
+	inventory_crit_chance_bonus_percent = 0
+	inventory_backpack_slots = []
+	inventory_equipment_slots = {}
 	total_attribute_points = STARTING_ATTRIBUTE_POINTS
 	available_attribute_points = STARTING_ATTRIBUTE_POINTS
 	strength = BASE_STRENGTH
@@ -90,6 +108,7 @@ func reset() -> void:
 	luck = BASE_LUCK
 	_rebuild_level_scaling_from_level()
 	_recalculate_resource_caps(true)
+	coins_changed.emit(coins)
 
 func to_save_data() -> Dictionary:
 	return {
@@ -111,6 +130,8 @@ func to_save_data() -> Dictionary:
 		"has_iron_pants": has_iron_pants,
 		"has_iron_helmet": has_iron_helmet,
 		"has_leather_boots": has_leather_boots,
+		"inventory_backpack_slots": inventory_backpack_slots.duplicate(true),
+		"inventory_equipment_slots": inventory_equipment_slots.duplicate(true),
 		"enemy_kills": enemy_kills,
 		"total_attribute_points": total_attribute_points,
 		"available_attribute_points": available_attribute_points,
@@ -136,6 +157,20 @@ func load_save_data(data: Dictionary) -> void:
 	has_iron_pants = bool(data.get("has_iron_pants", false))
 	has_iron_helmet = bool(data.get("has_iron_helmet", false))
 	has_leather_boots = bool(data.get("has_leather_boots", false))
+	inventory_weapon_damage_bonus = 0
+	inventory_flat_armor_bonus = 0
+	inventory_damage_reduction_bonus_ratio = 0.0
+	inventory_move_speed_bonus_ratio = 0.0
+	inventory_crit_chance_bonus_percent = 0
+	inventory_backpack_slots = []
+	inventory_equipment_slots = {}
+
+	var saved_backpack = data.get("inventory_backpack_slots", [])
+	if saved_backpack is Array:
+		inventory_backpack_slots = (saved_backpack as Array).duplicate(true)
+	var saved_equipment = data.get("inventory_equipment_slots", {})
+	if saved_equipment is Dictionary:
+		inventory_equipment_slots = (saved_equipment as Dictionary).duplicate(true)
 	enemy_kills = int(data.get("enemy_kills", 0))
 	total_attribute_points = int(data.get("total_attribute_points", STARTING_ATTRIBUTE_POINTS))
 	available_attribute_points = int(data.get("available_attribute_points", total_attribute_points))
@@ -153,6 +188,7 @@ func load_save_data(data: Dictionary) -> void:
 	current_health = clampi(current_health, 0, max_health)
 	current_stamina = clampi(current_stamina, 0, max_stamina)
 	current_mana = clampi(current_mana, 0, max_mana)
+	coins_changed.emit(coins)
 
 func add_xp(amount: int) -> void:
 	if amount <= 0:
@@ -180,6 +216,7 @@ func add_coins(amount: int) -> void:
 	if amount <= 0:
 		return
 	coins += amount
+	coins_changed.emit(coins)
 
 func can_afford(cost: int) -> bool:
 	return coins >= max(cost, 0)
@@ -189,6 +226,7 @@ func spend_coins(cost: int) -> bool:
 		return false
 
 	coins -= max(cost, 0)
+	coins_changed.emit(coins)
 	return true
 
 func add_potion(amount: int = 1) -> void:
@@ -241,6 +279,73 @@ func equip_leather_boots() -> void:
 func register_enemy_kill() -> void:
 	enemy_kills += 1
 
+func apply_inventory_item_bonuses(bonuses: Dictionary) -> void:
+	inventory_weapon_damage_bonus = max(int(bonuses.get("weapon_damage_bonus", 0)), 0)
+	inventory_flat_armor_bonus = max(int(bonuses.get("flat_armor_bonus", 0)), 0)
+	inventory_damage_reduction_bonus_ratio = max(float(bonuses.get("damage_reduction_bonus_ratio", 0.0)), 0.0)
+	inventory_move_speed_bonus_ratio = max(float(bonuses.get("move_speed_bonus_ratio", 0.0)), 0.0)
+	inventory_crit_chance_bonus_percent = max(int(bonuses.get("crit_chance_bonus_percent", 0)), 0)
+
+func set_inventory_state(backpack_slots: Array, equipment_slots: Dictionary) -> void:
+	inventory_backpack_slots = backpack_slots.duplicate(true)
+	inventory_equipment_slots = equipment_slots.duplicate(true)
+
+func get_inventory_state() -> Dictionary:
+	return {
+		"backpack_slots": inventory_backpack_slots.duplicate(true),
+		"equipment_slots": inventory_equipment_slots.duplicate(true)
+	}
+
+func has_inventory_state() -> bool:
+	return not inventory_backpack_slots.is_empty() and not inventory_equipment_slots.is_empty()
+
+func inventory_contains_item_named(item_name: String) -> bool:
+	if item_name == "":
+		return false
+
+	for entry in inventory_backpack_slots:
+		if not (entry is Dictionary):
+			continue
+		var item_data := entry as Dictionary
+		if str(item_data.get("display_name", "")) == item_name:
+			return true
+
+	for entry in inventory_equipment_slots.values():
+		if not (entry is Dictionary):
+			continue
+		var item_data := entry as Dictionary
+		if str(item_data.get("display_name", "")) == item_name:
+			return true
+
+	return false
+
+func add_item_to_inventory(item_data: Dictionary) -> bool:
+	if item_data.is_empty():
+		return false
+
+	_ensure_inventory_state_initialized()
+	for index in range(INVENTORY_UNLOCKED_BACKPACK_SLOTS):
+		var slot_entry = inventory_backpack_slots[index]
+		if slot_entry is Dictionary and not (slot_entry as Dictionary).is_empty():
+			continue
+		inventory_backpack_slots[index] = item_data.duplicate(true)
+		return true
+
+	return false
+
+func _ensure_inventory_state_initialized() -> void:
+	if inventory_backpack_slots.size() != INVENTORY_TOTAL_BACKPACK_SLOTS:
+		inventory_backpack_slots.resize(INVENTORY_TOTAL_BACKPACK_SLOTS)
+		for index in range(INVENTORY_TOTAL_BACKPACK_SLOTS):
+			var existing = inventory_backpack_slots[index]
+			if existing is Dictionary:
+				continue
+			inventory_backpack_slots[index] = {}
+
+	for slot_id in INVENTORY_EQUIPMENT_SLOT_IDS:
+		if not inventory_equipment_slots.has(slot_id):
+			inventory_equipment_slots[slot_id] = {}
+
 func increment_attribute(attribute_name: String) -> bool:
 	if available_attribute_points <= 0:
 		return false
@@ -273,7 +378,8 @@ func reset_attributes() -> void:
 	_recalculate_resource_caps(false)
 
 func get_total_damage(base_damage: int) -> int:
-	var base_with_weapon: float = float(max(base_damage + weapon_damage_bonus + level_damage_bonus, 0))
+	var effective_weapon_bonus: int = maxi(weapon_damage_bonus, inventory_weapon_damage_bonus)
+	var base_with_weapon: float = float(max(base_damage + effective_weapon_bonus + level_damage_bonus, 0))
 	return int(round(base_with_weapon * get_strength_damage_multiplier()))
 
 func get_magic_damage(base_magic_damage: int = 0) -> int:
@@ -307,7 +413,7 @@ func get_hit_chance_percent() -> int:
 	return clampi(BASE_HIT_CHANCE_PERCENT + dexterity * DEXTERITY_HIT_CHANCE_PER_POINT, 0, 100)
 
 func get_crit_chance_percent() -> int:
-	return clampi(BASE_CRIT_CHANCE_PERCENT + luck * LUCK_CRIT_CHANCE_PER_POINT, 0, 100)
+	return clampi(BASE_CRIT_CHANCE_PERCENT + luck * LUCK_CRIT_CHANCE_PER_POINT + inventory_crit_chance_bonus_percent, 0, 100)
 
 func get_crit_damage_percent() -> int:
 	return BASE_CRIT_DAMAGE_PERCENT
@@ -326,13 +432,14 @@ func get_total_armor() -> int:
 		armor += IRON_PANTS_ARMOR
 	if has_iron_helmet:
 		armor += IRON_HELMET_ARMOR
-	return armor
+	return armor + inventory_flat_armor_bonus
 
 func get_armor_damage_reduction_ratio() -> float:
 	return min(float(get_total_armor()) * ARMOR_TO_DAMAGE_REDUCTION_RATIO, MAX_DAMAGE_REDUCTION_RATIO)
 
 func get_item_damage_reduction_ratio() -> float:
-	return RESISTANCE_COLLAR_DAMAGE_REDUCTION_RATIO if has_resistance_collar else 0.0
+	var legacy_ratio := RESISTANCE_COLLAR_DAMAGE_REDUCTION_RATIO if has_resistance_collar else 0.0
+	return legacy_ratio + inventory_damage_reduction_bonus_ratio
 
 func get_damage_reduction_ratio() -> float:
 	var total_ratio: float = get_armor_damage_reduction_ratio() + get_item_damage_reduction_ratio()
@@ -374,4 +481,5 @@ func _get_move_speed_multiplier() -> float:
 	var speed_multiplier: float = 1.0 + float(dexterity) * DEXTERITY_MOVE_SPEED_PERCENT_PER_POINT
 	if has_leather_boots:
 		speed_multiplier += LEATHER_BOOTS_MOVE_SPEED_BONUS_RATIO
+	speed_multiplier += inventory_move_speed_bonus_ratio
 	return speed_multiplier

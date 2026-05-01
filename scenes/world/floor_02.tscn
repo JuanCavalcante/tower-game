@@ -593,8 +593,8 @@ sources/0 = SubResource("TileSetAtlasSource_dbd3n")
 script = ExtResource("1_f02sc")
 
 [node name="BackGroundLevel1" type="Sprite2D" parent="." unique_id=78304077]
-position = Vector2(643.00006, 362.99997)
-scale = Vector2(0.8317057, 0.70214844)
+position = Vector2(640.37506, 362.99997)
+scale = Vector2(0.83512366, 0.70214844)
 texture = ExtResource("2_ovmj4")
 
 [node name="TileMap" type="TileMapLayer" parent="." unique_id=337972668]

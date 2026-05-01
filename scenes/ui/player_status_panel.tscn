@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/ui/player_status_panel.gd" id="1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_card"]
-bg_color = Color(0.66, 0.22, 0.22, 0.95)
+bg_color = Color(0.66, 0.22, 0.22, 0.46)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3

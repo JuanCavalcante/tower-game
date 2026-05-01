@@ -192,57 +192,44 @@ func _build_vendor_buttons() -> void:
 	var weapon_btn := Button.new()
 	weapon_btn.custom_minimum_size = Vector2(260, 40)
 	weapon_btn.text = "Comprar %s (+%d dano) - %d moedas" % [WEAPON_NAME, WEAPON_DAMAGE_BONUS, WEAPON_COST]
-	weapon_btn.disabled = PlayerStats.weapon_damage_bonus >= WEAPON_DAMAGE_BONUS
+	weapon_btn.disabled = _is_market_item_owned(WEAPON_NAME, PlayerStats.weapon_damage_bonus >= WEAPON_DAMAGE_BONUS)
 	weapon_btn.pressed.connect(_buy_weapon)
 	floor_buttons_grid.add_child(weapon_btn)
 
 	var collar_btn := Button.new()
 	collar_btn.custom_minimum_size = Vector2(260, 40)
 	collar_btn.text = "Comprar %s (-%d%% dano) - %d moedas" % [RESISTANCE_COLLAR_NAME, RESISTANCE_COLLAR_REDUCTION_PERCENT, RESISTANCE_COLLAR_COST]
-	collar_btn.disabled = PlayerStats.has_resistance_collar
+	collar_btn.disabled = _is_market_item_owned(RESISTANCE_COLLAR_NAME, PlayerStats.has_resistance_collar)
 	collar_btn.pressed.connect(_buy_resistance_collar)
 	floor_buttons_grid.add_child(collar_btn)
 
 	var chest_btn := Button.new()
 	chest_btn.custom_minimum_size = Vector2(260, 40)
 	chest_btn.text = "Comprar %s (+%d armadura) - %d moedas" % [IRON_CHESTPLATE_NAME, PlayerStats.IRON_CHESTPLATE_ARMOR, IRON_CHESTPLATE_COST]
-	chest_btn.disabled = PlayerStats.has_iron_chestplate
+	chest_btn.disabled = _is_market_item_owned(IRON_CHESTPLATE_NAME, PlayerStats.has_iron_chestplate)
 	chest_btn.pressed.connect(_buy_iron_chestplate)
 	floor_buttons_grid.add_child(chest_btn)
 
 	var pants_btn := Button.new()
 	pants_btn.custom_minimum_size = Vector2(260, 40)
 	pants_btn.text = "Comprar %s (+%d armadura) - %d moedas" % [IRON_PANTS_NAME, PlayerStats.IRON_PANTS_ARMOR, IRON_PANTS_COST]
-	pants_btn.disabled = PlayerStats.has_iron_pants
+	pants_btn.disabled = _is_market_item_owned(IRON_PANTS_NAME, PlayerStats.has_iron_pants)
 	pants_btn.pressed.connect(_buy_iron_pants)
 	floor_buttons_grid.add_child(pants_btn)
 
 	var helmet_btn := Button.new()
 	helmet_btn.custom_minimum_size = Vector2(260, 40)
 	helmet_btn.text = "Comprar %s (+%d armadura) - %d moedas" % [IRON_HELMET_NAME, PlayerStats.IRON_HELMET_ARMOR, IRON_HELMET_COST]
-	helmet_btn.disabled = PlayerStats.has_iron_helmet
+	helmet_btn.disabled = _is_market_item_owned(IRON_HELMET_NAME, PlayerStats.has_iron_helmet)
 	helmet_btn.pressed.connect(_buy_iron_helmet)
 	floor_buttons_grid.add_child(helmet_btn)
 
 	var boots_btn := Button.new()
 	boots_btn.custom_minimum_size = Vector2(260, 40)
 	boots_btn.text = "Comprar %s (+50%% velocidade) - %d moedas" % [LEATHER_BOOTS_NAME, LEATHER_BOOTS_COST]
-	boots_btn.disabled = PlayerStats.has_leather_boots
+	boots_btn.disabled = _is_market_item_owned(LEATHER_BOOTS_NAME, PlayerStats.has_leather_boots)
 	boots_btn.pressed.connect(_buy_leather_boots)
 	floor_buttons_grid.add_child(boots_btn)
-
-	var equipment_status := Label.new()
-	equipment_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	equipment_status.text = "Equipamentos: Colar[%s] | Peitoral[%s] | Calcas[%s] | Elmo[%s] | Botas[%s] | Armadura total[%d]" % [
-		"OK" if PlayerStats.has_resistance_collar else "--",
-		"OK" if PlayerStats.has_iron_chestplate else "--",
-		"OK" if PlayerStats.has_iron_pants else "--",
-		"OK" if PlayerStats.has_iron_helmet else "--",
-		"OK" if PlayerStats.has_leather_boots else "--"
-		,
-		PlayerStats.get_total_armor()
-	]
-	floor_buttons_grid.add_child(equipment_status)
 
 func _apply_floor_button_state(btn: Button, floor_num: int) -> void:
 	var unlocked: bool = GameManager.is_floor_unlocked(floor_num)
@@ -387,88 +374,159 @@ func _buy_potion() -> void:
 
 
 func _buy_weapon() -> void:
-	if PlayerStats.weapon_damage_bonus >= WEAPON_DAMAGE_BONUS:
-		push_warning("Arma ja comprada.")
-		return
-
-	if not PlayerStats.spend_coins(WEAPON_COST):
-		push_warning("Moedas insuficientes para comprar arma.")
-		return
-
-	PlayerStats.equip_weapon(WEAPON_NAME, WEAPON_DAMAGE_BONUS)
-	_build_vendor_buttons()
-	_play_buy_sound()
-	GameManager.save_game()
+	_buy_market_item(
+		WEAPON_NAME,
+		PlayerStats.weapon_damage_bonus >= WEAPON_DAMAGE_BONUS,
+		WEAPON_COST,
+		_build_weapon_item_data(),
+		"Arma ja comprada.",
+		"Moedas insuficientes para comprar arma."
+	)
 
 func _buy_resistance_collar() -> void:
-	if PlayerStats.has_resistance_collar:
-		push_warning("Colar da resistencia ja comprado.")
-		return
-
-	if not PlayerStats.spend_coins(RESISTANCE_COLLAR_COST):
-		push_warning("Moedas insuficientes para comprar colar.")
-		return
-
-	PlayerStats.equip_resistance_collar()
-	_build_vendor_buttons()
-	_play_buy_sound()
-	GameManager.save_game()
+	_buy_market_item(
+		RESISTANCE_COLLAR_NAME,
+		PlayerStats.has_resistance_collar,
+		RESISTANCE_COLLAR_COST,
+		_build_resistance_collar_item_data(),
+		"Colar da resistencia ja comprado.",
+		"Moedas insuficientes para comprar colar."
+	)
 
 func _buy_iron_chestplate() -> void:
-	if PlayerStats.has_iron_chestplate:
-		push_warning("Peitoral de ferro ja comprado.")
-		return
-
-	if not PlayerStats.spend_coins(IRON_CHESTPLATE_COST):
-		push_warning("Moedas insuficientes para comprar peitoral.")
-		return
-
-	PlayerStats.equip_iron_chestplate()
-	_build_vendor_buttons()
-	_play_buy_sound()
-	GameManager.save_game()
+	_buy_market_item(
+		IRON_CHESTPLATE_NAME,
+		PlayerStats.has_iron_chestplate,
+		IRON_CHESTPLATE_COST,
+		_build_iron_chestplate_item_data(),
+		"Peitoral de ferro ja comprado.",
+		"Moedas insuficientes para comprar peitoral."
+	)
 
 func _buy_iron_pants() -> void:
-	if PlayerStats.has_iron_pants:
-		push_warning("Calcas de ferro ja compradas.")
-		return
-
-	if not PlayerStats.spend_coins(IRON_PANTS_COST):
-		push_warning("Moedas insuficientes para comprar calcas.")
-		return
-
-	PlayerStats.equip_iron_pants()
-	_build_vendor_buttons()
-	_play_buy_sound()
-	GameManager.save_game()
+	_buy_market_item(
+		IRON_PANTS_NAME,
+		PlayerStats.has_iron_pants,
+		IRON_PANTS_COST,
+		_build_iron_pants_item_data(),
+		"Calcas de ferro ja compradas.",
+		"Moedas insuficientes para comprar calcas."
+	)
 
 func _buy_iron_helmet() -> void:
-	if PlayerStats.has_iron_helmet:
-		push_warning("Elmo de ferro ja comprado.")
-		return
-
-	if not PlayerStats.spend_coins(IRON_HELMET_COST):
-		push_warning("Moedas insuficientes para comprar elmo.")
-		return
-
-	PlayerStats.equip_iron_helmet()
-	_build_vendor_buttons()
-	_play_buy_sound()
-	GameManager.save_game()
+	_buy_market_item(
+		IRON_HELMET_NAME,
+		PlayerStats.has_iron_helmet,
+		IRON_HELMET_COST,
+		_build_iron_helmet_item_data(),
+		"Elmo de ferro ja comprado.",
+		"Moedas insuficientes para comprar elmo."
+	)
 
 func _buy_leather_boots() -> void:
-	if PlayerStats.has_leather_boots:
-		push_warning("Botas de couro ja compradas.")
+	_buy_market_item(
+		LEATHER_BOOTS_NAME,
+		PlayerStats.has_leather_boots,
+		LEATHER_BOOTS_COST,
+		_build_leather_boots_item_data(),
+		"Botas de couro ja compradas.",
+		"Moedas insuficientes para comprar botas."
+	)
+
+func _buy_market_item(
+	item_name: String,
+	legacy_owned: bool,
+	cost: int,
+	item_data: Dictionary,
+	already_owned_message: String,
+	insufficient_coins_message: String
+) -> void:
+	if _is_market_item_owned(item_name, legacy_owned):
+		push_warning(already_owned_message)
 		return
 
-	if not PlayerStats.spend_coins(LEATHER_BOOTS_COST):
-		push_warning("Moedas insuficientes para comprar botas.")
+	if not PlayerStats.spend_coins(cost):
+		push_warning(insufficient_coins_message)
 		return
 
-	PlayerStats.equip_leather_boots()
+	if not PlayerStats.add_item_to_inventory(item_data):
+		PlayerStats.add_coins(cost)
+		push_warning("Inventario cheio para receber o item.")
+		_build_vendor_buttons()
+		return
+
 	_build_vendor_buttons()
 	_play_buy_sound()
 	GameManager.save_game()
+
+func _is_market_item_owned(item_name: String, legacy_owned: bool = false) -> bool:
+	return legacy_owned or PlayerStats.inventory_contains_item_named(item_name)
+
+func _build_weapon_item_data() -> Dictionary:
+	return {
+		"display_name": WEAPON_NAME,
+		"item_type": "weapon",
+		"type_label": "Mao Direita",
+		"rarity": "Normal",
+		"description": "Lamina de aco vendida no mercado central.",
+		"properties": ["+%d dano fisico" % WEAPON_DAMAGE_BONUS],
+		"effects": {"weapon_damage_bonus": WEAPON_DAMAGE_BONUS}
+	}
+
+func _build_resistance_collar_item_data() -> Dictionary:
+	return {
+		"display_name": RESISTANCE_COLLAR_NAME,
+		"item_type": "necklace",
+		"type_label": "Colar",
+		"rarity": "Normal",
+		"description": "Colar que reduz parte do dano recebido.",
+		"properties": ["-%d%% dano recebido" % RESISTANCE_COLLAR_REDUCTION_PERCENT],
+		"effects": {"damage_reduction_bonus_ratio": float(RESISTANCE_COLLAR_REDUCTION_PERCENT) / 100.0}
+	}
+
+func _build_iron_chestplate_item_data() -> Dictionary:
+	return {
+		"display_name": IRON_CHESTPLATE_NAME,
+		"item_type": "chest",
+		"type_label": "Peitoral",
+		"rarity": "Normal",
+		"description": "Peitoral pesado com alta protecao.",
+		"properties": ["+%d armadura" % PlayerStats.IRON_CHESTPLATE_ARMOR],
+		"effects": {"flat_armor_bonus": PlayerStats.IRON_CHESTPLATE_ARMOR}
+	}
+
+func _build_iron_pants_item_data() -> Dictionary:
+	return {
+		"display_name": IRON_PANTS_NAME,
+		"item_type": "legs",
+		"type_label": "Pernas",
+		"rarity": "Normal",
+		"description": "Calcas reforcadas para combate corpo a corpo.",
+		"properties": ["+%d armadura" % PlayerStats.IRON_PANTS_ARMOR],
+		"effects": {"flat_armor_bonus": PlayerStats.IRON_PANTS_ARMOR}
+	}
+
+func _build_iron_helmet_item_data() -> Dictionary:
+	return {
+		"display_name": IRON_HELMET_NAME,
+		"item_type": "helmet",
+		"type_label": "Cabeca",
+		"rarity": "Normal",
+		"description": "Elmo de ferro para absorver impacto frontal.",
+		"properties": ["+%d armadura" % PlayerStats.IRON_HELMET_ARMOR],
+		"effects": {"flat_armor_bonus": PlayerStats.IRON_HELMET_ARMOR}
+	}
+
+func _build_leather_boots_item_data() -> Dictionary:
+	return {
+		"display_name": LEATHER_BOOTS_NAME,
+		"item_type": "boots",
+		"type_label": "Pes",
+		"rarity": "Normal",
+		"description": "Botas leves para ganhar mobilidade em combate.",
+		"properties": ["+50%% velocidade de movimento"],
+		"effects": {"move_speed_bonus_ratio": PlayerStats.LEATHER_BOOTS_MOVE_SPEED_BONUS_RATIO}
+	}
 
 
 func _play_buy_sound() -> void:
