@@ -1,4 +1,4 @@
-extends "res://scripts/enemies/skeleton.gd"
+extends "res://scripts/entities/enemies/skeleton.gd"
 
 const BOSS_ATTACK_HIT_PROGRESS := 0.56
 const BOSS_SPECIAL_HIT_PROGRESS := 0.62

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://csmmwqcvmouk8"]
 
-[ext_resource type="Script" uid="uid://cf46s5mnshkru" path="res://scripts/player/player.gd" id="1_8afob"]
+[ext_resource type="Script" path="res://scripts/entities/player/player.gd" id="1_8afob"]
 [ext_resource type="Texture2D" uid="uid://b7k16yjoq7xa2" path="res://assets/sprites/GandalfHardcore Warrior.png" id="2_dovo2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gmlin"]

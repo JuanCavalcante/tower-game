@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://beccveb44imjo"]
 
-[ext_resource type="Script" uid="uid://dp6n1m4htawke" path="res://scripts/floor_03.gd" id="1_f03sc"]
+[ext_resource type="Script" path="res://scripts/world/floors/floor_03.gd" id="1_f03sc"]
 [ext_resource type="Texture2D" uid="uid://cfbllt7mdut8f" path="res://assets/sprites/sprite_generator/MUSH_BACK.png" id="2_38rg2"]
 [ext_resource type="Texture2D" uid="uid://dynmfgd206jls" path="res://assets/tilesets/Floor Tiles2.png" id="2_ihrxy"]
 [ext_resource type="PackedScene" uid="uid://cbceuq2n756e0" path="res://scenes/enemies/slime.tscn" id="3_3boyv"]

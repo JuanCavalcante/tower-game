@@ -1,4 +1,4 @@
-extends "res://scripts/enemies/base_enemy.gd"
+extends "res://scripts/entities/enemies/base_enemy.gd"
 
 const MUSHROOM_FRAME_WIDTH := 80
 const MUSHROOM_FRAME_HEIGHT := 64

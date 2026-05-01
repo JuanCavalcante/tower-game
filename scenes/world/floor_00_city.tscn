@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c4hjqilrk3dhr"]
 
-[ext_resource type="Script" uid="uid://bnkrcapq7dt2f" path="res://scripts/floor_00_city.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/world/floors/floor_00_city.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://m8kasuv270pw" path="res://scenes/world/node_cidade.tscn" id="3_city_scene"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1"]

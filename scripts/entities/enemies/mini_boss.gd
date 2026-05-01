@@ -1,4 +1,4 @@
-extends "res://scripts/enemies/slime.gd"
+extends "res://scripts/entities/enemies/slime.gd"
 
 const EFFECT_GREEN_FIRE := preload("res://assets/sprites/effect/greenfire.png")
 const EFFECT_POISON := preload("res://assets/sprites/effect/poison.png")

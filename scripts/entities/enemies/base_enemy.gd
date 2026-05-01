@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name BaseEnemy
 
-const COIN_SCENE := preload("res://scripts/coin/coin.tscn")
+const COIN_SCENE := preload("res://scenes/items/coin.tscn")
 const BASE_ATTACK_HIT_DELAY := 0.22
 
 enum State {

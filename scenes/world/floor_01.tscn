@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://hykfg6x4r5kx"]
 
-[ext_resource type="Script" uid="uid://nxx0jhy5gqbx" path="res://scripts/floor_01.gd" id="1_ihyvm"]
+[ext_resource type="Script" path="res://scripts/world/floors/floor_01.gd" id="1_ihyvm"]
 [ext_resource type="Texture2D" uid="uid://dynmfgd206jls" path="res://assets/tilesets/Floor Tiles2.png" id="2_ihrxy"]
 [ext_resource type="Texture2D" uid="uid://cfbllt7mdut8f" path="res://assets/sprites/sprite_generator/MUSH_BACK.png" id="3_ylf5x"]
 [ext_resource type="PackedScene" uid="uid://bsso1o3lu3okb" path="res://scenes/world/exit_portal.tscn" id="4_ihrxy"]
