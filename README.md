@@ -1,220 +1,113 @@
 # Tower Game
 
-![Godot](https://img.shields.io/badge/Engine-Godot_4-478cbf?logo=godot-engine&logoColor=white)
+![Godot](https://img.shields.io/badge/Engine-Godot_4.6-478cbf?logo=godot-engine&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Active_Development-2ea44f)
-![Genre](https://img.shields.io/badge/Genre-2D_Action_RPG-orange)
 ![Language](https://img.shields.io/badge/Scripting-GDScript-6c7a89)
 
-Jogo 2D em Godot 4 com loop de hub + torre: o jogador evolui atributos, enfrenta inimigos por andar, coleta moedas, compra no vendedor e avanca pelos portais.
+Jogo 2D em Godot 4 com loop de **hub + torre**: o jogador evolui atributos, enfrenta inimigos por andar, coleta moedas, compra itens e progride pelos portais.
 
-## Visao Geral
+## Estado Atual
 
-Estado atual da branch `feat/TG3-006-balanceamento-1-10`:
-
-- Hub de cidade (`floor_00_city`) como ponto central do loop.
-- Andares jogaveis mapeados no `GameManager`: `0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10`.
-- Combate melee com hit chance, critico, cooldown dinamico e escalonamento por atributos.
-- Sistema global de stats, XP, level, moedas, poucoes e equipamentos comprados no hub.
-- Painel de status/atributos (`tecla C`) com distribuicao de pontos e tooltips contextuais.
+- Hub de cidade funcional (`floor_00_city`) como ponto central.
+- Andares jogáveis mapeados de `0` a `10`.
+- Combate melee com acerto crítico, cooldown dinâmico e escalonamento por atributos.
+- Sistema persistente de `XP`, `level`, `moedas`, `poções` e equipamentos.
+- Painéis de personagem (`C`) e inventário (`I`).
 - Save/load em `user://savegame.json`.
 
-## Atualizacoes Recentes
-
-- Balanceamento inicial da curva 1..10 aplicado via tabela versionada.
-- Regra do andar 10 aplicada: encounter com boss unico (sem minions).
-- Boss do andar 10 reforcado (HP/dano/ritmo/mitigacao) com objetivo de luta final mais desafiadora.
-- Boss bar dedicada no topo da tela (cor vermelha) com nome do boss.
-- Spawn ajustado para nascer no portal em todos os andares da torre.
-- Mercador atualizado com novos itens:
-  - `Armadura de ferro` (400 moedas): reduz dano recebido.
-  - `Botas de couro` (300 moedas): concede +50% de velocidade de movimento.
-- Lista de itens do mercador ajustada para layout vertical e centralizado.
-
-## Funcionalidades Implementadas
+## Funcionalidades Principais
 
 ### Loop de jogo
-
 - Novo jogo e continuar do save.
-- Continuar sempre retorna para o hub preservando progresso.
-- Portal do hub com selecao de andares e bloqueio por desbloqueio.
-- Portal de saida nos andares de combate (ativa ao limpar o andar).
-- Spawn nos andares de combate posicionado pelo `ExitPortal` para evitar queda no load.
+- Retorno ao hub preservando progresso.
+- Portal do hub com bloqueio/desbloqueio de andares.
+- Portal de saída nos andares de combate após limpar inimigos.
 
 ### Combate e inimigos
+- Player com ataque melee e regras de hit por direção/alcance.
+- IA base para inimigos (`idle/chase/attack`).
+- Miniboss no andar 5 e boss final no andar 10.
+- Regra do andar 10: apenas boss único (sem minions).
 
-- Player com ataque melee e verificacao de acerto por chance.
-- Inimigos com IA base (`idle/chase/attack`) e knockback.
-- Coin drops magneticos com coleta automatica por proximidade.
-- Mini boss (mushroom) com especial toxico e mecanica anti-head-lock.
-- Skeleton boss com padrao de ataques e especial ciclico.
-- Boss final do andar 10 com barra de vida no topo e ajustes de dificuldade para endgame.
+### Progressão
+- Atributos: Força, Vitalidade, Destreza, Inteligência e Sorte.
+- Level up com pontos de atributo.
+- Escalonamento de HP/Stamina/Mana por nível + atributos.
+- Redução de dano por armadura/equipamentos.
 
-### Progressao e atributos
+## Estrutura do Projeto
 
-- Atributos: Forca, Vitalidade, Destreza, Inteligencia e Sorte.
-- Level up concede +5 pontos de atributo por nivel.
-- Equipamentos do mercador com persistencia:
-  - Armadura de ferro: reducao de dano recebido.
-  - Botas de couro: +50% de velocidade de movimento.
-- Escalonamento por nivel:
-  - Recursos base (HP/SP/MP): +10 por nivel, e +25 em niveis multiplos de 5.
-  - Dano base adicional: +2 por nivel.
-- Regras principais:
-  - Forca: multiplicador percentual no dano fisico.
-  - Vitalidade: +5 HP e +10 SP por ponto.
-  - Destreza: acerto, velocidade de movimento e velocidade de ataque.
-  - Inteligencia: MP maximo e multiplicador percentual de dano magico.
-  - Sorte: chance de critico.
+### Scripts
+- `scripts/core/` - fluxo principal (`main.gd`).
+- `scripts/autoload/` - singletons (`GameManager`, `PlayerStats`).
+- `scripts/world/` - lógica de mundo e contrato base de floors.
+- `scripts/world/floors/` - scripts específicos por andar.
+- `scripts/entities/` - player e inimigos.
+- `scripts/items/` - itens/coletáveis.
+- `scripts/ui/` - painéis e componentes de interface.
+- `scripts/balance/` - tabela de balanceamento em runtime.
 
-### UI
+### Cenas
+- `scenes/main.tscn` - cena raiz.
+- `scenes/world/floor_00_city.tscn` - hub.
+- `scenes/world/floors/floor_01_10/` - andares 1..10.
+- `scenes/enemies/`, `scenes/player/`, `scenes/ui/`, `scenes/items/`.
 
-- HUD com:
-  - `HP atual/maximo`
-  - `Moedas`
-  - `Andar atual`
-  - Toggle de `Modo Dev`.
-- Boss bar no topo da tela durante o encontro do boss do andar 10.
-- Menu principal, menu de pausa e controle de volume/musica.
-- Painel de status (`C`) com:
-  - Coluna esquerda: status detalhados do jogador.
-  - Coluna direita: atributos, pontos disponiveis/total e botoes `+`.
-  - Tooltips contextuais ao passar o mouse.
+### Escalabilidade de andares
+A convenção atual organiza os andares por faixa:
+- `floor_01_10`
+- `floor_11_20`
+- `floor_21_30`
+- ...
 
-## Estrutura Principal
+Isso evita um diretório único muito grande em `scenes/world`.
 
-- `autoload/GameManager.gd`: fluxo global (load de andares, desbloqueio, save/load).
-- `autoload/PlayerStats.gd`: estado persistente e formulas de progressao/atributos.
-- `scenes/main.tscn`: raiz do jogo (Game + UI + audio).
-- `scripts/main.gd`: orquestracao de menu, HUD, pausa e painel de status.
-- `scripts/floor_00_city.gd`: logica do hub (portal e vendedor).
-- `scripts/base_floor.gd`: contrato base de clear de andar.
-- `scripts/enemies/*.gd`: IA e variacoes de inimigos/bosses.
-- `scripts/coin/coin_pickup.gd`: coleta de moedas com magnetismo.
-- `scenes/ui/player_status_panel.tscn`: UI do painel de status/atributos.
+## Fonte de Verdade Técnica
 
-## Andares e Cenas
-
-Mapeados e carregados atualmente:
-
-- `0 -> scenes/world/floor_00_city.tscn`
-- `1 -> scenes/world/floor_01.tscn`
-- `2 -> scenes/world/floor_02.tscn`
-- `3 -> scenes/world/floor_03.tscn`
-- `4 -> scenes/world/floor_04.tscn`
-- `5 -> scenes/world/floor_05.tscn`
-- `6 -> scenes/world/floor_06.tscn`
-- `7 -> scenes/world/floor_07.tscn`
-- `8 -> scenes/world/floor_08.tscn`
-- `9 -> scenes/world/floor_09.tscn`
-- `10 -> scenes/world/floor_10.tscn`
+- Mapa de carregamento de andares: `scripts/autoload/GameManager.gd`
+- Balanceamento aplicado em runtime: `scripts/balance/floor_balance.gd`
+- Documentação de estrutura: `docs/architecture/folder_structure.md`
 
 ## Controles
 
 - `A` / `Seta Esquerda`: mover para esquerda.
 - `D` / `Seta Direita`: mover para direita.
-- `W` / `Espaco` / `Seta Cima`: pular.
+- `W` / `Espaço` / `Seta Cima`: pular.
 - `Mouse Esquerdo`: atacar.
-- `E`: interagir (hub).
-- `Q`: usar pocao.
-- `C`: abrir/fechar painel de status do jogador.
-- `Esc`: pausar/retomar (quando aplicavel).
+- `E`: interagir.
+- `Q`: usar poção.
+- `C`: painel de status.
+- `I`: inventário.
+- `Esc`: pausa.
 
 ## Como Executar
 
-1. Abra o projeto no Godot 4.6.
-2. Rode `scenes/main.tscn` (F5).
+### Editor
+1. Abrir no Godot 4.6.
+2. Rodar `scenes/main.tscn` (`F5`).
 
-Sem pipeline de build/teste automatizado no repositorio neste momento.
+### Smoke headless
+```powershell
+& "C:\Users\juanc\Desktop\Godot_v4.6.2-stable_win64.exe\Godot.exe" --headless --path D:\projeto_game_mvp\tower-game --quit
+```
 
-## Persistencia
+## Persistência
 
-Save em JSON no caminho:
-
+Arquivo de save:
 - `user://savegame.json`
 
 Dados persistidos:
-
 - andar atual
 - andares desbloqueados
-- estado completo de `PlayerStats` (nivel, xp, recursos, moedas, atributos, arma e equipamentos do mercador)
+- estado completo de `PlayerStats`
 
-## Limitacoes Conhecidas
+## Limitações Conhecidas
 
-- Fluxo de portal entre andares ainda e automatico ao entrar no `ExitPortal` ativo (sem escolha de "voltar cidade / proximo andar" no portal de combate).
-- Inventario/equipamentos completos (drag and drop) ainda nao implementados.
+- Ainda não há suíte automatizada de testes de gameplay.
+- O smoke headless pode encerrar com warning de `ObjectDB instances leaked` (não bloqueia o carregamento principal).
 
-## Roadmap por Fases
+## Skills de Trabalho (Agentes)
 
-Status de referencia atualizado em `2026-04-29`, com base na `main`, PRs mergeados e issues do board `Projects/TowerGame > Current iteration`.
-
-### Fase 1 - Fundacao jogavel (Concluida)
-
-- Loop base de combate + HUD + pausa.
-- Estrutura de save/load funcional.
-- Base de andares iniciais e bosses em funcionamento.
-
-Entregas relacionadas:
-- Fluxo base consolidado na `main`.
-
-### Fase 2 - Hub da Cidade e Progressao de Acesso (Concluida)
-
-- Floor 0 (cidade/hub) implementado.
-- Portal central com selecao de andares 1..10.
-- Andares bloqueados/desbloqueados com persistencia em save.
-- Fluxo cidade <-> torre com spawn consistente.
-
-Entregas relacionadas:
-- #6 (TG3-001) concluida.
-- #7 (TG3-002) concluida.
-- #8 (TG3-003) concluida.
-- #9 (TG3-004) concluida.
-
-### Fase 3 - Qualidade de Combate e UX de Morte/Status (Concluida)
-
-- Ajustes de hitbox/knockback/colisao para reduzir soft lock.
-- Painel de status (tecla `C`) com atributos e tooltips.
-- Fluxo de morte com animacao, overlay `Voce morreu` e botao `Renascer`.
-
-Entregas relacionadas:
-- #18 (TG3-008) concluida.
-- #12 (TG3-007) concluida.
-- #24 (TG3-011) concluida.
-
-### Fase 4 - Escala de Conteudo 1..10 e Balanceamento (Em andamento)
-
-Objetivo:
-- Fechar pacote de andares jogaveis ate 10.
-- Aplicar curva de dificuldade coerente (HP/dano/XP/spawn/waves).
-
-Pendencias principais:
-- #10 (TG3-005) em aberto.
-- #11 (TG3-006) em aberto.
-
-### Fase 5 - UX de Portal Tatico e HUD de Vida (Pendente)
-
-Objetivo:
-- Dar ao jogador decisao explicita no portal do andar.
-- Melhorar legibilidade de sobrevivencia em combate.
-
-Pendencias principais:
-- #23 (TG3-010): escolha `Retornar a cidade` vs `Ir Proximo Andar`.
-- #25 (TG3-012): barra de vida no HUD com `HP atual/maximo`.
-
-### Fase 6 - Inventario RPG e Equipamentos (Pendente)
-
-Objetivo:
-- Sistema de inventario com drag and drop entre mochila e equipamentos.
-- Base para progressao de itens e customizacao de build.
-
-Pendencia principal:
-- #22 (TG3-009) em aberto.
-
-## Proximo Marco Recomendado
-
-Para fechar o ciclo atual com menor risco tecnico:
-
-1. Concluir #10 (andares 7-10).
-2. Concluir #11 (balanceamento 1-10).
-3. Concluir #23 (decisao de portal no fim do andar).
-4. Concluir #25 (barra de vida da HUD).
-5. Iniciar #22 (inventario/equipamentos).
+- `.agents/skills/towergame-folder-structure-standardizer`
+- `.agents/skills/towergame-post-change-mechanics-guard`
+- `.agents/skills/towergame-cross-agent-governance`
