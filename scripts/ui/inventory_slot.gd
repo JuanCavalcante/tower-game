@@ -5,6 +5,15 @@ const STYLE_ITEM := Color(0.29, 0.18, 0.12, 0.95)
 const STYLE_BLOCKED := Color(0.06, 0.06, 0.06, 0.85)
 const BORDER_COLOR := Color(0.9, 0.82, 0.58, 0.95)
 const BORDER_WIDTH := 2
+const ICON_SIZE := Vector2(32, 32)
+const ITEM_TYPE_ICON_FALLBACK := {
+	"weapon": "res://assets/sprites/items/merchant/steel_blade.png",
+	"necklace": "res://assets/sprites/items/merchant/resistance_collar.png",
+	"chest": "res://assets/sprites/items/merchant/iron_chestplate.png",
+	"legs": "res://assets/sprites/items/merchant/iron_pants.png",
+	"helmet": "res://assets/sprites/items/merchant/iron_helmet.png",
+	"boots": "res://assets/sprites/items/merchant/leather_boots.png"
+}
 
 signal slot_double_clicked(slot_id: String)
 signal slot_hover_started(slot_id: String)
@@ -19,6 +28,7 @@ var blocked := false
 var item_data: Dictionary = {}
 var inventory_owner: Node = null
 
+var _icon: TextureRect
 var _label: Label
 
 func _ready() -> void:
@@ -115,16 +125,31 @@ func _build_content() -> void:
 	margin.add_theme_constant_override("margin_bottom", 4)
 	add_child(margin)
 
+	var layout := VBoxContainer.new()
+	layout.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	layout.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	layout.alignment = BoxContainer.ALIGNMENT_CENTER
+	layout.add_theme_constant_override("separation", 2)
+	margin.add_child(layout)
+
+	_icon = TextureRect.new()
+	_icon.custom_minimum_size = ICON_SIZE
+	_icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+	_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_icon.self_modulate = Color(1, 1, 1, 1)
+	_icon.visible = false
+	layout.add_child(_icon)
+
 	_label = Label.new()
 	_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_label.clip_text = true
 	_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_label.add_theme_font_size_override("font_size", 11)
 	_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	margin.add_child(_label)
+	_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	layout.add_child(_label)
 
 func _refresh_visual() -> void:
 	if _label == null:
@@ -143,10 +168,16 @@ func _refresh_visual() -> void:
 
 	if blocked:
 		style.bg_color = STYLE_BLOCKED
+		if _icon != null:
+			_icon.texture = null
+			_icon.visible = false
 		_label.text = "Bloqueado"
 		_label.modulate = Color(0.65, 0.65, 0.65, 1.0)
 	elif item_data.is_empty():
 		style.bg_color = STYLE_EMPTY
+		if _icon != null:
+			_icon.texture = null
+			_icon.visible = false
 		if slot_kind == "equipment" and slot_label != "":
 			_label.text = slot_label
 		else:
@@ -154,7 +185,25 @@ func _refresh_visual() -> void:
 		_label.modulate = Color(0.8, 0.8, 0.8, 1.0)
 	else:
 		style.bg_color = STYLE_ITEM
+		var icon_texture := _resolve_item_icon(item_data)
+		if _icon != null:
+			_icon.texture = icon_texture
+			_icon.visible = icon_texture != null
 		_label.text = str(item_data.get("display_name", "Item"))
 		_label.modulate = Color(1.0, 0.94, 0.82, 1.0)
 
 	add_theme_stylebox_override("panel", style)
+
+func _resolve_item_icon(data: Dictionary) -> Texture2D:
+	var icon_path := str(data.get("icon_path", ""))
+	if icon_path == "":
+		var item_type := str(data.get("item_type", ""))
+		icon_path = str(ITEM_TYPE_ICON_FALLBACK.get(item_type, ""))
+	if icon_path == "":
+		return null
+	if not ResourceLoader.exists(icon_path):
+		return null
+	var icon_resource := load(icon_path)
+	if icon_resource is Texture2D:
+		return icon_resource
+	return null

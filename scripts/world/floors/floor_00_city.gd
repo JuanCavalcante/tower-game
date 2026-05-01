@@ -17,6 +17,12 @@ const IRON_CHESTPLATE_NAME := "Peitoral de ferro"
 const IRON_PANTS_NAME := "Calcas de ferro"
 const IRON_HELMET_NAME := "Elmo de ferro"
 const LEATHER_BOOTS_NAME := "Botas de couro"
+const WEAPON_ICON_PATH := "res://assets/sprites/items/merchant/steel_blade.png"
+const RESISTANCE_COLLAR_ICON_PATH := "res://assets/sprites/items/merchant/resistance_collar.png"
+const IRON_CHESTPLATE_ICON_PATH := "res://assets/sprites/items/merchant/iron_chestplate.png"
+const IRON_PANTS_ICON_PATH := "res://assets/sprites/items/merchant/iron_pants.png"
+const IRON_HELMET_ICON_PATH := "res://assets/sprites/items/merchant/iron_helmet.png"
+const LEATHER_BOOTS_ICON_PATH := "res://assets/sprites/items/merchant/leather_boots.png"
 const BUY_SOUND := preload("res://assets/sprites/effect/sound/buySound.mp3")
 
 var _player_in_portal_range := false
@@ -467,6 +473,7 @@ func _build_weapon_item_data() -> Dictionary:
 		"display_name": WEAPON_NAME,
 		"item_type": "weapon",
 		"type_label": "Mao Direita",
+		"icon_path": WEAPON_ICON_PATH,
 		"rarity": "Normal",
 		"description": "Lamina de aco vendida no mercado central.",
 		"properties": ["+%d dano fisico" % WEAPON_DAMAGE_BONUS],
@@ -478,6 +485,7 @@ func _build_resistance_collar_item_data() -> Dictionary:
 		"display_name": RESISTANCE_COLLAR_NAME,
 		"item_type": "necklace",
 		"type_label": "Colar",
+		"icon_path": RESISTANCE_COLLAR_ICON_PATH,
 		"rarity": "Normal",
 		"description": "Colar que reduz parte do dano recebido.",
 		"properties": ["-%d%% dano recebido" % RESISTANCE_COLLAR_REDUCTION_PERCENT],
@@ -489,6 +497,7 @@ func _build_iron_chestplate_item_data() -> Dictionary:
 		"display_name": IRON_CHESTPLATE_NAME,
 		"item_type": "chest",
 		"type_label": "Peitoral",
+		"icon_path": IRON_CHESTPLATE_ICON_PATH,
 		"rarity": "Normal",
 		"description": "Peitoral pesado com alta protecao.",
 		"properties": ["+%d armadura" % PlayerStats.IRON_CHESTPLATE_ARMOR],
@@ -500,6 +509,7 @@ func _build_iron_pants_item_data() -> Dictionary:
 		"display_name": IRON_PANTS_NAME,
 		"item_type": "legs",
 		"type_label": "Pernas",
+		"icon_path": IRON_PANTS_ICON_PATH,
 		"rarity": "Normal",
 		"description": "Calcas reforcadas para combate corpo a corpo.",
 		"properties": ["+%d armadura" % PlayerStats.IRON_PANTS_ARMOR],
@@ -511,6 +521,7 @@ func _build_iron_helmet_item_data() -> Dictionary:
 		"display_name": IRON_HELMET_NAME,
 		"item_type": "helmet",
 		"type_label": "Cabeca",
+		"icon_path": IRON_HELMET_ICON_PATH,
 		"rarity": "Normal",
 		"description": "Elmo de ferro para absorver impacto frontal.",
 		"properties": ["+%d armadura" % PlayerStats.IRON_HELMET_ARMOR],
@@ -522,6 +533,7 @@ func _build_leather_boots_item_data() -> Dictionary:
 		"display_name": LEATHER_BOOTS_NAME,
 		"item_type": "boots",
 		"type_label": "Pes",
+		"icon_path": LEATHER_BOOTS_ICON_PATH,
 		"rarity": "Normal",
 		"description": "Botas leves para ganhar mobilidade em combate.",
 		"properties": ["+50%% velocidade de movimento"],
