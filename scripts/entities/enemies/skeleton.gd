@@ -1,6 +1,6 @@
-extends "res://scripts/enemies/base_enemy.gd"
+extends "res://scripts/entities/enemies/base_enemy.gd"
 
-const BASE_SKELETON_SCRIPT := "res://scripts/enemies/skeleton.gd"
+const BASE_SKELETON_SCRIPT := "res://scripts/entities/enemies/skeleton.gd"
 const SKELETON_ATTACK_HIT_DELAY := 0.28
 
 var _is_hurt := false

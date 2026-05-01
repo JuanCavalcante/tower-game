@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b6vyk5fxb82fo"]
 
-[ext_resource type="Script" uid="uid://dro1v0tsut0oj" path="res://scripts/main.gd" id="1_0wfyh"]
+[ext_resource type="Script" path="res://scripts/core/main.gd" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://csmmwqcvmouk8" path="res://scenes/player/player.tscn" id="1_o5qli"]
 [ext_resource type="Texture2D" uid="uid://dynj5g1n2ds04" path="res://midia/TWGame.png" id="2_i0i0k"]
 [ext_resource type="PackedScene" path="res://scenes/ui/inventory_panel.tscn" id="2_inventory_panel"]

@@ -1,6 +1,6 @@
 [gd_scene format=4]
 
-[ext_resource type="Script" path="res://scripts/floor_10.gd" id="1_f10sc"]
+[ext_resource type="Script" path="res://scripts/world/floors/floor_10.gd" id="1_f10sc"]
 [ext_resource type="Texture2D" uid="uid://iol3btpbyomi" path="res://assets/sprites/sprite_generator/29f167d5-a09c-4dcf-8a37-eabc412d5513.png" id="2_fhcyc"]
 [ext_resource type="Texture2D" uid="uid://dynmfgd206jls" path="res://assets/tilesets/Floor Tiles2.png" id="2_ihrxy"]
 [ext_resource type="PackedScene" uid="uid://brmt17c21m775" path="res://scenes/enemies/skeleton.tscn" id="3_skel"]

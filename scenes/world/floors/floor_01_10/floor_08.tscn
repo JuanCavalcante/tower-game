@@ -1,6 +1,6 @@
 [gd_scene format=4]
 
-[ext_resource type="Script" path="res://scripts/floor_09.gd" id="1_f09sc"]
+[ext_resource type="Script" path="res://scripts/world/floors/floor_08.gd" id="1_f08sc"]
 [ext_resource type="Texture2D" uid="uid://iol3btpbyomi" path="res://assets/sprites/sprite_generator/29f167d5-a09c-4dcf-8a37-eabc412d5513.png" id="2_fhcyc"]
 [ext_resource type="Texture2D" uid="uid://dynmfgd206jls" path="res://assets/tilesets/Floor Tiles2.png" id="2_ihrxy"]
 [ext_resource type="PackedScene" uid="uid://brmt17c21m775" path="res://scenes/enemies/skeleton.tscn" id="3_skel"]
@@ -589,8 +589,8 @@ texture = ExtResource("2_ihrxy")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_dbd3n")
 
-[node name="Floor09" type="Node2D" unique_id=-293732729]
-script = ExtResource("1_f09sc")
+[node name="Floor08" type="Node2D" unique_id=-293732729]
+script = ExtResource("1_f08sc")
 
 [node name="29f167d5A09c4Dcf8a37Eabc412d5513" type="Sprite2D" parent="." unique_id=535888165]
 position = Vector2(646, 519)

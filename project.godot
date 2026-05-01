@@ -17,8 +17,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GameManager="*uid://csx7o2d5k7uor"
-PlayerStats="*uid://b6hckf5ghpird"
+GameManager="*res://scripts/autoload/GameManager.gd"
+PlayerStats="*res://scripts/autoload/PlayerStats.gd"
 
 [display]
 
