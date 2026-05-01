@@ -276,8 +276,8 @@ sources/0 = SubResource("TileSetAtlasSource_0dqw8")
 position = Vector2(-3, 839)
 
 [node name="BackGround_city" type="Sprite2D" parent="." unique_id=214149555]
-position = Vector2(643.25, -478.50003)
-scale = Vector2(0.8317057, 0.70214844)
+position = Vector2(642.5, -479.00003)
+scale = Vector2(0.8339843, 0.70312494)
 texture = ExtResource("1_wy4np")
 
 [node name="Portal" type="Sprite2D" parent="." unique_id=50108364]

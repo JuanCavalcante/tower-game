@@ -2,12 +2,13 @@
 
 [ext_resource type="Script" uid="uid://dro1v0tsut0oj" path="res://scripts/main.gd" id="1_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://csmmwqcvmouk8" path="res://scenes/player/player.tscn" id="1_o5qli"]
-[ext_resource type="PackedScene" path="res://scenes/ui/player_status_panel.tscn" id="2_status_panel"]
 [ext_resource type="Texture2D" uid="uid://dynj5g1n2ds04" path="res://midia/TWGame.png" id="2_i0i0k"]
+[ext_resource type="PackedScene" path="res://scenes/ui/inventory_panel.tscn" id="2_inventory_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/player_status_panel.tscn" id="2_status_panel"]
 [ext_resource type="AudioStream" uid="uid://uip0ovcpp0b8" path="res://midia/TowerGame_Theme.mp3" id="3_8q6rq"]
 [ext_resource type="Texture2D" uid="uid://bt5riy1r6dufa" path="res://assets/sprites/tailmap/GandalfHardcore Pixel Art Medieval Fantasy Assets/Castle Tiles.png" id="4_tbgi4"]
 [ext_resource type="Texture2D" uid="uid://bdvfafcposmy6" path="res://assets/sprites/effect/coins-chests-etc-2-0.png" id="5_5yp7b"]
-[ext_resource type="AudioStream" path="res://midia/Glitch Crown Omega.mp3" id="6_fos8r"]
+[ext_resource type="AudioStream" uid="uid://bua1hv3m04ajy" path="res://midia/Glitch Crown Omega.mp3" id="6_fos8r"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tefeu"]
 texture = ExtResource("4_tbgi4")
@@ -295,14 +296,14 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="HealthBar" type="Control" parent="UI/HUD" unique_id=1103687201]
-layout_mode = 0
+clip_contents = true
+anchors_preset = 0
 offset_left = 16.0
 offset_top = 16.0
 offset_right = 216.0
 offset_bottom = 38.0
-clip_contents = true
 
-[node name="Backdrop" type="ColorRect" parent="UI/HUD/HealthBar"]
+[node name="Backdrop" type="ColorRect" parent="UI/HUD/HealthBar" unique_id=1508731500]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -311,7 +312,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.08, 0.05, 0.05, 0.82)
 
-[node name="Fill" type="ColorRect" parent="UI/HUD/HealthBar"]
+[node name="Fill" type="ColorRect" parent="UI/HUD/HealthBar" unique_id=1972920735]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -320,7 +321,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.76, 0.08, 0.1, 0.95)
 
-[node name="HealthText" type="Label" parent="UI/HUD/HealthBar"]
+[node name="HealthText" type="Label" parent="UI/HUD/HealthBar" unique_id=182438872]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -335,7 +336,7 @@ text = "100/100"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CoinIcon" type="TextureRect" parent="UI/HUD"]
+[node name="CoinIcon" type="TextureRect" parent="UI/HUD" unique_id=412017943]
 layout_mode = 0
 offset_left = 16.0
 offset_top = 46.0
@@ -345,7 +346,7 @@ texture = SubResource("AtlasTexture_coin_gold")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="CoinsLabel" type="Label" parent="UI/HUD"]
+[node name="CoinsLabel" type="Label" parent="UI/HUD" unique_id=1132896859]
 layout_mode = 0
 offset_left = 38.0
 offset_top = 46.0
@@ -366,6 +367,34 @@ offset_top = 70.0
 offset_right = 136.0
 offset_bottom = 93.0
 
+[node name="QuickActionsBar" type="PanelContainer" parent="UI/HUD"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 674.0
+offset_right = 336.0
+offset_bottom = 710.0
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/HUD/QuickActionsBar"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 4
+
+[node name="ActionsRow" type="HBoxContainer" parent="UI/HUD/QuickActionsBar/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="InventoryQuickButton" type="Button" parent="UI/HUD/QuickActionsBar/MarginContainer/ActionsRow"]
+custom_minimum_size = Vector2(146, 24)
+layout_mode = 2
+text = "Inventario (I)"
+
+[node name="CharacterQuickButton" type="Button" parent="UI/HUD/QuickActionsBar/MarginContainer/ActionsRow"]
+custom_minimum_size = Vector2(146, 24)
+layout_mode = 2
+text = "Personagem (C)"
+
 [node name="MainMenu" type="Control" parent="UI" unique_id=1103687205]
 process_mode = 3
 layout_mode = 3
@@ -381,9 +410,9 @@ anchors_preset = -1
 anchor_left = -0.015000001
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 24.2
-offset_right = -3.0
-offset_bottom = 187.0
+offset_left = 17.2
+offset_right = 1.0
+offset_bottom = 203.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_i0i0k")
@@ -478,7 +507,7 @@ custom_minimum_size = Vector2(240, 42)
 layout_mode = 2
 text = "Sair do jogo"
 
-[node name="DeathOverlay" type="Control" parent="UI"]
+[node name="DeathOverlay" type="Control" parent="UI" unique_id=30072351]
 process_mode = 3
 visible = false
 layout_mode = 3
@@ -488,7 +517,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Backdrop" type="ColorRect" parent="UI/DeathOverlay"]
+[node name="Backdrop" type="ColorRect" parent="UI/DeathOverlay" unique_id=1464037651]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -497,7 +526,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.55)
 
-[node name="MenuPanel" type="PanelContainer" parent="UI/DeathOverlay"]
+[node name="MenuPanel" type="PanelContainer" parent="UI/DeathOverlay" unique_id=772087663]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -511,11 +540,11 @@ offset_bottom = 120.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MenuItems" type="VBoxContainer" parent="UI/DeathOverlay/MenuPanel"]
+[node name="MenuItems" type="VBoxContainer" parent="UI/DeathOverlay/MenuPanel" unique_id=1333507911]
 layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="DeathLabel" type="Label" parent="UI/DeathOverlay/MenuPanel/MenuItems"]
+[node name="DeathLabel" type="Label" parent="UI/DeathOverlay/MenuPanel/MenuItems" unique_id=1790954780]
 custom_minimum_size = Vector2(300, 48)
 layout_mode = 2
 theme_override_font_sizes/font_size = 34
@@ -523,11 +552,13 @@ text = "Você morreu"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RespawnButton" type="Button" parent="UI/DeathOverlay/MenuPanel/MenuItems"]
+[node name="RespawnButton" type="Button" parent="UI/DeathOverlay/MenuPanel/MenuItems" unique_id=977405086]
 custom_minimum_size = Vector2(240, 46)
 layout_mode = 2
 text = "Renascer"
 
-[node name="PlayerStatusPanel" parent="UI" instance=ExtResource("2_status_panel")]
+[node name="PlayerStatusPanel" parent="UI" unique_id=424053473 instance=ExtResource("2_status_panel")]
+
+[node name="InventoryPanel" parent="UI" unique_id=238242250 instance=ExtResource("2_inventory_panel")]
 
 [node name="Managers" type="Node" parent="." unique_id=1209282052]

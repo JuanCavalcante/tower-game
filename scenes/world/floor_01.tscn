@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://nxx0jhy5gqbx" path="res://scripts/floor_01.gd" id="1_ihyvm"]
 [ext_resource type="Texture2D" uid="uid://dynmfgd206jls" path="res://assets/tilesets/Floor Tiles2.png" id="2_ihrxy"]
-[ext_resource type="PackedScene" uid="uid://cbceuq2n756e0" path="res://scenes/enemies/slime.tscn" id="3_3boyv"]
 [ext_resource type="Texture2D" uid="uid://cfbllt7mdut8f" path="res://assets/sprites/sprite_generator/MUSH_BACK.png" id="3_ylf5x"]
 [ext_resource type="PackedScene" uid="uid://bsso1o3lu3okb" path="res://scenes/world/exit_portal.tscn" id="4_ihrxy"]
 
@@ -591,11 +590,10 @@ sources/0 = SubResource("TileSetAtlasSource_dbd3n")
 
 [node name="Floor01" type="Node2D" unique_id=1865856719]
 script = ExtResource("1_ihyvm")
-enemy_scene = ExtResource("3_3boyv")
 
 [node name="BackGroundLevel1" type="Sprite2D" parent="." unique_id=1285905167]
-position = Vector2(643.00006, 362.99997)
-scale = Vector2(0.8317057, 0.70214844)
+position = Vector2(640.87506, 361.75)
+scale = Vector2(0.83447266, 0.7045899)
 texture = ExtResource("3_ylf5x")
 
 [node name="TileMap" type="TileMapLayer" parent="." unique_id=337972668]

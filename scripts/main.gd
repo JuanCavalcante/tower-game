@@ -16,14 +16,18 @@ const BOSS_FLOOR := 10
 @onready var music_volume_slider = $UI/MainMenu/MenuPanel/MenuItems/MusicVolumeSlider
 @onready var music_pause_button = $UI/MainMenu/MenuPanel/MenuItems/MusicPauseButton
 @onready var player_status_panel = $UI/PlayerStatusPanel
+@onready var inventory_panel = $UI/InventoryPanel
 @onready var health_bar_fill: ColorRect = $UI/HUD/HealthBar/Fill
 @onready var health_bar_text: Label = $UI/HUD/HealthBar/HealthText
 @onready var coins_label: Label = $UI/HUD/CoinsLabel
 @onready var xp_label = $UI/HUD/XPLabel
 @onready var floor_label = $UI/HUD/FloorLabel
+@onready var inventory_quick_button: Button = $UI/HUD/QuickActionsBar/MarginContainer/ActionsRow/InventoryQuickButton
+@onready var character_quick_button: Button = $UI/HUD/QuickActionsBar/MarginContainer/ActionsRow/CharacterQuickButton
 
 var is_entry_pause_active := false
 var is_status_panel_open := false
+var is_inventory_panel_open := false
 var is_death_overlay_open := false
 var _boss_health_root: Control = null
 var _boss_health_bar: ProgressBar = null
@@ -46,8 +50,11 @@ func _ready():
 	$UI/PauseMenu/MenuPanel/MenuItems/NewGameButton.pressed.connect(_on_new_game_pressed)
 	$UI/PauseMenu/MenuPanel/MenuItems/QuitButton.pressed.connect(_on_quit_pressed)
 	respawn_button.pressed.connect(_on_respawn_pressed)
+	inventory_quick_button.pressed.connect(_on_inventory_quick_button_pressed)
+	character_quick_button.pressed.connect(_on_character_quick_button_pressed)
 	_configure_boss_music_loop()
 	player_status_panel.close_requested.connect(_close_status_panel)
+	inventory_panel.close_requested.connect(_close_inventory_panel)
 	_setup_boss_health_ui()
 	xp_label.visible = false
 	show_main_menu()
@@ -55,14 +62,24 @@ func _ready():
 func _process(_delta):
 	_ensure_player_death_signal()
 
-	if Input.is_action_just_pressed("toggle_status_panel") and not main_menu.visible and game.visible and not is_entry_pause_active and not pause_menu.visible:
+	if Input.is_action_just_pressed("toggle_status_panel") and not main_menu.visible and game.visible and not is_entry_pause_active and not pause_menu.visible and not is_inventory_panel_open:
 		if is_status_panel_open:
 			_close_status_panel()
 		else:
 			_open_status_panel()
 
-	if Input.is_action_just_pressed("ui_cancel") and not main_menu.visible and game.visible and not is_entry_pause_active and not is_status_panel_open and not is_death_overlay_open:
-		if get_tree().paused:
+	if Input.is_action_just_pressed("toggle_inventory_panel") and not main_menu.visible and game.visible and not is_entry_pause_active and not pause_menu.visible and not is_status_panel_open:
+		if is_inventory_panel_open:
+			_close_inventory_panel()
+		else:
+			_open_inventory_panel()
+
+	if Input.is_action_just_pressed("ui_cancel") and not main_menu.visible and game.visible and not is_entry_pause_active and not is_death_overlay_open:
+		if is_inventory_panel_open:
+			_close_inventory_panel()
+		elif is_status_panel_open:
+			_close_status_panel()
+		elif get_tree().paused:
 			resume_game()
 		else:
 			pause_game()
@@ -109,6 +126,8 @@ func start_game():
 func pause_game():
 	if is_status_panel_open:
 		_close_status_panel()
+	if is_inventory_panel_open:
+		_close_inventory_panel()
 	get_tree().paused = true
 	pause_menu.visible = true
 
@@ -128,6 +147,55 @@ func _close_status_panel() -> void:
 	if not pause_menu.visible and not main_menu.visible and game.visible and not is_entry_pause_active and not is_death_overlay_open:
 		get_tree().paused = false
 
+func _open_inventory_panel() -> void:
+	is_inventory_panel_open = true
+	inventory_panel.reload_from_player_stats()
+	inventory_panel.visible = true
+	get_tree().paused = true
+
+func _close_inventory_panel() -> void:
+	is_inventory_panel_open = false
+	inventory_panel.visible = false
+	if not pause_menu.visible and not main_menu.visible and game.visible and not is_entry_pause_active and not is_death_overlay_open:
+		get_tree().paused = false
+
+func _on_inventory_quick_button_pressed() -> void:
+	if not _can_toggle_player_panels():
+		return
+	if is_status_panel_open:
+		_close_status_panel()
+		_open_inventory_panel()
+		return
+	if is_inventory_panel_open:
+		_close_inventory_panel()
+	else:
+		_open_inventory_panel()
+
+func _on_character_quick_button_pressed() -> void:
+	if not _can_toggle_player_panels():
+		return
+	if is_inventory_panel_open:
+		_close_inventory_panel()
+		_open_status_panel()
+		return
+	if is_status_panel_open:
+		_close_status_panel()
+	else:
+		_open_status_panel()
+
+func _can_toggle_player_panels() -> bool:
+	if main_menu.visible:
+		return false
+	if not game.visible:
+		return false
+	if is_entry_pause_active:
+		return false
+	if pause_menu.visible:
+		return false
+	if is_death_overlay_open:
+		return false
+	return true
+
 func _get_player_node() -> Node:
 	return get_tree().get_first_node_in_group("player")
 
@@ -144,6 +212,8 @@ func _on_player_death_sequence_finished() -> void:
 	is_death_overlay_open = true
 	if is_status_panel_open:
 		_close_status_panel()
+	if is_inventory_panel_open:
+		_close_inventory_panel()
 	pause_menu.visible = false
 	death_overlay.visible = true
 	_stop_boss_music()
@@ -162,12 +232,14 @@ func _on_respawn_pressed() -> void:
 func _on_new_game_pressed():
 	start_game()
 	GameManager.start_new_game()
+	inventory_panel.reload_from_player_stats()
 	main_continue_button.disabled = false
 	await _apply_entry_pause()
 
 func _on_continue_pressed():
 	start_game()
 	GameManager.continue_game()
+	inventory_panel.reload_from_player_stats()
 	await _apply_entry_pause()
 
 func _apply_entry_pause():
@@ -185,6 +257,12 @@ func _on_quit_pressed():
 		GameManager.save_game()
 
 	get_tree().quit()
+
+func _notification(what: int) -> void:
+	if what != NOTIFICATION_WM_CLOSE_REQUEST:
+		return
+	if game.visible and GameManager.current_level_instance:
+		GameManager.save_game()
 
 func _on_music_volume_changed(value: float) -> void:
 	_set_music_volume_from_linear(value)
