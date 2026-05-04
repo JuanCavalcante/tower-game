@@ -18,6 +18,8 @@ const HEAL_INDICATOR_DURATION := 0.8
 @export var jump_force := -400
 @export var attack_cooldown := 1.0
 @export var run_speed_threshold := 130.0
+@export var acceleration := 900.0
+@export var deceleration := 1200.0
 @export var dash_speed := 430.0
 @export var dash_duration := 0.17
 @export var dash_cooldown := 0.65
@@ -303,7 +305,9 @@ func _physics_process(delta):
 		var current_move_speed := PlayerStats.get_move_speed(float(speed))
 		if is_blocking:
 			current_move_speed *= block_move_speed_multiplier
-		velocity.x = direction_x * current_move_speed
+		var target_velocity_x: float = direction_x * current_move_speed
+		var blend_rate: float = acceleration if absf(direction_x) > 0.0 else deceleration
+		velocity.x = move_toward(velocity.x, target_velocity_x, blend_rate * delta)
 
 	velocity.y += gravity * delta
 
