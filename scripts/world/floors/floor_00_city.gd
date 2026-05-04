@@ -2,6 +2,7 @@ extends Node2D
 class_name Floor00City
 
 const TOTAL_PORTAL_FLOORS := 10
+const HORIZONTAL_WRAP_MARGIN := 8.0
 const POTION_COST := 15
 const WEAPON_COST := 60
 const RESISTANCE_COLLAR_COST := 400
@@ -67,6 +68,28 @@ func _ready() -> void:
 
 	var close_btn: Button = $PortalUI/PortalPanel/VBox/CloseButton
 	close_btn.pressed.connect(_close_ui)
+
+func _process(_delta: float) -> void:
+	_apply_player_horizontal_wrap()
+
+func _apply_player_horizontal_wrap() -> void:
+	var player := get_tree().get_first_node_in_group("player") as Node2D
+	if player == null:
+		return
+
+	var player_camera := player.get_node_or_null("Camera2D") as Camera2D
+	if player_camera == null:
+		return
+
+	var left_limit := float(player_camera.limit_left)
+	var right_limit := float(player_camera.limit_right)
+	if right_limit <= left_limit:
+		return
+
+	if player.global_position.x < left_limit:
+		player.global_position.x = right_limit - HORIZONTAL_WRAP_MARGIN
+	elif player.global_position.x > right_limit:
+		player.global_position.x = left_limit + HORIZONTAL_WRAP_MARGIN
 
 func _sync_portal_layout_to_sprite() -> void:
 	var portal_sprite: Node2D = _find_portal_sprite()

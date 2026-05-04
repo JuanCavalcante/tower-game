@@ -37,6 +37,7 @@ var _tracked_boss: Node = null
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	game.process_mode = Node.PROCESS_MODE_PAUSABLE
+	_ensure_inventory_tab_shortcut()
 	main_continue_button.disabled = not GameManager.has_save_game()
 	$UI/MainMenu/MenuPanel/MenuItems/NewGameButton.pressed.connect(_on_new_game_pressed)
 	$UI/MainMenu/MenuPanel/MenuItems/ContinueButton.pressed.connect(_on_continue_pressed)
@@ -92,6 +93,19 @@ func _process(_delta):
 	floor_label.text = "Andar: %d" % [GameManager.current_floor]
 	_update_boss_music_state()
 	_update_boss_health_ui()
+
+func _ensure_inventory_tab_shortcut() -> void:
+	if not InputMap.has_action("toggle_inventory_panel"):
+		return
+
+	var tab_event := InputEventKey.new()
+	tab_event.physical_keycode = KEY_TAB
+	tab_event.keycode = KEY_TAB
+
+	if InputMap.action_has_event("toggle_inventory_panel", tab_event):
+		return
+
+	InputMap.action_add_event("toggle_inventory_panel", tab_event)
 
 func _update_health_bar() -> void:
 	var max_health: int = max(PlayerStats.max_health, 1)
