@@ -18,6 +18,8 @@ const HEAL_INDICATOR_DURATION := 0.8
 @export var gravity := 900
 @export var jump_force := -400
 @export var attack_cooldown := 1.0
+@export var acceleration := 900.0
+@export var deceleration := 1200.0
 
 @onready var anim = $AnimatedSprite2D
 
@@ -166,7 +168,7 @@ func _physics_process(delta):
 	if is_dead:
 		return
 
-	var direction = Vector2.ZERO
+	var direction: Vector2 = Vector2.ZERO
 
 	if Input.is_action_just_pressed("use_potion"):
 		var previous_health: int = PlayerStats.current_health
@@ -187,10 +189,12 @@ func _physics_process(delta):
 		direction.x -= 1
 
 	if direction.x != 0:
-		facing_direction = sign(direction.x)
+		facing_direction = int(sign(direction.x))
 		anim.flip_h = facing_direction > 0
 
-	velocity.x = direction.x * PlayerStats.get_move_speed(float(speed))
+	var target_velocity_x: float = direction.x * PlayerStats.get_move_speed(float(speed))
+	var blend_rate: float = acceleration if absf(direction.x) > 0.0 else deceleration
+	velocity.x = move_toward(velocity.x, target_velocity_x, blend_rate * delta)
 
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_force
