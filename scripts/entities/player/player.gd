@@ -10,7 +10,6 @@ const DAMAGE_INDICATOR_DURATION := 0.7
 const HEAL_INDICATOR_OFFSET := Vector2(-18, -70)
 const HEAL_INDICATOR_RISE := Vector2(0, -24)
 const HEAL_INDICATOR_DURATION := 0.8
-
 @export var speed := 100
 @export var attack_damage := 10
 @export var attack_range := 50
@@ -18,25 +17,95 @@ const HEAL_INDICATOR_DURATION := 0.8
 @export var gravity := 900
 @export var jump_force := -400
 @export var attack_cooldown := 1.0
+@export var run_speed_threshold := 130.0
 @export var acceleration := 900.0
 @export var deceleration := 1200.0
+@export var dash_speed := 430.0
+@export var dash_duration := 0.17
+@export var dash_cooldown := 0.65
+@export var block_move_speed_multiplier := 0.45
+@export var sprite_ground_offset_y := 9.0
 
-@onready var anim = $AnimatedSprite2D
+@onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 
 var can_attack := true
 var is_attacking := false
 var facing_direction := 1
 var is_dead := false
+var is_dashing := false
+var is_blocking := false
+var dash_direction := 1
+var dash_time_left := 0.0
+var dash_cooldown_left := 0.0
+var _shift_was_pressed := false
 var _sword_sfx_player: AudioStreamPlayer2D = null
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	add_to_group("player")
+	anim.offset = Vector2(anim.offset.x, sprite_ground_offset_y)
 	_sword_sfx_player = AudioStreamPlayer2D.new()
 	_sword_sfx_player.name = "SwordSfx"
 	_sword_sfx_player.volume_db = -7.0
 	add_child(_sword_sfx_player)
+	_apply_generated_player_frames()
 	_ensure_death_animation()
+
+
+func _apply_generated_player_frames() -> void:
+	if anim == null:
+		return
+
+	var frames := SpriteFrames.new()
+	_add_animation_from_folder(frames, "idle", "idle", true, 7.0)
+	_add_animation_from_folder(frames, "walk", "walk", false, 10.0)
+	_add_animation_from_folder(frames, "run", "run", false, 14.0)
+	_add_animation_from_folder(frames, "dash", "dash", false, 16.0)
+	_add_animation_from_folder(frames, "attack", "attack", false, 9.0)
+	_add_animation_from_folder(frames, "block", "block", false, 8.0)
+	_add_animation_from_folder(frames, "jump", "jump", false, 10.0)
+
+	if frames.has_animation("idle"):
+		anim.sprite_frames = frames
+		anim.play("idle")
+
+
+func _add_animation_from_folder(
+	frames: SpriteFrames,
+	animation_name: String,
+	frame_prefix: String,
+	loop: bool,
+	speed_value: float
+) -> void:
+	var loaded_any := false
+	frames.add_animation(animation_name)
+	frames.set_animation_loop(animation_name, loop)
+	frames.set_animation_speed(animation_name, speed_value)
+
+	var animation_folder := "res://assets/sprites/player/generated/%s" % frame_prefix
+	var folder := DirAccess.open(animation_folder)
+	if folder == null:
+		frames.remove_animation(animation_name)
+		return
+
+	var file_names: PackedStringArray = folder.get_files()
+	file_names.sort()
+	var expected_prefix := "%s_" % frame_prefix
+	for file_name in file_names:
+		if not file_name.ends_with(".png"):
+			continue
+		if not file_name.begins_with(expected_prefix):
+			continue
+		var texture_path := "%s/%s" % [animation_folder, file_name]
+		if not ResourceLoader.exists(texture_path):
+			continue
+		var frame_texture = load(texture_path)
+		if frame_texture is Texture2D:
+			frames.add_frame(animation_name, frame_texture, 1.0)
+			loaded_any = true
+
+	if not loaded_any:
+		frames.remove_animation(animation_name)
 
 
 func _ensure_death_animation() -> void:
@@ -44,20 +113,23 @@ func _ensure_death_animation() -> void:
 		return
 	if anim.sprite_frames.has_animation("die"):
 		return
-	if not anim.sprite_frames.has_animation("jump"):
+	var source_animation := "jump"
+	if not anim.sprite_frames.has_animation(source_animation):
+		source_animation = "idle"
+	if not anim.sprite_frames.has_animation(source_animation):
 		return
 
-	var jump_frame_count: int = anim.sprite_frames.get_frame_count("jump")
-	if jump_frame_count <= 0:
+	var source_frame_count: int = anim.sprite_frames.get_frame_count(source_animation)
+	if source_frame_count <= 0:
 		return
 
 	anim.sprite_frames.add_animation("die")
 	anim.sprite_frames.set_animation_loop("die", false)
 	anim.sprite_frames.set_animation_speed("die", 7.0)
 
-	var start_index := maxi(jump_frame_count - 4, 0)
-	for frame_index in range(start_index, jump_frame_count):
-		var frame_texture: Texture2D = anim.sprite_frames.get_frame_texture("jump", frame_index)
+	var start_index := maxi(source_frame_count - 4, 0)
+	for frame_index in range(start_index, source_frame_count):
+		var frame_texture: Texture2D = anim.sprite_frames.get_frame_texture(source_animation, frame_index)
 		anim.sprite_frames.add_frame("die", frame_texture, 1.0)
 
 
@@ -85,6 +157,15 @@ func take_damage(amount):
 		return
 
 	if is_dead:
+		return
+	if is_blocking:
+		_show_floating_indicator(
+			"BLOCK",
+			Color(0.4, 0.8, 1.0, 1.0),
+			DAMAGE_INDICATOR_OFFSET,
+			DAMAGE_INDICATOR_RISE,
+			0.45
+		)
 		return
 
 	var previous_health: int = PlayerStats.current_health
@@ -143,6 +224,8 @@ func die():
 	is_dead = true
 	can_attack = false
 	is_attacking = false
+	is_dashing = false
+	is_blocking = false
 	velocity = Vector2.ZERO
 	set_physics_process(false)
 
@@ -161,14 +244,18 @@ func respawn_to_hub() -> void:
 	PlayerStats.refill_health()
 	GameManager.return_to_hub()
 	is_dead = false
+	is_dashing = false
+	is_blocking = false
+	dash_cooldown_left = 0.0
 	set_physics_process(true)
 	can_attack = true
 
 func _physics_process(delta):
 	if is_dead:
 		return
+	dash_cooldown_left = max(dash_cooldown_left - delta, 0.0)
 
-	var direction: Vector2 = Vector2.ZERO
+	var direction_x := 0.0
 
 	if Input.is_action_just_pressed("use_potion"):
 		var previous_health: int = PlayerStats.current_health
@@ -180,24 +267,47 @@ func _physics_process(delta):
 		else:
 			print("Sem pocao ou HP ja cheio.")
 
-	if Input.is_action_just_pressed("attack") and can_attack:
+	if Input.is_action_pressed("right"):
+		direction_x += 1
+	if Input.is_action_pressed("left"):
+		direction_x -= 1
+
+	var shift_pressed := Input.is_key_pressed(KEY_SHIFT)
+	var dash_just_pressed := shift_pressed and not _shift_was_pressed
+	_shift_was_pressed = shift_pressed
+
+	if direction_x != 0:
+		facing_direction = int(sign(direction_x))
+		anim.flip_h = facing_direction < 0
+
+	is_blocking = not is_attacking and not is_dashing and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) and is_on_floor()
+
+	if dash_just_pressed and not is_attacking and not is_blocking and not is_dashing and dash_cooldown_left <= 0.0:
+		is_dashing = true
+		dash_direction = facing_direction
+		if direction_x != 0:
+			dash_direction = int(sign(direction_x))
+		dash_time_left = dash_duration
+		dash_cooldown_left = dash_cooldown
+
+	if Input.is_action_just_pressed("attack") and can_attack and not is_blocking and not is_dashing:
 		attack()
 
-	if Input.is_action_pressed("right"):
-		direction.x += 1
-	if Input.is_action_pressed("left"):
-		direction.x -= 1
-
-	if direction.x != 0:
-		facing_direction = int(sign(direction.x))
-		anim.flip_h = facing_direction > 0
-
-	var target_velocity_x: float = direction.x * PlayerStats.get_move_speed(float(speed))
-	var blend_rate: float = acceleration if absf(direction.x) > 0.0 else deceleration
-	velocity.x = move_toward(velocity.x, target_velocity_x, blend_rate * delta)
-
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	if Input.is_action_just_pressed("jump") and is_on_floor() and not is_dashing:
 		velocity.y = jump_force
+
+	if is_dashing:
+		velocity.x = float(dash_direction) * dash_speed
+		dash_time_left -= delta
+		if dash_time_left <= 0.0:
+			is_dashing = false
+	else:
+		var current_move_speed := PlayerStats.get_move_speed(float(speed))
+		if is_blocking:
+			current_move_speed *= block_move_speed_multiplier
+		var target_velocity_x: float = direction_x * current_move_speed
+		var blend_rate: float = acceleration if absf(direction_x) > 0.0 else deceleration
+		velocity.x = move_toward(velocity.x, target_velocity_x, blend_rate * delta)
 
 	velocity.y += gravity * delta
 
@@ -211,13 +321,40 @@ func _physics_process(delta):
 func update_animation():
 	if is_attacking:
 		return
+	if is_dashing:
+		_play_animation_state("dash", false)
+		return
+	if is_blocking:
+		_play_animation_state("block", false)
+		return
 
 	if not is_on_floor():
-		anim.play("jump")
-	elif velocity.x != 0:
-		anim.play("walk")
+		if anim.sprite_frames != null and anim.sprite_frames.has_animation("jump"):
+			_play_animation_state("jump", false)
+		else:
+			_play_animation_state("idle", false)
+		return
+
+	var move_speed_abs: float = absf(velocity.x)
+	if move_speed_abs <= 1.0:
+		_play_animation_state("idle", false)
+	elif move_speed_abs >= run_speed_threshold and anim.sprite_frames != null and anim.sprite_frames.has_animation("run"):
+		_play_animation_state("run", true)
+	elif anim.sprite_frames != null and anim.sprite_frames.has_animation("walk"):
+		_play_animation_state("walk", true)
 	else:
-		anim.play("idle")
+		_play_animation_state("idle", false)
+
+func _play_animation_state(animation_name: StringName, restart_when_finished: bool) -> void:
+	if anim == null or anim.sprite_frames == null:
+		return
+	if not anim.sprite_frames.has_animation(animation_name):
+		return
+	if anim.animation != animation_name:
+		anim.play(animation_name)
+		return
+	if restart_when_finished and not anim.is_playing():
+		anim.play(animation_name)
 
 func attack():
 	can_attack = false
