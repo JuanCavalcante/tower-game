@@ -1,0 +1,401 @@
+[gd_scene format=3 uid="uid://d1htnwnskcdgf"]
+
+[ext_resource type="Script" uid="uid://d0ygl7vs4lnf1" path="res://scripts/ui/hud_panel.gd" id="1_hud_script"]
+[ext_resource type="Texture2D" uid="uid://bdvfafcposmy6" path="res://assets/sprites/effect/coins-chests-etc-2-0.png" id="2_coin_sheet"]
+[ext_resource type="Texture2D" uid="uid://drmy8wfwchk2j" path="res://assets/ui/buttons/button_ornate_generated.png" id="3_button_texture"]
+[ext_resource type="Texture2D" uid="uid://raqgqra05xy6" path="res://assets/ui/hud/final/portrait_frame_96.png" id="4_portrait_frame"]
+[ext_resource type="Texture2D" uid="uid://dgo48vlkbmexw" path="res://assets/ui/hud/final/icon_heart_24.png" id="5_heart"]
+[ext_resource type="Texture2D" uid="uid://5d0hbvd3x2kf" path="res://assets/ui/hud/final/icon_mana_24.png" id="6_mana"]
+[ext_resource type="Texture2D" uid="uid://7dsodr30h8fp" path="res://assets/ui/hud/final/icon_stamina_24.png" id="7_stamina"]
+[ext_resource type="Texture2D" uid="uid://ip6cux6f21ml" path="res://assets/ui/hud/final/bar_frame_178x16.png" id="8_bar_frame"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_coin_gold"]
+atlas = ExtResource("2_coin_sheet")
+region = Rect2(17, 18, 14, 14)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_quick_actions_panel"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_quick_button"]
+content_margin_left = 18.0
+content_margin_top = 7.0
+content_margin_right = 18.0
+content_margin_bottom = 7.0
+texture = ExtResource("3_button_texture")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss_bar_bg"]
+bg_color = Color(0.15, 0.04, 0.04, 0.95)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss_bar_fill"]
+bg_color = Color(0.87, 0.12, 0.12, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="HUD" type="Control" unique_id=1292043936]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hud_script")
+
+[node name="PlayerHud" type="Control" parent="." unique_id=1905196089]
+anchors_preset = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 322.0
+offset_bottom = 126.0
+
+[node name="Portrait" type="Control" parent="PlayerHud" unique_id=1878770601]
+layout_mode = 1
+anchors_preset = 0
+offset_right = 96.0
+offset_bottom = 96.0
+
+[node name="Frame" type="TextureRect" parent="PlayerHud/Portrait" unique_id=700842873]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 9.0
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_portrait_frame")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LevelLabel" type="Label" parent="PlayerHud/Portrait" unique_id=1079510552]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -20.0
+offset_right = 11.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.95)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 9
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatusRows" type="VBoxContainer" parent="PlayerHud" unique_id=1706739390]
+layout_mode = 1
+offset_left = 98.0
+offset_right = 312.0
+offset_bottom = 112.0
+theme_override_constants/separation = 2
+
+[node name="HealthRow" type="Control" parent="PlayerHud/StatusRows" unique_id=989129263]
+custom_minimum_size = Vector2(214, 34)
+layout_mode = 2
+
+[node name="ValueLabel" type="Label" parent="PlayerHud/StatusRows/HealthRow" unique_id=1900228219]
+layout_mode = 1
+offset_left = 30.0
+offset_right = 182.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.95)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 10
+text = "100/100"
+
+[node name="Icon" type="TextureRect" parent="PlayerHud/StatusRows/HealthRow" unique_id=1311384512]
+layout_mode = 1
+offset_top = 10.0
+offset_right = 24.0
+offset_bottom = 34.0
+texture = ExtResource("5_heart")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BarRoot" type="Control" parent="PlayerHud/StatusRows/HealthRow" unique_id=1568411015]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 30.0
+offset_top = 15.0
+offset_right = 208.0
+offset_bottom = 31.0
+
+[node name="Frame" type="TextureRect" parent="PlayerHud/StatusRows/HealthRow/BarRoot" unique_id=2146179057]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_bar_frame")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="FillClip" type="Control" parent="PlayerHud/StatusRows/HealthRow/BarRoot" unique_id=141421513]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 0
+offset_left = 7.0
+offset_top = 4.0
+offset_right = 171.0
+offset_bottom = 12.0
+
+[node name="Fill" type="ColorRect" parent="PlayerHud/StatusRows/HealthRow/BarRoot/FillClip" unique_id=920463947]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -4.0
+offset_right = 164.0
+offset_bottom = 4.0
+grow_vertical = 2
+color = Color(0.86, 0.22, 0.19, 1)
+
+[node name="ManaRow" type="Control" parent="PlayerHud/StatusRows" unique_id=1150717811]
+custom_minimum_size = Vector2(214, 34)
+layout_mode = 2
+
+[node name="ValueLabel" type="Label" parent="PlayerHud/StatusRows/ManaRow" unique_id=2099776952]
+layout_mode = 1
+offset_left = 30.0
+offset_right = 182.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.95)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 10
+text = "100/100"
+
+[node name="Icon" type="TextureRect" parent="PlayerHud/StatusRows/ManaRow" unique_id=1652459298]
+layout_mode = 1
+offset_top = 10.0
+offset_right = 24.0
+offset_bottom = 34.0
+texture = ExtResource("6_mana")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BarRoot" type="Control" parent="PlayerHud/StatusRows/ManaRow" unique_id=1813755959]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 30.0
+offset_top = 15.0
+offset_right = 208.0
+offset_bottom = 31.0
+
+[node name="Frame" type="TextureRect" parent="PlayerHud/StatusRows/ManaRow/BarRoot" unique_id=1379124739]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_bar_frame")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="FillClip" type="Control" parent="PlayerHud/StatusRows/ManaRow/BarRoot" unique_id=960111973]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 0
+offset_left = 7.0
+offset_top = 4.0
+offset_right = 171.0
+offset_bottom = 12.0
+
+[node name="Fill" type="ColorRect" parent="PlayerHud/StatusRows/ManaRow/BarRoot/FillClip" unique_id=1498924177]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -4.0
+offset_right = 164.0
+offset_bottom = 4.0
+grow_vertical = 2
+color = Color(0.2, 0.5, 0.82, 1)
+
+[node name="StaminaRow" type="Control" parent="PlayerHud/StatusRows" unique_id=2010855430]
+custom_minimum_size = Vector2(214, 34)
+layout_mode = 2
+
+[node name="ValueLabel" type="Label" parent="PlayerHud/StatusRows/StaminaRow" unique_id=1994510880]
+layout_mode = 1
+offset_left = 30.0
+offset_right = 182.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.95)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 10
+text = "100/100"
+
+[node name="Icon" type="TextureRect" parent="PlayerHud/StatusRows/StaminaRow" unique_id=486582277]
+layout_mode = 1
+offset_top = 10.0
+offset_right = 24.0
+offset_bottom = 34.0
+texture = ExtResource("7_stamina")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BarRoot" type="Control" parent="PlayerHud/StatusRows/StaminaRow" unique_id=1412063272]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 30.0
+offset_top = 15.0
+offset_right = 208.0
+offset_bottom = 31.0
+
+[node name="Frame" type="TextureRect" parent="PlayerHud/StatusRows/StaminaRow/BarRoot" unique_id=2102049687]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_bar_frame")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="FillClip" type="Control" parent="PlayerHud/StatusRows/StaminaRow/BarRoot" unique_id=1853012274]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 0
+offset_left = 7.0
+offset_top = 4.0
+offset_right = 171.0
+offset_bottom = 12.0
+
+[node name="Fill" type="ColorRect" parent="PlayerHud/StatusRows/StaminaRow/BarRoot/FillClip" unique_id=1205577531]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -4.0
+offset_right = 164.0
+offset_bottom = 4.0
+grow_vertical = 2
+color = Color(0.88, 0.73, 0.19, 1)
+
+[node name="CoinIcon" type="TextureRect" parent="." unique_id=685499934]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 146.0
+offset_right = 34.0
+offset_bottom = 164.0
+texture = SubResource("AtlasTexture_coin_gold")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CoinsLabel" type="Label" parent="." unique_id=1858046767]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 144.0
+offset_right = 120.0
+offset_bottom = 167.0
+
+[node name="FloorLabel" type="Label" parent="." unique_id=333639788]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 170.0
+offset_right = 136.0
+offset_bottom = 193.0
+
+[node name="QuickActionsBar" type="PanelContainer" parent="." unique_id=1927452476]
+layout_mode = 0
+offset_top = 674.0
+offset_right = 330.0
+offset_bottom = 718.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_quick_actions_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="QuickActionsBar" unique_id=1536422218]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 4
+
+[node name="ActionsRow" type="HBoxContainer" parent="QuickActionsBar/MarginContainer" unique_id=681634178]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="InventoryQuickButton" type="Button" parent="QuickActionsBar/MarginContainer/ActionsRow" unique_id=370723007]
+custom_minimum_size = Vector2(154, 36)
+layout_mode = 2
+theme_override_colors/font_focus_color = Color(1, 0.93, 0.78, 1)
+theme_override_colors/font_pressed_color = Color(0.92, 0.86, 0.7, 1)
+theme_override_colors/font_hover_color = Color(0.68235296, 0.5568628, 0.043137256, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.92, 0.86, 0.7, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxTexture_quick_button")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_quick_button")
+theme_override_styles/hover = SubResource("StyleBoxTexture_quick_button")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_quick_button")
+theme_override_styles/focus = SubResource("StyleBoxTexture_quick_button")
+text = "Inventario (I)"
+
+[node name="CharacterQuickButton" type="Button" parent="QuickActionsBar/MarginContainer/ActionsRow" unique_id=514615897]
+custom_minimum_size = Vector2(154, 36)
+layout_mode = 2
+theme_override_colors/font_focus_color = Color(1, 0.93, 0.78, 1)
+theme_override_colors/font_pressed_color = Color(0.92, 0.86, 0.7, 1)
+theme_override_colors/font_hover_color = Color(0.68235296, 0.5568628, 0.043137256, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.92, 0.86, 0.7, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxTexture_quick_button")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_quick_button")
+theme_override_styles/hover = SubResource("StyleBoxTexture_quick_button")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_quick_button")
+theme_override_styles/focus = SubResource("StyleBoxTexture_quick_button")
+text = "Personagem (C)"
+
+[node name="BossHealthUI" type="Control" parent="." unique_id=861710208]
+visible = false
+layout_mode = 1
+anchor_left = 0.27800003
+anchor_right = 0.79800004
+anchor_bottom = 0.086
+offset_left = 0.35995483
+offset_top = 8.0
+offset_right = 0.35986328
+offset_bottom = 0.07999802
+grow_horizontal = 2
+
+[node name="Panel" type="PanelContainer" parent="BossHealthUI" unique_id=451760511]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -0.5
+offset_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Content" type="VBoxContainer" parent="BossHealthUI/Panel" unique_id=2063498909]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="BossHealthBar" type="ProgressBar" parent="BossHealthUI/Panel/Content" unique_id=110803654]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_boss_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_boss_bar_fill")
+value = 100.0
+show_percentage = false
+
+[node name="BossNameLabel" type="Label" parent="BossHealthUI/Panel/Content" unique_id=285249898]
+layout_mode = 2
+horizontal_alignment = 1

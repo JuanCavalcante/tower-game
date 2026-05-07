@@ -17,21 +17,11 @@ const BOSS_FLOOR := 10
 @onready var music_pause_button = $UI/MainMenu/MenuPanel/MenuItems/MusicPauseButton
 @onready var player_status_panel = $UI/PlayerStatusPanel
 @onready var inventory_panel = $UI/InventoryPanel
-@onready var health_bar_fill: ColorRect = $UI/HUD/HealthBar/Fill
-@onready var health_bar_text: Label = $UI/HUD/HealthBar/HealthText
-@onready var coins_label: Label = $UI/HUD/CoinsLabel
-@onready var xp_label = $UI/HUD/XPLabel
-@onready var floor_label = $UI/HUD/FloorLabel
-@onready var inventory_quick_button: Button = $UI/HUD/QuickActionsBar/MarginContainer/ActionsRow/InventoryQuickButton
-@onready var character_quick_button: Button = $UI/HUD/QuickActionsBar/MarginContainer/ActionsRow/CharacterQuickButton
 
 var is_entry_pause_active := false
 var is_status_panel_open := false
 var is_inventory_panel_open := false
 var is_death_overlay_open := false
-var _boss_health_root: Control = null
-var _boss_health_bar: ProgressBar = null
-var _boss_name_label: Label = null
 var _tracked_boss: Node = null
 
 func _ready():
@@ -51,13 +41,11 @@ func _ready():
 	$UI/PauseMenu/MenuPanel/MenuItems/NewGameButton.pressed.connect(_on_new_game_pressed)
 	$UI/PauseMenu/MenuPanel/MenuItems/QuitButton.pressed.connect(_on_quit_pressed)
 	respawn_button.pressed.connect(_on_respawn_pressed)
-	inventory_quick_button.pressed.connect(_on_inventory_quick_button_pressed)
-	character_quick_button.pressed.connect(_on_character_quick_button_pressed)
+	hud.inventory_quick_pressed.connect(_on_inventory_quick_button_pressed)
+	hud.character_quick_pressed.connect(_on_character_quick_button_pressed)
 	_configure_boss_music_loop()
 	player_status_panel.close_requested.connect(_close_status_panel)
 	inventory_panel.close_requested.connect(_close_inventory_panel)
-	_setup_boss_health_ui()
-	xp_label.visible = false
 	show_main_menu()
 
 func _process(_delta):
@@ -88,9 +76,7 @@ func _process(_delta):
 	if is_status_panel_open:
 		player_status_panel.refresh(_get_player_node())
 
-	_update_health_bar()
-	coins_label.text = "%d" % [PlayerStats.coins]
-	floor_label.text = "Andar: %d" % [GameManager.current_floor]
+	hud.refresh(GameManager.current_floor)
 	_update_boss_music_state()
 	_update_boss_health_ui()
 
@@ -107,34 +93,25 @@ func _ensure_inventory_tab_shortcut() -> void:
 
 	InputMap.action_add_event("toggle_inventory_panel", tab_event)
 
-func _update_health_bar() -> void:
-	var max_health: int = max(PlayerStats.max_health, 1)
-	var current_health: int = clampi(PlayerStats.current_health, 0, max_health)
-	var health_ratio: float = float(current_health) / float(max_health)
-
-	PlayerStats.current_health = current_health
-	health_bar_fill.anchor_right = health_ratio
-	health_bar_text.text = "%d/%d" % [current_health, max_health]
-
 func show_main_menu():
 	get_tree().paused = false
 	game.visible = false
-	hud.visible = false
 	main_menu.visible = true
 	pause_menu.visible = false
 	death_overlay.visible = false
 	is_death_overlay_open = false
+	_refresh_hud_visibility()
 	_stop_boss_music()
 	_play_menu_music()
 
 func start_game():
 	get_tree().paused = false
 	game.visible = true
-	hud.visible = true
 	main_menu.visible = false
 	pause_menu.visible = false
 	death_overlay.visible = false
 	is_death_overlay_open = false
+	_refresh_hud_visibility()
 	_stop_menu_music()
 
 func pause_game():
@@ -144,34 +121,51 @@ func pause_game():
 		_close_inventory_panel()
 	get_tree().paused = true
 	pause_menu.visible = true
+	_refresh_hud_visibility()
 
 func resume_game():
 	get_tree().paused = false
 	pause_menu.visible = false
+	_refresh_hud_visibility()
 
 func _open_status_panel() -> void:
 	is_status_panel_open = true
 	player_status_panel.visible = true
 	player_status_panel.refresh(_get_player_node())
 	get_tree().paused = true
+	_refresh_hud_visibility()
 
 func _close_status_panel() -> void:
 	is_status_panel_open = false
 	player_status_panel.visible = false
 	if not pause_menu.visible and not main_menu.visible and game.visible and not is_entry_pause_active and not is_death_overlay_open:
 		get_tree().paused = false
+	_refresh_hud_visibility()
 
 func _open_inventory_panel() -> void:
 	is_inventory_panel_open = true
 	inventory_panel.reload_from_player_stats()
 	inventory_panel.visible = true
 	get_tree().paused = true
+	_refresh_hud_visibility()
 
 func _close_inventory_panel() -> void:
 	is_inventory_panel_open = false
 	inventory_panel.visible = false
 	if not pause_menu.visible and not main_menu.visible and game.visible and not is_entry_pause_active and not is_death_overlay_open:
 		get_tree().paused = false
+	_refresh_hud_visibility()
+
+func _refresh_hud_visibility() -> void:
+	var should_show_hud: bool = (
+		game.visible
+		and not main_menu.visible
+		and not pause_menu.visible
+		and not is_status_panel_open
+		and not is_inventory_panel_open
+		and not is_death_overlay_open
+	)
+	hud.set_hud_visible(should_show_hud)
 
 func _on_inventory_quick_button_pressed() -> void:
 	if not _can_toggle_player_panels():
@@ -348,77 +342,12 @@ func _should_play_boss_music() -> bool:
 
 	return true
 
-func _setup_boss_health_ui() -> void:
-	_boss_health_root = Control.new()
-	_boss_health_root.name = "BossHealthUI"
-	_boss_health_root.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	_boss_health_root.anchor_left = 0.24
-	_boss_health_root.anchor_right = 0.76
-	_boss_health_root.offset_top = 10.0
-	_boss_health_root.offset_bottom = 64.0
-	_boss_health_root.visible = false
-	hud.add_child(_boss_health_root)
-
-	var panel := PanelContainer.new()
-	panel.set_anchors_preset(Control.PRESET_FULL_RECT)
-	panel.offset_left = 0.0
-	panel.offset_top = 0.0
-	panel.offset_right = 0.0
-	panel.offset_bottom = 0.0
-	_boss_health_root.add_child(panel)
-
-	var content := VBoxContainer.new()
-	content.add_theme_constant_override("separation", 4)
-	panel.add_child(content)
-
-	_boss_health_bar = ProgressBar.new()
-	_boss_health_bar.custom_minimum_size = Vector2(0, 22)
-	_boss_health_bar.show_percentage = false
-	_boss_health_bar.max_value = 100.0
-	_boss_health_bar.value = 100.0
-	var boss_bar_background := StyleBoxFlat.new()
-	boss_bar_background.bg_color = Color(0.15, 0.04, 0.04, 0.95)
-	_boss_health_bar.add_theme_stylebox_override("background", boss_bar_background)
-	var boss_bar_fill := StyleBoxFlat.new()
-	boss_bar_fill.bg_color = Color(0.87, 0.12, 0.12, 1.0)
-	_boss_health_bar.add_theme_stylebox_override("fill", boss_bar_fill)
-	content.add_child(_boss_health_bar)
-
-	_boss_name_label = Label.new()
-	_boss_name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_boss_name_label.text = ""
-	content.add_child(_boss_name_label)
-
 func _update_boss_health_ui() -> void:
-	if _boss_health_root == null or _boss_health_bar == null or _boss_name_label == null:
-		return
-
-	if GameManager.current_floor != 10 or not game.visible:
-		_boss_health_root.visible = false
+	if GameManager.current_floor != 10:
 		_tracked_boss = null
-		return
-
 	if _tracked_boss == null or not is_instance_valid(_tracked_boss):
 		_tracked_boss = _find_floor_10_boss()
-
-	if _tracked_boss == null or not is_instance_valid(_tracked_boss):
-		_boss_health_root.visible = false
-		return
-
-	var max_hp: int = int(_tracked_boss.get("max_health"))
-	var current_hp: int = int(_tracked_boss.get("current_health"))
-	if max_hp <= 0 or current_hp <= 0:
-		_boss_health_root.visible = false
-		return
-
-	_boss_health_bar.max_value = max_hp
-	_boss_health_bar.value = clampi(current_hp, 0, max_hp)
-	if _tracked_boss.has_method("get_boss_display_name"):
-		_boss_name_label.text = _tracked_boss.get_boss_display_name()
-	else:
-		_boss_name_label.text = "Boss do Andar 10"
-
-	_boss_health_root.visible = true
+	hud.update_boss_health_ui(GameManager.current_floor, game.visible, _tracked_boss)
 
 func _find_floor_10_boss() -> Node:
 	for enemy in get_tree().get_nodes_in_group("boss_enemy"):
