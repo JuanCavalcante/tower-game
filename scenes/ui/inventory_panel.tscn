@@ -1,22 +1,38 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://c0v4wc3uxr3ww"]
 
-[ext_resource type="Script" path="res://scripts/ui/inventory_panel.gd" id="1"]
+[ext_resource type="Script" uid="uid://bru8bxhktitke" path="res://scripts/ui/inventory_panel.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://dbai2h7pnhf6q" path="res://assets/ui/panels/panel_bg_ornate_generated.png" id="2_panel_bg"]
+[ext_resource type="Texture2D" uid="uid://drmy8wfwchk2j" path="res://assets/ui/buttons/button_ornate_generated.png" id="3_button_bg"]
+[ext_resource type="Texture2D" uid="uid://bdvfafcposmy6" path="res://assets/sprites/effect/coins-chests-etc-2-0.png" id="4_coin_sheet"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cvy6a"]
+bg_color = Color(0.78431374, 0.54901963, 0.15686275, 0.25882354)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_button_large"]
+content_margin_left = 20.0
+content_margin_top = 8.0
+content_margin_right = 20.0
+content_margin_bottom = 8.0
+texture = ExtResource("3_button_bg")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_coin_gold"]
+atlas = ExtResource("4_coin_sheet")
+region = Rect2(17, 18, 14, 14)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
-bg_color = Color(0.66, 0.22, 0.22, 0.46)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
+bg_color = Color(0, 0, 0, 0)
 border_color = Color(0.95, 0.86, 0.67, 0.95)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="InventoryPanel" type="Control"]
+[node name="InventoryPanel" type="Control" unique_id=1496932905]
 process_mode = 3
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,7 +42,7 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1")
 
-[node name="Overlay" type="ColorRect" parent="."]
+[node name="Overlay" type="ColorRect" parent="." unique_id=673981776]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,121 +51,156 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.45)
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1414153744]
+custom_minimum_size = Vector2(930, 500)
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -465.0
+offset_top = -250.0
+offset_right = 465.0
+offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cvy6a")
 
-[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
-custom_minimum_size = Vector2(930, 500)
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=2011024464]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=985925344]
 layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="Header" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Header" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=279199806]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Header"]
+[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Header" unique_id=1552222721]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Inventario"
 
-[node name="CloseButton" type="Button" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Header"]
+[node name="CloseButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Header" unique_id=1725972229]
 custom_minimum_size = Vector2(120, 34)
 layout_mode = 2
+theme_override_colors/font_pressed_color = Color(0.92, 0.86, 0.7, 1)
+theme_override_colors/font_hover_color = Color(0.68235296, 0.5568628, 0.043137256, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxTexture_button_large")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_button_large")
+theme_override_styles/hover = SubResource("StyleBoxTexture_button_large")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_button_large")
+theme_override_styles/focus = SubResource("StyleBoxTexture_button_large")
 text = "Fechar"
 
-[node name="Body" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Body" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=797942369]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 16
 
-[node name="BackpackColumn" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body"]
+[node name="BackpackColumn" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body" unique_id=1609936937]
 custom_minimum_size = Vector2(560, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 8
 
-[node name="BackpackTitle" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body/BackpackColumn"]
+[node name="BackpackTitle" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Body/BackpackColumn" unique_id=671765568]
 layout_mode = 2
-text = "Mochila (15 slots desbloqueados)"
+text = "Mochila"
 
-[node name="BackpackCard" type="PanelContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body/BackpackColumn"]
+[node name="BackpackCard" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body/BackpackColumn" unique_id=1258270108]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body/BackpackColumn/BackpackCard"]
+[node name="Background" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Body/BackpackColumn/BackpackCard" unique_id=2004929970]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+mouse_filter = 2
+texture = ExtResource("2_panel_bg")
+expand_mode = 1
 
-[node name="BackpackBody" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body/BackpackColumn/BackpackCard/MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body/BackpackColumn/BackpackCard" unique_id=103034085]
 layout_mode = 2
+theme_override_constants/margin_left = 41
+theme_override_constants/margin_top = 53
+theme_override_constants/margin_right = 41
+theme_override_constants/margin_bottom = 53
+
+[node name="BackpackBody" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body/BackpackColumn/BackpackCard/MarginContainer" unique_id=982271965]
+layout_mode = 2
+size_flags_horizontal = 4
 theme_override_constants/separation = 8
+alignment = 1
 
-[node name="SlotsGrid" type="GridContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body/BackpackColumn/BackpackCard/MarginContainer/BackpackBody"]
+[node name="SlotsGrid" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body/BackpackColumn/BackpackCard/MarginContainer/BackpackBody" unique_id=40971658]
 layout_mode = 2
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 8
-columns = 5
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 7
+columns = 6
 
-[node name="EquipmentColumn" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body"]
+[node name="EquipmentColumn" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body" unique_id=1090763593]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 8
 
-[node name="EquipmentTitle" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn"]
+[node name="EquipmentTitle" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn" unique_id=2133686568]
 layout_mode = 2
 text = "Equipamentos"
 
-[node name="EquipmentCard" type="PanelContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn"]
+[node name="EquipmentCard" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn" unique_id=1307828433]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard"]
+[node name="Background" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard" unique_id=2058824840]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+mouse_filter = 2
+texture = ExtResource("2_panel_bg")
+expand_mode = 1
 
-[node name="EquipmentBody" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard/MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard" unique_id=964280281]
+layout_mode = 2
+theme_override_constants/margin_left = 46
+theme_override_constants/margin_top = 46
+theme_override_constants/margin_right = 46
+theme_override_constants/margin_bottom = 46
+
+[node name="EquipmentBody" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard/MarginContainer" unique_id=616845498]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="EquipmentSlotsGrid" type="GridContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard/MarginContainer/EquipmentBody"]
+[node name="EquipmentSlotsGrid" type="GridContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard/MarginContainer/EquipmentBody" unique_id=89938386]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 8
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
 columns = 3
 
-[node name="CoinsRow" type="HBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard/MarginContainer/EquipmentBody"]
+[node name="CoinsRow" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard/MarginContainer/EquipmentBody" unique_id=920383497]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="CoinsLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard/MarginContainer/EquipmentBody/CoinsRow" unique_id=1704595105]
+visible = false
 layout_mode = 2
 
-[node name="CoinsLabel" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard/MarginContainer/EquipmentBody/CoinsRow"]
+[node name="CoinIcon" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard/MarginContainer/EquipmentBody/CoinsRow"]
+custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
-text = "Moedas:"
+texture = SubResource("AtlasTexture_coin_gold")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="CoinsValue" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard/MarginContainer/EquipmentBody/CoinsRow"]
+[node name="CoinsValue" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard/MarginContainer/EquipmentBody/CoinsRow" unique_id=783243407]
 layout_mode = 2
 text = "0"
