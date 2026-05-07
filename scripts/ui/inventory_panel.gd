@@ -1,9 +1,10 @@
+@tool
 extends Control
 
 const TOTAL_BACKPACK_SLOTS := 30
 const UNLOCKED_BACKPACK_SLOTS := 15
-const BACKPACK_SLOT_SIZE := Vector2(100, 64)
-const EQUIPMENT_SLOT_SIZE := Vector2(92, 72)
+const BACKPACK_SLOT_SIZE := Vector2(72, 44)
+const EQUIPMENT_SLOT_SIZE := Vector2(62, 48)
 const TOOLTIP_OFFSET := Vector2(14, 14)
 
 const EQUIPMENT_LAYOUT := [
@@ -18,10 +19,10 @@ const EQUIPMENT_LAYOUT := [
 	{"id": "feet", "label": "Pes", "types": ["boots"]}
 ]
 
-@onready var close_button: Button = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Header/CloseButton
-@onready var coins_label: Label = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard/MarginContainer/EquipmentBody/CoinsRow/CoinsValue
-@onready var backpack_grid: GridContainer = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body/BackpackColumn/BackpackCard/MarginContainer/BackpackBody/SlotsGrid
-@onready var equipment_grid: GridContainer = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard/MarginContainer/EquipmentBody/EquipmentSlotsGrid
+@onready var close_button: Button = $PanelContainer/MarginContainer/VBoxContainer/Header/CloseButton
+@onready var coins_label: Label = $PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard/MarginContainer/EquipmentBody/CoinsRow/CoinsValue
+@onready var backpack_grid: GridContainer = $PanelContainer/MarginContainer/VBoxContainer/Body/BackpackColumn/BackpackCard/MarginContainer/BackpackBody/SlotsGrid
+@onready var equipment_grid: GridContainer = $PanelContainer/MarginContainer/VBoxContainer/Body/EquipmentColumn/EquipmentCard/MarginContainer/EquipmentBody/EquipmentSlotsGrid
 
 signal close_requested
 
@@ -46,6 +47,10 @@ const EQUIPMENT_GRID_POSITIONS := {
 }
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		_build_editor_preview()
+		return
+
 	close_button.pressed.connect(func(): close_requested.emit())
 	PlayerStats.coins_changed.connect(_on_coins_changed)
 	_build_hover_tooltip()
@@ -55,6 +60,21 @@ func _ready() -> void:
 	_refresh_all_slots()
 	_on_coins_changed(PlayerStats.coins)
 	_apply_equipment_effects_to_player_stats()
+
+func _build_editor_preview() -> void:
+	_clear_grid_children(backpack_grid)
+	_clear_grid_children(equipment_grid)
+	_slot_nodes.clear()
+
+	_reset_inventory_state()
+	_build_backpack_slots()
+	_build_equipment_slots()
+	_refresh_all_slots()
+	coins_label.text = "0"
+
+func _clear_grid_children(grid: GridContainer) -> void:
+	for child in grid.get_children():
+		child.queue_free()
 
 func _process(_delta: float) -> void:
 	if _hover_tooltip_panel != null and _hover_tooltip_panel.visible:
@@ -418,3 +438,4 @@ func _format_item_tooltip(item_data: Dictionary) -> String:
 		type_label,
 		rarity
 	]
+
