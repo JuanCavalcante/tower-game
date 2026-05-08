@@ -34,7 +34,8 @@ enum SpawnContext {
 	CONTINUE_GAME,
 	ENTER_TOWER,
 	ADVANCE_FLOOR,
-	RETURN_TO_HUB
+	RETURN_TO_HUB,
+	RESTART_FLOOR
 }
 
 func start_new_game() -> void:
@@ -113,6 +114,13 @@ func continue_game() -> void:
 
 func return_to_hub(save_progress := true) -> void:
 	load_floor(HUB_FLOOR, save_progress, SpawnContext.RETURN_TO_HUB)
+
+
+func restart_current_floor() -> void:
+	if current_floor == HUB_FLOOR:
+		return
+
+	load_floor(current_floor, false, SpawnContext.RESTART_FLOOR)
 
 func load_floor(floor_number: int, save_progress := true, spawn_context: int = SpawnContext.DEFAULT) -> void:
 	if _is_loading_floor:
