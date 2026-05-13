@@ -9,6 +9,7 @@ var _portal_ui: CanvasLayer
 var _overlay: ColorRect
 var _panel: PanelContainer
 var _next_floor_button: Button
+var _restart_floor_button: Button
 var _interact_prompt: Label
 
 
@@ -20,10 +21,10 @@ func _ready() -> void:
 
 func activate() -> void:
 	active = true
-	print("Portal ativado! Escolha retornar a cidade ou avancar para o proximo andar.")
+	print("Portal ativado! Escolha retornar a cidade, reiniciar o andar ou avancar para o proximo andar.")
 	$AnimatedSprite2D.modulate = Color(0.5, 1.0, 0.5)
 	_unlock_next_floor()
-	_refresh_next_floor_button()
+	_refresh_action_buttons()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -110,16 +111,20 @@ func _build_choice_ui() -> void:
 	return_button.pressed.connect(_return_to_city)
 	vbox.add_child(return_button)
 
+	_restart_floor_button = Button.new()
+	_restart_floor_button.pressed.connect(_restart_floor)
+	vbox.add_child(_restart_floor_button)
+
 	_next_floor_button = Button.new()
 	_next_floor_button.pressed.connect(_go_to_next_floor)
 	vbox.add_child(_next_floor_button)
-	_refresh_next_floor_button()
+	_refresh_action_buttons()
 
 
 func _open_choice_ui() -> void:
 	_ui_open = true
 	_pause_game_for_portal()
-	_refresh_next_floor_button()
+	_refresh_action_buttons()
 	_overlay.visible = true
 	_panel.visible = true
 	_update_interact_prompt()
@@ -141,7 +146,13 @@ func _update_interact_prompt() -> void:
 	_interact_prompt.text = "Pressione E para fechar" if _ui_open else "Pressione E"
 
 
-func _refresh_next_floor_button() -> void:
+func _refresh_action_buttons() -> void:
+	if _restart_floor_button != null:
+		_restart_floor_button.disabled = not active
+		_restart_floor_button.text = "Reiniciar Andar"
+		if not active:
+			_restart_floor_button.text += " (Bloqueado)"
+
 	if _next_floor_button == null:
 		return
 
@@ -157,6 +168,14 @@ func _refresh_next_floor_button() -> void:
 func _return_to_city() -> void:
 	_close_choice_ui()
 	GameManager.return_to_hub(true)
+
+
+func _restart_floor() -> void:
+	if not active:
+		return
+
+	_close_choice_ui()
+	GameManager.restart_current_floor()
 
 
 func _go_to_next_floor() -> void:
